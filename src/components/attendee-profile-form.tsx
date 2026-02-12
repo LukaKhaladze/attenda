@@ -141,6 +141,7 @@ export function AttendeeProfileForm() {
             maxLength={150}
             rows={3}
             placeholder="მაქს. 150 სიმბოლო"
+            className="w-full resize-none"
           />
         </label>
         <UIInput label="ტელეფონი" value={form.phone} onChange={(event) => setForm((prev) => ({ ...prev, phone: event.target.value }))} />

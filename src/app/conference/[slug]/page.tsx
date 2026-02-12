@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { ConferencePage } from "@/components/conference-page";
 import { Shell } from "@/components/shell";
@@ -14,9 +15,14 @@ export default async function ConferenceSinglePage({ params }: { params: { slug:
     notFound();
   }
 
+  const requestHeaders = headers();
+  const forwardedProto = requestHeaders.get("x-forwarded-proto");
+  const forwardedHost = requestHeaders.get("x-forwarded-host");
+  const host = forwardedHost || requestHeaders.get("host");
   const origin =
-    process.env.NEXTAUTH_URL ||
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
+    host
+      ? `${forwardedProto || "https"}://${host}`
+      : process.env.NEXTAUTH_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
   const shareUrl = `${origin}/conference/${conference.slug}`;
 
   return (

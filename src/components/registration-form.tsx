@@ -21,9 +21,10 @@ const positionOptions = [
   "Backend დეველოპერი",
   "პროდუქტის მენეჯერი",
   "UI/UX დიზაინერი",
-  "მარკეტინგ მენეჯერი",
+  "მარკეტინგის მენეჯერი",
   "გაყიდვების მენეჯერი",
-  "ბიზნეს ანალიტიკოსი"
+  "ბიზნეს ანალიტიკოსი",
+  "სხვა"
 ];
 
 export function RegistrationForm({ conferenceId }: Props) {
@@ -135,6 +136,7 @@ export function RegistrationForm({ conferenceId }: Props) {
             maxLength={150}
             rows={3}
             placeholder="მოკლედ აღწერე რატომ გინდა დასწრება (მაქს. 150 სიმბოლო)"
+            className="w-full resize-none"
           />
         </label>
         <UIInput label="ტელეფონი" name="phone" placeholder="+995..." />
