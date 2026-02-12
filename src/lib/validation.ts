@@ -12,16 +12,18 @@ const linkedInValidator = z
     }
   }, "LinkedIn ბმული უნდა იყოს linkedin.com");
 
+const phoneSchema = z
+  .string()
+  .min(7, "ტელეფონის ნომერი სავალდებულოა")
+  .max(30, "ტელეფონის ნომერი ძალიან გრძელია")
+  .regex(/^\+?[0-9()\-\s]{7,30}$/, "ტელეფონის ფორმატი არასწორია");
+
 export const registerSchema = z.object({
   conferenceId: z.string().cuid("კონფერენციის იდენტიფიკატორი არასწორია"),
   fullName: z.string().min(2, "სახელი და გვარი სავალდებულოა").max(120, "მაქსიმუმ 120 სიმბოლო"),
   company: z.string().max(120, "მაქსიმუმ 120 სიმბოლო").optional(),
   position: z.string().max(120, "მაქსიმუმ 120 სიმბოლო").optional(),
-  phone: z
-    .string()
-    .min(7, "ტელეფონის ნომერი სავალდებულოა")
-    .max(30, "ტელეფონის ნომერი ძალიან გრძელია")
-    .regex(/^\+?[0-9()\-\s]{7,30}$/, "ტელეფონის ფორმატი არასწორია"),
+  phone: phoneSchema,
   linkedinUrl: linkedInValidator,
   photoUrl: z.string().url("ფოტოს ბმული არასწორია").optional().or(z.literal("")),
   consentPublicList: z.literal(true, {
@@ -32,6 +34,20 @@ export const registerSchema = z.object({
   formStartedAt: z.number()
 });
 
+export const hostRegisterSchema = z.object({
+  organizerName: z.string().min(2, "ორგანიზატორის სახელი სავალდებულოა").max(120),
+  organizerEmail: z.string().email("ელფოსტა არასწორია"),
+  organizerPhone: phoneSchema,
+  organizerCompany: z.string().min(2, "კომპანია სავალდებულოა").max(120),
+  title_ka: z.string().min(3, "კონფერენციის სათაური სავალდებულოა").max(180),
+  date: z.string().min(1, "თარიღი სავალდებულოა"),
+  location_ka: z.string().min(2, "ლოკაცია სავალდებულოა").max(160),
+  description_ka: z.string().min(20, "აღწერა უნდა იყოს მინიმუმ 20 სიმბოლო"),
+  websiteUrl: z.string().url("ვებსაიტის ბმული არასწორია").optional().or(z.literal("")),
+  mapUrl: z.string().url("რუკის ბმული არასწორია").optional().or(z.literal("")),
+  coverImageUrl: z.string().url("სურათის ბმული არასწორია").optional().or(z.literal(""))
+});
+
 export const attendeeQuerySchema = z.object({
   q: z.string().optional(),
   hasCompany: z.enum(["true", "false"]).optional(),
@@ -40,7 +56,7 @@ export const attendeeQuerySchema = z.object({
 });
 
 export const attendeeStatusSchema = z.object({
-  status: z.enum(["APPROVED", "HIDDEN", "PENDING"]) 
+  status: z.enum(["APPROVED", "HIDDEN", "PENDING"])
 });
 
 export const meetingSchema = z.object({

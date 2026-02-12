@@ -1,4 +1,4 @@
-import { RegistrationForm } from "@/components/registration-form";
+import { RegistrationRoleSwitcher } from "@/components/registration-role-switcher";
 import { Shell } from "@/components/shell";
 import { prisma } from "@/lib/prisma";
 
@@ -11,11 +11,7 @@ export default async function RegisterPage({ searchParams }: { searchParams: { c
 
   return (
     <Shell>
-      {conference ? (
-        <RegistrationForm conferenceId={conference.id} />
-      ) : (
-        <p className="rounded-md bg-amber-50 px-4 py-3 text-sm text-amber-700">აქტიური კონფერენცია ვერ მოიძებნა.</p>
-      )}
+      <RegistrationRoleSwitcher conferenceId={conference?.id ?? null} />
     </Shell>
   );
 }
