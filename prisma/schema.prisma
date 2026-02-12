@@ -52,7 +52,8 @@ model Attendee {
   status            AttendeeStatus @default(PENDING)
   createdAt         DateTime       @default(now())
   conference        Conference     @relation(fields: [conferenceId], references: [id], onDelete: Cascade)
-  receivedOffers    MeetingOffer[]
+  receivedOffers    MeetingOffer[] @relation("ReceivedOffers")
+  sentOffers        MeetingOffer[] @relation("SentOffers")
 
   @@index([conferenceId, status])
   @@index([fullName])
@@ -62,15 +63,18 @@ model Attendee {
 model MeetingOffer {
   id                String             @id @default(cuid())
   recipientAttendeeId String
+  senderAttendeeId  String?
   senderName        String
   senderContact     String?
   proposedAt        DateTime?
   note              String?
   status            MeetingOfferStatus @default(PENDING)
   createdAt         DateTime           @default(now())
-  recipient         Attendee           @relation(fields: [recipientAttendeeId], references: [id], onDelete: Cascade)
+  recipient         Attendee           @relation("ReceivedOffers", fields: [recipientAttendeeId], references: [id], onDelete: Cascade)
+  sender            Attendee?          @relation("SentOffers", fields: [senderAttendeeId], references: [id], onDelete: SetNull)
 
   @@index([recipientAttendeeId, createdAt])
+  @@index([senderAttendeeId, createdAt])
 }
 
 model User {

@@ -25,6 +25,11 @@ export async function POST(request: NextRequest) {
     }
 
     const data = parsed.data;
+    const senderAttendeeId = request.cookies.get("attendee_id")?.value ?? null;
+
+    if (senderAttendeeId && senderAttendeeId === data.recipientAttendeeId) {
+      return NextResponse.json({ error: "საკუთარ თავთან შეხვედრის შეთავაზება არ შეიძლება" }, { status: 400 });
+    }
 
     const attendee = await prisma.attendee.findUnique({ where: { id: data.recipientAttendeeId } });
     if (!attendee || attendee.status !== "APPROVED") {
@@ -34,6 +39,7 @@ export async function POST(request: NextRequest) {
     await prisma.meetingOffer.create({
       data: {
         recipientAttendeeId: data.recipientAttendeeId,
+        senderAttendeeId,
         senderName: cleanText(data.senderName),
         senderContact: data.senderContact ? cleanText(data.senderContact) : null,
         proposedAt: data.proposedAt ? new Date(data.proposedAt) : null,
