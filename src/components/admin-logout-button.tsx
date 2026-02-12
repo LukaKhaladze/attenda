@@ -6,7 +6,7 @@ export function AdminLogoutButton() {
   return (
     <button
       onClick={() => signOut({ callbackUrl: "/auth/signin" })}
-      className="rounded-xl bg-brand-100 px-4 py-2 text-sm font-medium text-brand-800"
+      className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700"
     >
       გასვლა
     </button>
