@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AttendeeStatus {
+  PENDING
+  APPROVED
+  HIDDEN
+}
+
+model Conference {
+  id            String     @id @default(cuid())
+  slug          String     @unique
+  title_ka      String
+  description_ka String
+  date          DateTime
+  location_ka   String
+  coverImageUrl String?
+  websiteUrl    String?
+  mapUrl        String?
+  agendaHighlights Json?
+  speakers      Json?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  attendees     Attendee[]
+}
+
+model Attendee {
+  id                String         @id @default(cuid())
+  conferenceId      String
+  fullName          String
+  company           String?
+  position          String?
+  phone             String
+  linkedinUrl       String
+  photoUrl          String?
+  sharePhonePublic  Boolean        @default(false)
+  consentPublicList Boolean
+  status            AttendeeStatus @default(PENDING)
+  createdAt         DateTime       @default(now())
+  conference        Conference     @relation(fields: [conferenceId], references: [id], onDelete: Cascade)
+
+  @@index([conferenceId, status])
+  @@index([fullName])
+  @@index([company])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? @db.Text
+  session_state      String?
+  refresh_token_expires_in Int?
+  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

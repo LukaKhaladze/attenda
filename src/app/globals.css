@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  font-family: "Noto Sans Georgian", "Noto Sans", sans-serif;
+  background: radial-gradient(circle at top, #ecf8f6 0%, #f7fbfa 45%, #ffffff 100%);
+  color: #12322f;
+}
+
+input,
+textarea,
+select {
+  @apply rounded-xl border border-brand-200 bg-white px-3 py-2 outline-none ring-0 transition focus:border-brand-500;
+}
+
+button {
+  @apply transition;
+}
