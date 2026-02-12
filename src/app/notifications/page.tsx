@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { MeetingOfferStatus, Prisma } from "@prisma/client";
 import { format } from "date-fns";
 import { Shell } from "@/components/shell";
+import { NotificationsReadMarker } from "@/components/notifications-read-marker";
 import { UICard } from "@/components/ui-card";
 import { UIHeader } from "@/components/ui-header";
 import { prisma } from "@/lib/prisma";
@@ -152,6 +153,7 @@ export default async function NotificationsPage() {
   return (
     <Shell>
       <section className="space-y-4">
+        <NotificationsReadMarker />
         <UIHeader title="შეტყობინებები" backHref="/" />
 
         {loadError ? (

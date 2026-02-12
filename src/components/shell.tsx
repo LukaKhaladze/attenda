@@ -9,24 +9,46 @@ export function Shell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [hasAttendeeCookie, setHasAttendeeCookie] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
-    async function updateAttendeeState() {
+    async function updateState() {
       try {
-        const response = await fetch("/api/attendee-profile", { cache: "no-store" });
-        setHasAttendeeCookie(response.ok);
+        const profileResponse = await fetch("/api/attendee-profile", { cache: "no-store" });
+        const isAttendee = profileResponse.ok;
+        setHasAttendeeCookie(isAttendee);
+
+        if (!isAttendee) {
+          setUnreadCount(0);
+          return;
+        }
+
+        if (pathname.startsWith("/notifications")) {
+          setUnreadCount(0);
+          return;
+        }
+
+        const countResponse = await fetch("/api/notifications/count", { cache: "no-store" });
+        if (!countResponse.ok) {
+          setUnreadCount(0);
+          return;
+        }
+
+        const data = await countResponse.json();
+        setUnreadCount(Number(data?.unread || 0));
       } catch {
         setHasAttendeeCookie(false);
+        setUnreadCount(0);
       }
     }
 
-    updateAttendeeState();
+    updateState();
 
-    window.addEventListener("focus", updateAttendeeState);
+    window.addEventListener("focus", updateState);
     return () => {
-      window.removeEventListener("focus", updateAttendeeState);
+      window.removeEventListener("focus", updateState);
     };
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     setMenuOpen(false);
@@ -35,6 +57,7 @@ export function Shell({ children }: { children: ReactNode }) {
   async function handleLogout() {
     await fetch("/api/attendee/logout", { method: "POST" }).catch(() => null);
     setHasAttendeeCookie(false);
+    setUnreadCount(0);
     setMenuOpen(false);
     router.refresh();
   }
@@ -47,18 +70,39 @@ export function Shell({ children }: { children: ReactNode }) {
             Attenda.ge
           </Link>
 
-          <button
-            type="button"
-            onClick={() => setMenuOpen((value) => !value)}
-            className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-3 py-1.5 text-sm text-gray-700"
-            aria-expanded={menuOpen}
-            aria-label="მენიუ"
-          >
-            <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
-              <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-            <span>მენიუ</span>
-          </button>
+          <div className="flex items-center gap-2">
+            {hasAttendeeCookie ? (
+              <Link
+                href="/notifications"
+                className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 text-primary"
+                aria-label="შეტყობინებები"
+                title="შეტყობინებები"
+              >
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <path d="M15 17h5l-1.4-1.4a2 2 0 01-.6-1.4V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h11z" stroke="currentColor" strokeWidth="2" />
+                  <path d="M10 20a2 2 0 004 0" stroke="currentColor" strokeWidth="2" />
+                </svg>
+                {unreadCount > 0 ? (
+                  <span className="absolute -right-1 -top-1 inline-flex min-h-[18px] min-w-[18px] items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold leading-none text-white">
+                    {unreadCount > 99 ? "99+" : unreadCount}
+                  </span>
+                ) : null}
+              </Link>
+            ) : null}
+
+            <button
+              type="button"
+              onClick={() => setMenuOpen((value) => !value)}
+              className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-3 py-1.5 text-sm text-gray-700"
+              aria-expanded={menuOpen}
+              aria-label="მენიუ"
+            >
+              <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
+                <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+              <span>მენიუ</span>
+            </button>
+          </div>
         </div>
 
         {menuOpen ? (
@@ -104,6 +148,7 @@ export function Shell({ children }: { children: ReactNode }) {
                     <path d="M10 20a2 2 0 004 0" stroke="currentColor" strokeWidth="2" />
                   </svg>
                   <span>შეტყობინებები</span>
+                  {unreadCount > 0 ? <span className="ml-auto text-xs font-semibold text-primary">{unreadCount > 99 ? "99+" : unreadCount}</span> : null}
                 </Link>
 
                 <button
