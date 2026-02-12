@@ -24,8 +24,20 @@ export function ConferenceCard({ conference }: Props) {
         </div>
 
         <div className="space-y-2 p-4">
-          <p className="text-sm text-gray-700">📅 {format(conference.date, "yyyy-MM-dd HH:mm")}</p>
-          <p className="text-sm text-gray-700">📍 {conference.location_ka}</p>
+          <p className="flex items-center gap-2 text-sm text-gray-700">
+            <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="2" />
+              <path d="M8 3v4M16 3v4M3 10h18" stroke="currentColor" strokeWidth="2" />
+            </svg>
+            {format(conference.date, "yyyy-MM-dd HH:mm")}
+          </p>
+          <p className="flex items-center gap-2 text-sm text-gray-700">
+            <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <path d="M12 21s7-6.3 7-11a7 7 0 10-14 0c0 4.7 7 11 7 11z" stroke="currentColor" strokeWidth="2" />
+              <circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="2" />
+            </svg>
+            {conference.location_ka}
+          </p>
           <p className="line-clamp-3 text-sm leading-6 text-gray-700">{conference.description_ka}</p>
         </div>
       </UICard>
