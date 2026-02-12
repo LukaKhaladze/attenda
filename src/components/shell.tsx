@@ -12,33 +12,78 @@ export function Shell({ children }: { children: ReactNode }) {
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const cacheKey = "attenda_header_state_v1";
+
+    function readCachedState() {
+      try {
+        const raw = sessionStorage.getItem(cacheKey);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw) as { at: number; isAttendee: boolean; unreadCount: number };
+        if (Date.now() - parsed.at > 15_000) {
+          return null;
+        }
+        return parsed;
+      } catch {
+        return null;
+      }
+    }
+
+    function saveCachedState(isAttendee: boolean, unread: number) {
+      try {
+        sessionStorage.setItem(cacheKey, JSON.stringify({ at: Date.now(), isAttendee, unreadCount: unread }));
+      } catch {
+        // Ignore storage errors in private mode.
+      }
+    }
+
     async function updateState() {
       try {
-        const profileResponse = await fetch("/api/attendee-profile", { cache: "no-store" });
-        const isAttendee = profileResponse.ok;
+        const cached = readCachedState();
+        if (cached) {
+          setHasAttendeeCookie(cached.isAttendee);
+          setUnreadCount(pathname.startsWith("/notifications") ? 0 : cached.unreadCount);
+          return;
+        }
+
+        const sessionResponse = await fetch("/api/attendee/session", {
+          cache: "no-store",
+          signal: controller.signal
+        });
+        const sessionData = await sessionResponse.json().catch(() => ({}));
+        const isAttendee = Boolean(sessionResponse.ok && sessionData?.isAttendee);
         setHasAttendeeCookie(isAttendee);
 
         if (!isAttendee) {
           setUnreadCount(0);
+          saveCachedState(false, 0);
           return;
         }
 
         if (pathname.startsWith("/notifications")) {
           setUnreadCount(0);
+          saveCachedState(true, 0);
           return;
         }
 
-        const countResponse = await fetch("/api/notifications/count", { cache: "no-store" });
+        const countResponse = await fetch("/api/notifications/count", {
+          cache: "no-store",
+          signal: controller.signal
+        });
         if (!countResponse.ok) {
           setUnreadCount(0);
           return;
         }
 
-        const data = await countResponse.json();
-        setUnreadCount(Number(data?.unread || 0));
+        const data = await countResponse.json().catch(() => ({}));
+        const unread = Number(data?.unread || 0);
+        setUnreadCount(unread);
+        saveCachedState(true, unread);
       } catch {
-        setHasAttendeeCookie(false);
-        setUnreadCount(0);
+        if (!controller.signal.aborted) {
+          setHasAttendeeCookie(false);
+          setUnreadCount(0);
+        }
       }
     }
 
@@ -46,6 +91,7 @@ export function Shell({ children }: { children: ReactNode }) {
 
     window.addEventListener("focus", updateState);
     return () => {
+      controller.abort();
       window.removeEventListener("focus", updateState);
     };
   }, [pathname]);
@@ -56,6 +102,11 @@ export function Shell({ children }: { children: ReactNode }) {
 
   async function handleLogout() {
     await fetch("/api/attendee/logout", { method: "POST" }).catch(() => null);
+    try {
+      sessionStorage.removeItem("attenda_header_state_v1");
+    } catch {
+      // Ignore storage errors.
+    }
     setHasAttendeeCookie(false);
     setUnreadCount(0);
     setMenuOpen(false);

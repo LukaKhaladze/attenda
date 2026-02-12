@@ -1,6 +1,8 @@
 import { put } from "@vercel/blob";
 import { NextResponse } from "next/server";
 
+const MAX_UPLOAD_SIZE = 2 * 1024 * 1024;
+
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
@@ -14,18 +16,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "მხოლოდ სურათის ატვირთვაა შესაძლებელი" }, { status: 400 });
     }
 
-    if (!process.env.BLOB_READ_WRITE_TOKEN) {
-      if (file.size > 2 * 1024 * 1024) {
-        return NextResponse.json({ error: "ფაილი ძალიან დიდია. მაქსიმუმ 2MB" }, { status: 413 });
-      }
+    if (file.size > MAX_UPLOAD_SIZE) {
+      return NextResponse.json({ error: "ფაილი ძალიან დიდია. მაქსიმუმ 2MB" }, { status: 413 });
+    }
 
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
       const bytes = await file.arrayBuffer();
       const base64 = Buffer.from(bytes).toString("base64");
       const dataUrl = `data:${file.type};base64,${base64}`;
       return NextResponse.json({ url: dataUrl, storage: "inline" });
     }
 
-    const blob = await put(`profiles/${Date.now()}-${file.name}`, file, {
+    const safeFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-");
+    const blob = await put(`profiles/${Date.now()}-${safeFileName}`, file, {
       access: "public",
       token: process.env.BLOB_READ_WRITE_TOKEN
     });

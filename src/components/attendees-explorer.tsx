@@ -59,7 +59,12 @@ export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
       if (conferenceId) params.set("conferenceId", conferenceId);
       if (effectivePosition) params.set("position", effectivePosition);
       const response = await fetch(`/api/attendees?${params.toString()}`, { signal: controller.signal });
-      const data = await response.json();
+      if (!response.ok) {
+        setAttendees([]);
+        setLoading(false);
+        return;
+      }
+      const data = await response.json().catch(() => ({}));
       setAttendees(data.items ?? []);
       const terms: string[] = Array.isArray(data.positions)
         ? Array.from(
@@ -77,7 +82,11 @@ export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
       }
       setLoading(false);
     }
-    load().catch(() => setLoading(false));
+    load().catch(() => {
+      if (!controller.signal.aborted) {
+        setLoading(false);
+      }
+    });
     return () => controller.abort();
   }, [debouncedQ, effectivePosition, conferenceId, initialItems]);
 
@@ -95,9 +104,9 @@ export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
         </div>
 
         <div className="flex gap-2 overflow-x-auto pb-1">
-          {["ყველა", ...positionTerms].map((item, index) => (
+          {["ყველა", ...positionTerms].map((item) => (
             <button
-              key={`${item}-${index}`}
+              key={item}
               type="button"
               onClick={() => setPosition(item)}
               className={`whitespace-nowrap rounded-full px-3 py-1 text-xs ${position === item ? "bg-primary text-white" : "border border-gray-300 text-gray-700"}`}

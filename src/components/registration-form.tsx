@@ -33,11 +33,19 @@ export function RegistrationForm({ conferenceId }: Props) {
   const [uploadNotice, setUploadNotice] = useState<string | null>(null);
   const startedAt = useMemo(() => Date.now(), []);
 
+  async function readJsonSafe(response: Response) {
+    try {
+      return await response.json();
+    } catch {
+      return {};
+    }
+  }
+
   async function uploadPhoto(file: File) {
     const formData = new FormData();
     formData.append("file", file);
     const response = await fetch("/api/upload", { method: "POST", body: formData });
-    const data = await response.json();
+    const data = await readJsonSafe(response);
     if (!response.ok) throw new Error(data?.error ?? "ფოტოს ატვირთვა ვერ მოხერხდა");
     return data.url as string;
   }
@@ -84,7 +92,7 @@ export function RegistrationForm({ conferenceId }: Props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
-      const data = await response.json();
+      const data = await readJsonSafe(response);
 
       if (!response.ok) throw new Error(data?.error ?? "რეგისტრაცია ვერ შესრულდა");
 

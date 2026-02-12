@@ -34,10 +34,18 @@ export function AttendeeProfileForm() {
     consentPublicList: true
   });
 
+  async function readJsonSafe(response: Response) {
+    try {
+      return await response.json();
+    } catch {
+      return {};
+    }
+  }
+
   useEffect(() => {
     async function load() {
       const response = await fetch("/api/attendee-profile");
-      const data = await response.json();
+      const data = await readJsonSafe(response);
       if (!response.ok) {
         setError(data?.error ?? "პროფილი ვერ ჩაიტვირთა");
         setLoading(false);
@@ -68,7 +76,7 @@ export function AttendeeProfileForm() {
     const formData = new FormData();
     formData.append("file", file);
     const response = await fetch("/api/upload", { method: "POST", body: formData });
-    const data = await response.json();
+    const data = await readJsonSafe(response);
     if (!response.ok) throw new Error(data?.error ?? "ფოტოს ატვირთვა ვერ მოხერხდა");
     return data.url as string;
   }
@@ -104,23 +112,26 @@ export function AttendeeProfileForm() {
       consentPublicList: form.consentPublicList
     };
 
-    const response = await fetch("/api/attendee-profile", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-    const data = await response.json();
+    try {
+      const response = await fetch("/api/attendee-profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await readJsonSafe(response);
 
-    setSaving(false);
+      if (!response.ok) {
+        setError(data?.error ?? "განახლება ვერ შესრულდა");
+        return;
+      }
 
-    if (!response.ok) {
-      setError(data?.error ?? "განახლება ვერ შესრულდა");
-      return;
+      setForm((prev) => ({ ...prev, photoUrl }));
+      setMessage("პროფილი განახლდა წარმატებით");
+    } catch {
+      setError("განახლება ვერ შესრულდა");
+    } finally {
+      setSaving(false);
     }
-
-    setForm((prev) => ({ ...prev, photoUrl }));
-    setMessage("პროფილი განახლდა წარმატებით");
-    target.reset();
   }
 
   if (loading) {

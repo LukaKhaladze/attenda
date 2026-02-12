@@ -25,32 +25,37 @@ export function MeetingOfferForm({ recipientAttendeeId }: Props) {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const form = event.currentTarget;
     setLoading(true);
     setMessage(null);
     setError(null);
 
-    const formData = new FormData(event.currentTarget);
-    const response = await fetch("/api/meeting-offers", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        recipientAttendeeId,
-        proposedAt: String(formData.get("proposedAt") || ""),
-        note: String(formData.get("note") || "")
-      })
-    });
+    try {
+      const formData = new FormData(form);
+      const response = await fetch("/api/meeting-offers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          recipientAttendeeId,
+          proposedAt: String(formData.get("proposedAt") || ""),
+          note: String(formData.get("note") || "")
+        })
+      });
 
-    const data = await response.json().catch(() => ({}));
-    setLoading(false);
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        setError(data?.error ?? "შეთავაზება ვერ გაიგზავნა");
+        return;
+      }
 
-    if (!response.ok) {
-      setError(data?.error ?? "შეთავაზება ვერ გაიგზავნა");
-      return;
+      setMessage("შეხვედრის შეთავაზება წარმატებით გაიგზავნა.");
+      form.reset();
+      setProposedAt(initialProposedAt);
+    } catch {
+      setError("შეთავაზება ვერ გაიგზავნა");
+    } finally {
+      setLoading(false);
     }
-
-    setMessage("შეხვედრის შეთავაზება წარმატებით გაიგზავნა.");
-    event.currentTarget.reset();
-    setProposedAt(initialProposedAt);
   }
 
   return (
