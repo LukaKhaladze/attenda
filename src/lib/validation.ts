@@ -47,6 +47,17 @@ export const attendeeStatusSchema = z.object({
   status: z.enum(["APPROVED", "HIDDEN", "PENDING"])
 });
 
+export const attendeeProfileUpdateSchema = z.object({
+  fullName: z.string().min(2, "სახელი და გვარი სავალდებულოა").max(120),
+  company: z.string().max(120).optional().or(z.literal("")),
+  position: z.string().max(120).optional().or(z.literal("")),
+  phone: phoneSchema,
+  linkedinUrl: linkedInValidator,
+  photoUrl: z.string().url("ფოტოს ბმული არასწორია").optional().or(z.literal("")),
+  sharePhonePublic: z.boolean(),
+  consentPublicList: z.boolean()
+});
+
 export const meetingSchema = z.object({
   attendeeId: z.string().cuid(),
   title: z.string().min(3, "შეხვედრის სათაური სავალდებულოა"),

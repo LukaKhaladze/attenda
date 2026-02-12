@@ -50,5 +50,14 @@ export async function POST(request: NextRequest) {
     }
   });
 
-  return NextResponse.json({ ok: true, attendeeId: attendee.id });
+  const response = NextResponse.json({ ok: true, attendeeId: attendee.id });
+  response.cookies.set("attendee_id", attendee.id, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 90
+  });
+
+  return response;
 }

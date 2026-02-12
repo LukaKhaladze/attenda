@@ -17,7 +17,7 @@ type Props = {
   conferenceId?: string;
 };
 
-const positionPresets = ["ყველა", "დამფუძნებელი", "CEO", "CTO", "ვებ დეველოპერი", "დიზაინერი", "მარკეტინგი"];
+const positionPresets = ["ყველა", "დამფუძნებელი", "CEO", "CTO", "დიზაინერი", "ვებ დეველოპერი", "პროდუქტის მენეჯერი"];
 
 export function AttendeesExplorer({ conferenceId }: Props) {
   const [attendees, setAttendees] = useState<Attendee[]>([]);
@@ -25,14 +25,11 @@ export function AttendeesExplorer({ conferenceId }: Props) {
   const [q, setQ] = useState("");
   const [debouncedQ, setDebouncedQ] = useState("");
   const [position, setPosition] = useState("ყველა");
-  const [hasCompany, setHasCompany] = useState("false");
-  const [hasLinkedin, setHasLinkedin] = useState("false");
-  const [sort, setSort] = useState("new");
 
   const effectivePosition = useMemo(() => (position === "ყველა" ? "" : position), [position]);
 
   useEffect(() => {
-    const timer = setTimeout(() => setDebouncedQ(q), 250);
+    const timer = setTimeout(() => setDebouncedQ(q), 220);
     return () => clearTimeout(timer);
   }, [q]);
 
@@ -40,7 +37,7 @@ export function AttendeesExplorer({ conferenceId }: Props) {
     const controller = new AbortController();
     async function load() {
       setLoading(true);
-      const params = new URLSearchParams({ q: debouncedQ, hasCompany, hasLinkedin, sort });
+      const params = new URLSearchParams({ q: debouncedQ });
       if (conferenceId) params.set("conferenceId", conferenceId);
       if (effectivePosition) params.set("position", effectivePosition);
       const response = await fetch(`/api/attendees?${params.toString()}`, { signal: controller.signal });
@@ -50,12 +47,20 @@ export function AttendeesExplorer({ conferenceId }: Props) {
     }
     load().catch(() => setLoading(false));
     return () => controller.abort();
-  }, [debouncedQ, effectivePosition, hasCompany, hasLinkedin, sort, conferenceId]);
+  }, [debouncedQ, effectivePosition, conferenceId]);
 
   return (
-    <section className="space-y-3">
-      <UICard className="space-y-3">
-        <input placeholder="🔍 მოძებნე სახელით ან პოზიციით" value={q} onChange={(event) => setQ(event.target.value)} />
+    <section className="space-y-2">
+      <UICard className="space-y-2 p-3 sm:p-4">
+        <div className="relative">
+          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
+              <path d="M20 20l-4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </span>
+          <input className="h-10 w-full rounded-md pl-9 text-sm" placeholder="მოძებნე ადამიანის სახელი ან პოზიცია" value={q} onChange={(event) => setQ(event.target.value)} />
+        </div>
 
         <div className="flex gap-2 overflow-x-auto pb-1">
           {positionPresets.map((item) => (
@@ -63,32 +68,11 @@ export function AttendeesExplorer({ conferenceId }: Props) {
               key={item}
               type="button"
               onClick={() => setPosition(item)}
-              className={`whitespace-nowrap rounded-full px-3 py-1.5 text-sm ${position === item ? "bg-primary text-white" : "border border-gray-300 text-gray-700"}`}
+              className={`whitespace-nowrap rounded-full px-3 py-1 text-xs ${position === item ? "bg-primary text-white" : "border border-gray-300 text-gray-700"}`}
             >
               {item}
             </button>
           ))}
-        </div>
-
-        <div className="flex gap-2 overflow-x-auto">
-          <button
-            type="button"
-            onClick={() => setHasCompany(hasCompany === "true" ? "false" : "true")}
-            className={`rounded-full px-3 py-1.5 text-sm ${hasCompany === "true" ? "bg-primary text-white" : "border border-gray-300 text-gray-700"}`}
-          >
-            კომპანია აქვს
-          </button>
-          <button
-            type="button"
-            onClick={() => setSort(sort === "new" ? "az" : "new")}
-            className="rounded-full border border-gray-300 px-3 py-1.5 text-sm text-gray-700"
-          >
-            {sort === "new" ? "ახალი" : "A-Z"}
-          </button>
-          <select value={hasLinkedin} onChange={(event) => setHasLinkedin(event.target.value)}>
-            <option value="false">LinkedIn: ყველა</option>
-            <option value="true">LinkedIn აქვს</option>
-          </select>
         </div>
       </UICard>
 
@@ -100,7 +84,7 @@ export function AttendeesExplorer({ conferenceId }: Props) {
         </UICard>
       ) : null}
 
-      <div className="space-y-3">
+      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
         {attendees.map((attendee) => (
           <Link key={attendee.id} href={`/attendees/${attendee.id}`}>
             <UICard className="flex items-center gap-3 active:scale-[0.98]">

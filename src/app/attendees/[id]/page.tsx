@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { MeetingActions } from "@/components/meeting-actions";
+import { MeetingOfferForm } from "@/components/meeting-offer-form";
 import { Shell } from "@/components/shell";
 import { UIAvatar } from "@/components/ui-avatar";
 import { UICard } from "@/components/ui-card";
@@ -42,7 +42,7 @@ export default async function AttendeeDetailPage({ params }: { params: { id: str
           </Link>
         </UICard>
 
-        <MeetingActions attendeeId={attendee.id} />
+        <MeetingOfferForm recipientAttendeeId={attendee.id} />
 
         <UICard>
           <h2 className="mb-2 text-base font-semibold text-primary">საკონტაქტო</h2>

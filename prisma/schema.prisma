@@ -14,21 +14,27 @@ enum AttendeeStatus {
   HIDDEN
 }
 
+enum MeetingOfferStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
 model Conference {
-  id            String     @id @default(cuid())
-  slug          String     @unique
-  title_ka      String
-  description_ka String
-  date          DateTime
-  location_ka   String
-  coverImageUrl String?
-  websiteUrl    String?
-  mapUrl        String?
+  id               String     @id @default(cuid())
+  slug             String     @unique
+  title_ka         String
+  description_ka   String
+  date             DateTime
+  location_ka      String
+  coverImageUrl    String?
+  websiteUrl       String?
+  mapUrl           String?
   agendaHighlights Json?
-  speakers      Json?
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-  attendees     Attendee[]
+  speakers         Json?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  attendees        Attendee[]
 }
 
 model Attendee {
@@ -45,10 +51,25 @@ model Attendee {
   status            AttendeeStatus @default(PENDING)
   createdAt         DateTime       @default(now())
   conference        Conference     @relation(fields: [conferenceId], references: [id], onDelete: Cascade)
+  receivedOffers    MeetingOffer[]
 
   @@index([conferenceId, status])
   @@index([fullName])
   @@index([company])
+}
+
+model MeetingOffer {
+  id                String             @id @default(cuid())
+  recipientAttendeeId String
+  senderName        String
+  senderContact     String?
+  proposedAt        DateTime?
+  note              String?
+  status            MeetingOfferStatus @default(PENDING)
+  createdAt         DateTime           @default(now())
+  recipient         Attendee           @relation(fields: [recipientAttendeeId], references: [id], onDelete: Cascade)
+
+  @@index([recipientAttendeeId, createdAt])
 }
 
 model User {
@@ -63,20 +84,20 @@ model User {
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String? @db.Text
-  access_token       String? @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String? @db.Text
-  session_state      String?
+  id                       String  @id @default(cuid())
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? @db.Text
+  access_token             String? @db.Text
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String? @db.Text
+  session_state            String?
   refresh_token_expires_in Int?
-  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
