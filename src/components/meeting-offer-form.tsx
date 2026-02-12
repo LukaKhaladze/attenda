@@ -35,8 +35,6 @@ export function MeetingOfferForm({ recipientAttendeeId }: Props) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         recipientAttendeeId,
-        senderName: String(formData.get("senderName") || ""),
-        senderContact: String(formData.get("senderContact") || ""),
         proposedAt: String(formData.get("proposedAt") || ""),
         note: String(formData.get("note") || "")
       })
@@ -59,13 +57,6 @@ export function MeetingOfferForm({ recipientAttendeeId }: Props) {
     <UICard className="space-y-3">
       <h3 className="text-base font-semibold text-primary">შეხვედრის შეთავაზება</h3>
       <form onSubmit={onSubmit} className="space-y-3">
-        <UIInput label="შენი სახელი" name="senderName" required requiredMark placeholder="მაგ: ნინო ბერიძე" maxLength={100} />
-        <UIInput
-          label="კონტაქტი"
-          name="senderContact"
-          placeholder="ტელეფონი ან ელფოსტა"
-          maxLength={120}
-        />
         <UIInput
           label="შემოთავაზებული დრო"
           name="proposedAt"

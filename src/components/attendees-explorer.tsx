@@ -20,22 +20,24 @@ type Props = {
 
 export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
   const [attendees, setAttendees] = useState<Attendee[]>(initialItems);
-  const [positionTerms, setPositionTerms] = useState<string[]>(() => {
-    const unique = Array.from(
-      new Set(
-        initialItems
-          .map((item) => item.position?.trim())
-          .filter((value): value is string => Boolean(value))
-      )
-    );
-    return unique.sort((a, b) => a.localeCompare(b, "ka"));
-  });
+  const [positionTerms, setPositionTerms] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [q, setQ] = useState("");
   const [debouncedQ, setDebouncedQ] = useState("");
   const [position, setPosition] = useState("ყველა");
 
   const effectivePosition = useMemo(() => (position === "ყველა" ? "" : position), [position]);
+
+  useEffect(() => {
+    const unique = Array.from(
+      new Set(
+        initialItems
+          .map((item) => item.position?.trim())
+          .filter((value): value is string => Boolean(value) && value !== "ყველა")
+      )
+    );
+    setPositionTerms(unique);
+  }, [initialItems]);
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedQ(q), 220);
@@ -59,7 +61,20 @@ export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
       const response = await fetch(`/api/attendees?${params.toString()}`, { signal: controller.signal });
       const data = await response.json();
       setAttendees(data.items ?? []);
-      setPositionTerms(Array.isArray(data.positions) ? data.positions : []);
+      const terms: string[] = Array.isArray(data.positions)
+        ? Array.from(
+            new Set(
+              data.positions.filter(
+                (value: unknown): value is string =>
+                  typeof value === "string" && value.trim().length > 0 && value !== "ყველა"
+              )
+            )
+          )
+        : [];
+      setPositionTerms(terms);
+      if (position !== "ყველა" && !terms.includes(position)) {
+        setPosition("ყველა");
+      }
       setLoading(false);
     }
     load().catch(() => setLoading(false));
@@ -80,9 +95,9 @@ export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
         </div>
 
         <div className="flex gap-2 overflow-x-auto pb-1">
-          {["ყველა", ...positionTerms].map((item) => (
+          {["ყველა", ...positionTerms].map((item, index) => (
             <button
-              key={item}
+              key={`${item}-${index}`}
               type="button"
               onClick={() => setPosition(item)}
               className={`whitespace-nowrap rounded-full px-3 py-1 text-xs ${position === item ? "bg-primary text-white" : "border border-gray-300 text-gray-700"}`}

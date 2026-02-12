@@ -6,8 +6,6 @@ import { cleanText } from "@/lib/sanitize";
 
 const schema = z.object({
   recipientAttendeeId: z.string().cuid(),
-  senderName: z.string().min(2, "სახელი სავალდებულოა").max(100, "სახელი ძალიან გრძელია"),
-  senderContact: z.string().max(120, "კონტაქტი ძალიან გრძელია").optional(),
   proposedAt: z
     .string()
     .optional()
@@ -49,8 +47,8 @@ export async function POST(request: NextRequest) {
       data: {
         recipientAttendeeId: data.recipientAttendeeId,
         senderAttendeeId,
-        senderName: cleanText(data.senderName),
-        senderContact: data.senderContact ? cleanText(data.senderContact) : null,
+        senderName: cleanText(senderAttendee.fullName),
+        senderContact: senderAttendee.phone ? cleanText(senderAttendee.phone) : null,
         proposedAt: data.proposedAt ? new Date(data.proposedAt) : null,
         note: data.note ? cleanText(data.note) : null
       }
