@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
       photoUrl: data.photoUrl ? cleanText(data.photoUrl) : null,
       sharePhonePublic: data.sharePhonePublic,
       consentPublicList: data.consentPublicList,
-      status: AttendeeStatus.PENDING
+      status: AttendeeStatus.APPROVED
     }
   });
 

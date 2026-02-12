@@ -23,15 +23,21 @@ export function AttendeesExplorer({ conferenceId }: Props) {
   const [attendees, setAttendees] = useState<Attendee[]>([]);
   const [loading, setLoading] = useState(true);
   const [q, setQ] = useState("");
+  const [debouncedQ, setDebouncedQ] = useState("");
   const [hasCompany, setHasCompany] = useState("false");
   const [hasLinkedin, setHasLinkedin] = useState("false");
   const [sort, setSort] = useState("new");
 
   useEffect(() => {
+    const timer = setTimeout(() => setDebouncedQ(q), 250);
+    return () => clearTimeout(timer);
+  }, [q]);
+
+  useEffect(() => {
     const controller = new AbortController();
     async function load() {
       setLoading(true);
-      const params = new URLSearchParams({ q, hasCompany, hasLinkedin, sort });
+      const params = new URLSearchParams({ q: debouncedQ, hasCompany, hasLinkedin, sort });
       if (conferenceId) params.set("conferenceId", conferenceId);
       const response = await fetch(`/api/attendees?${params.toString()}`, { signal: controller.signal });
       const data = await response.json();
@@ -40,7 +46,7 @@ export function AttendeesExplorer({ conferenceId }: Props) {
     }
     load().catch(() => setLoading(false));
     return () => controller.abort();
-  }, [q, hasCompany, hasLinkedin, sort, conferenceId]);
+  }, [debouncedQ, hasCompany, hasLinkedin, sort, conferenceId]);
 
   return (
     <section className="space-y-3">

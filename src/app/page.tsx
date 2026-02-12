@@ -2,7 +2,7 @@ import { ConferenceCard } from "@/components/conference-card";
 import { Shell } from "@/components/shell";
 import { prisma } from "@/lib/prisma";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function HomePage() {
   const conferences = await prisma.conference.findMany({

@@ -12,8 +12,8 @@ export function Shell({ children }: { children: ReactNode }) {
           <Link className="rounded-full border border-gray-200 px-3 py-1.5 text-gray-700" href="/register">
             რეგისტრაცია
           </Link>
-          <Link className="rounded-full border border-gray-200 px-3 py-1.5 text-gray-700" href="/attendees">
-            დამსწრეები
+          <Link className="rounded-full border border-gray-200 px-3 py-1.5 text-gray-700" href="/">
+            კონფერენციები
           </Link>
         </nav>
       </header>

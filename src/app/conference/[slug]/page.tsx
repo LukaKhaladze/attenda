@@ -3,7 +3,7 @@ import { ConferencePage } from "@/components/conference-page";
 import { Shell } from "@/components/shell";
 import { prisma } from "@/lib/prisma";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function ConferenceSinglePage({ params }: { params: { slug: string } }) {
   const conference = await prisma.conference.findUnique({
