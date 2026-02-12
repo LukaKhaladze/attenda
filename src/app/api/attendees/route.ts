@@ -10,35 +10,24 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "ფილტრი არასწორია" }, { status: 400 });
   }
 
-  const { q, hasCompany, hasLinkedin, sort, conferenceId } = parsed.data;
+  const { q, position, hasCompany, hasLinkedin, sort, conferenceId } = parsed.data;
 
   const items = await prisma.attendee.findMany({
     where: {
       status: "APPROVED",
       consentPublicList: true,
-      ...(conferenceId
-        ? {
-            conferenceId
-          }
-        : {}),
+      ...(conferenceId ? { conferenceId } : {}),
+      ...(position ? { position: { contains: position, mode: "insensitive" } } : {}),
       ...(q
         ? {
             OR: [
               { fullName: { contains: q, mode: "insensitive" } },
-              { company: { contains: q, mode: "insensitive" } }
+              { position: { contains: q, mode: "insensitive" } }
             ]
           }
         : {}),
-      ...(hasCompany === "true"
-        ? {
-            company: { not: null }
-          }
-        : {}),
-      ...(hasLinkedin === "true"
-        ? {
-            linkedinUrl: { not: "" }
-          }
-        : {})
+      ...(hasCompany === "true" ? { company: { not: null } } : {}),
+      ...(hasLinkedin === "true" ? { linkedinUrl: { not: "" } } : {})
     },
     orderBy: sort === "az" ? { fullName: "asc" } : { createdAt: "desc" },
     select: {

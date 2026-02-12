@@ -34,22 +34,9 @@ export const registerSchema = z.object({
   formStartedAt: z.number()
 });
 
-export const hostRegisterSchema = z.object({
-  organizerName: z.string().min(2, "ორგანიზატორის სახელი სავალდებულოა").max(120),
-  organizerEmail: z.string().email("ელფოსტა არასწორია"),
-  organizerPhone: phoneSchema,
-  organizerCompany: z.string().min(2, "კომპანია სავალდებულოა").max(120),
-  title_ka: z.string().min(3, "კონფერენციის სათაური სავალდებულოა").max(180),
-  date: z.string().min(1, "თარიღი სავალდებულოა"),
-  location_ka: z.string().min(2, "ლოკაცია სავალდებულოა").max(160),
-  description_ka: z.string().min(20, "აღწერა უნდა იყოს მინიმუმ 20 სიმბოლო"),
-  websiteUrl: z.string().url("ვებსაიტის ბმული არასწორია").optional().or(z.literal("")),
-  mapUrl: z.string().url("რუკის ბმული არასწორია").optional().or(z.literal("")),
-  coverImageUrl: z.string().url("სურათის ბმული არასწორია").optional().or(z.literal(""))
-});
-
 export const attendeeQuerySchema = z.object({
   q: z.string().optional(),
+  position: z.string().max(120).optional(),
   hasCompany: z.enum(["true", "false"]).optional(),
   hasLinkedin: z.enum(["true", "false"]).optional(),
   sort: z.enum(["az", "new"]).optional(),

@@ -11,6 +11,21 @@ type Props = {
   conferenceId: string;
 };
 
+const positionOptions = [
+  "დამფუძნებელი",
+  "CEO",
+  "CTO",
+  "COO",
+  "ვებ დეველოპერი",
+  "Frontend დეველოპერი",
+  "Backend დეველოპერი",
+  "პროდუქტის მენეჯერი",
+  "UI/UX დიზაინერი",
+  "მარკეტინგ მენეჯერი",
+  "გაყიდვების მენეჯერი",
+  "ბიზნეს ანალიტიკოსი"
+];
+
 export function RegistrationForm({ conferenceId }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -75,7 +90,7 @@ export function RegistrationForm({ conferenceId }: Props) {
 
       setSuccess("რეგისტრაცია წარმატებულია. გადამისამართება მიმდინარეობს...");
       form.reset();
-      setTimeout(() => router.push("/attendees"), 900);
+      setTimeout(() => router.push(`/attendees?conferenceId=${conferenceId}`), 900);
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : "უცნობი შეცდომა");
     } finally {
@@ -94,7 +109,15 @@ export function RegistrationForm({ conferenceId }: Props) {
 
         <UIInput label="სახელი და გვარი" name="fullName" required requiredMark maxLength={120} />
         <UIInput label="კომპანია" name="company" maxLength={120} />
-        <UIInput label="პოზიცია" name="position" maxLength={120} />
+        <label className="block space-y-1.5">
+          <span className="text-sm font-medium text-gray-700">პოზიცია</span>
+          <input name="position" list="position-options" placeholder="აირჩიე ან ჩაწერე პოზიცია" maxLength={120} className="w-full" />
+          <datalist id="position-options">
+            {positionOptions.map((item) => (
+              <option key={item} value={item} />
+            ))}
+          </datalist>
+        </label>
         <UIInput label="ტელეფონი" name="phone" required requiredMark placeholder="+995..." />
         <UIInput
           label="LinkedIn ბმული"
@@ -126,7 +149,7 @@ export function RegistrationForm({ conferenceId }: Props) {
       </UICard>
 
       <div className="fixed bottom-0 left-0 right-0 border-t border-gray-200 bg-white p-4">
-        <div className="mx-auto max-w-[430px]">
+        <div className="mx-auto w-full max-w-3xl">
           <UIButton fullWidth size="lg" disabled={loading} type="submit">
             {loading ? "იგზავნება..." : "რეგისტრაცია"}
           </UIButton>

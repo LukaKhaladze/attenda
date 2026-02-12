@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { UICard } from "@/components/ui-card";
 import { UIAvatar } from "@/components/ui-avatar";
 
@@ -11,22 +11,25 @@ type Attendee = {
   company: string | null;
   position: string | null;
   photoUrl: string | null;
-  createdAt: string;
-  linkedinUrl: string;
 };
 
 type Props = {
   conferenceId?: string;
 };
 
+const positionPresets = ["ყველა", "დამფუძნებელი", "CEO", "CTO", "ვებ დეველოპერი", "დიზაინერი", "მარკეტინგი"];
+
 export function AttendeesExplorer({ conferenceId }: Props) {
   const [attendees, setAttendees] = useState<Attendee[]>([]);
   const [loading, setLoading] = useState(true);
   const [q, setQ] = useState("");
   const [debouncedQ, setDebouncedQ] = useState("");
+  const [position, setPosition] = useState("ყველა");
   const [hasCompany, setHasCompany] = useState("false");
   const [hasLinkedin, setHasLinkedin] = useState("false");
   const [sort, setSort] = useState("new");
+
+  const effectivePosition = useMemo(() => (position === "ყველა" ? "" : position), [position]);
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedQ(q), 250);
@@ -39,6 +42,7 @@ export function AttendeesExplorer({ conferenceId }: Props) {
       setLoading(true);
       const params = new URLSearchParams({ q: debouncedQ, hasCompany, hasLinkedin, sort });
       if (conferenceId) params.set("conferenceId", conferenceId);
+      if (effectivePosition) params.set("position", effectivePosition);
       const response = await fetch(`/api/attendees?${params.toString()}`, { signal: controller.signal });
       const data = await response.json();
       setAttendees(data.items ?? []);
@@ -46,23 +50,30 @@ export function AttendeesExplorer({ conferenceId }: Props) {
     }
     load().catch(() => setLoading(false));
     return () => controller.abort();
-  }, [debouncedQ, hasCompany, hasLinkedin, sort, conferenceId]);
+  }, [debouncedQ, effectivePosition, hasCompany, hasLinkedin, sort, conferenceId]);
 
   return (
     <section className="space-y-3">
-      <UICard className="space-y-2">
-        <input placeholder="🔍 ძიება სახელით ან კომპანიით" value={q} onChange={(event) => setQ(event.target.value)} />
+      <UICard className="space-y-3">
+        <input placeholder="🔍 მოძებნე სახელით ან პოზიციით" value={q} onChange={(event) => setQ(event.target.value)} />
+
+        <div className="flex gap-2 overflow-x-auto pb-1">
+          {positionPresets.map((item) => (
+            <button
+              key={item}
+              type="button"
+              onClick={() => setPosition(item)}
+              className={`whitespace-nowrap rounded-full px-3 py-1.5 text-sm ${position === item ? "bg-primary text-white" : "border border-gray-300 text-gray-700"}`}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+
         <div className="flex gap-2 overflow-x-auto">
           <button
             type="button"
-            onClick={() => setHasCompany("false")}
-            className={`rounded-full px-3 py-1.5 text-sm ${hasCompany === "false" ? "bg-primary text-white" : "border border-gray-300 text-gray-700"}`}
-          >
-            ყველა
-          </button>
-          <button
-            type="button"
-            onClick={() => setHasCompany("true")}
+            onClick={() => setHasCompany(hasCompany === "true" ? "false" : "true")}
             className={`rounded-full px-3 py-1.5 text-sm ${hasCompany === "true" ? "bg-primary text-white" : "border border-gray-300 text-gray-700"}`}
           >
             კომპანია აქვს
@@ -74,11 +85,11 @@ export function AttendeesExplorer({ conferenceId }: Props) {
           >
             {sort === "new" ? "ახალი" : "A-Z"}
           </button>
+          <select value={hasLinkedin} onChange={(event) => setHasLinkedin(event.target.value)}>
+            <option value="false">LinkedIn: ყველა</option>
+            <option value="true">LinkedIn აქვს</option>
+          </select>
         </div>
-        <select value={hasLinkedin} onChange={(event) => setHasLinkedin(event.target.value)}>
-          <option value="false">LinkedIn: ყველა</option>
-          <option value="true">LinkedIn აქვს</option>
-        </select>
       </UICard>
 
       {loading ? <p className="text-sm text-gray-600">იტვირთება...</p> : null}
