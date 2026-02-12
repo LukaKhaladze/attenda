@@ -3,12 +3,12 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
-import { signIn } from "next-auth/react";
 
-export default function SignInPage() {
+export default function SignUpPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -17,36 +17,42 @@ export default function SignInPage() {
     setLoading(true);
     setError(null);
 
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false
+    const response = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email, password, name })
     });
 
+    const data = await response.json();
     setLoading(false);
 
-    if (result?.error) {
-      setError("ელფოსტა ან პაროლი არასწორია");
+    if (!response.ok) {
+      setError(data?.error ?? "რეგისტრაცია ვერ შესრულდა");
       return;
     }
 
-    router.push("/admin");
-    router.refresh();
+    router.push("/auth/signin");
   }
 
   return (
     <section className="mx-auto mt-20 max-w-md space-y-5 rounded-2xl border border-brand-100 bg-white p-6 shadow-soft">
-      <h1 className="text-2xl font-bold text-brand-900">ადმინ ავტორიზაცია</h1>
-      <p className="text-sm text-brand-700">შედი ელფოსტით და პაროლით.</p>
+      <h1 className="text-2xl font-bold text-brand-900">ადმინ რეგისტრაცია</h1>
+      <p className="text-sm text-brand-700">შექმენი ადმინისტრატორის ანგარიში ელფოსტით და პაროლით.</p>
 
       <form onSubmit={onSubmit} className="space-y-3">
+        <div className="space-y-1">
+          <label className="text-sm font-medium">სახელი</label>
+          <input value={name} onChange={(event) => setName(event.target.value)} required />
+        </div>
         <div className="space-y-1">
           <label className="text-sm font-medium">ელფოსტა</label>
           <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
         </div>
         <div className="space-y-1">
           <label className="text-sm font-medium">პაროლი</label>
-          <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} required />
+          <input type="password" minLength={8} value={password} onChange={(event) => setPassword(event.target.value)} required />
         </div>
 
         {error ? <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p> : null}
@@ -55,12 +61,12 @@ export default function SignInPage() {
           disabled={loading}
           className="w-full rounded-xl bg-brand-600 px-4 py-2 font-medium text-white hover:bg-brand-700 disabled:opacity-60"
         >
-          {loading ? "მიმდინარეობს..." : "შესვლა"}
+          {loading ? "მიმდინარეობს..." : "რეგისტრაცია"}
         </button>
       </form>
 
       <p className="text-sm text-brand-700">
-        ანგარიში არ გაქვს? <Link href="/auth/signup" className="text-brand-700 underline">რეგისტრაცია</Link>
+        უკვე გაქვს ანგარიში? <Link href="/auth/signin" className="text-brand-700 underline">შესვლა</Link>
       </p>
     </section>
   );

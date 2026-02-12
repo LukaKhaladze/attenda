@@ -9,7 +9,7 @@ Default UI language is **Georgian (ka-GE)**.
 - TypeScript
 - Tailwind CSS
 - Prisma ORM + PostgreSQL (Neon / Vercel Postgres)
-- NextAuth (Google OAuth, admin-protected area)
+- NextAuth (Credentials: email/password, admin-protected area)
 - Vercel Blob uploads for attendee profile images
 - Google Calendar integration + ICS fallback
 - Zod validation + server-side sanitization
@@ -40,13 +40,13 @@ cp .env.example .env
 Required values:
 
 - `DATABASE_URL`: PostgreSQL connection string
+- `DIRECT_URL`: direct PostgreSQL connection string for migrations
 - `NEXTAUTH_URL`: app URL (`http://localhost:3000` for local)
 - `NEXTAUTH_SECRET`: random secret for NextAuth
-- `GOOGLE_CLIENT_ID`: Google OAuth client ID
-- `GOOGLE_CLIENT_SECRET`: Google OAuth secret
 - `ADMIN_EMAILS`: comma-separated admin emails allowed into `/admin`
 - `BLOB_READ_WRITE_TOKEN`: Vercel Blob token
-- `GOOGLE_CALENDAR_REDIRECT_URI`: usually `http://localhost:3000/api/auth/callback/google`
+- `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`: optional for Google Calendar API integration
+- `GOOGLE_CALENDAR_REDIRECT_URI`: optional, used for Google Calendar API flow
 
 ## Install
 
