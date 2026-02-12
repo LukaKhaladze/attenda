@@ -18,6 +18,7 @@ export async function GET() {
       fullName: true,
       company: true,
       position: true,
+      motivation: true,
       phone: true,
       linkedinUrl: true,
       photoUrl: true,
@@ -55,10 +56,11 @@ export async function PATCH(request: NextRequest) {
       fullName: cleanText(data.fullName),
       company: data.company ? cleanText(data.company) : null,
       position: data.position ? cleanText(data.position) : null,
-      phone: cleanText(data.phone),
-      linkedinUrl: cleanText(data.linkedinUrl),
+      motivation: data.motivation ? cleanText(data.motivation) : null,
+      phone: data.phone ? cleanText(data.phone) : "",
+      linkedinUrl: data.linkedinUrl ? cleanText(data.linkedinUrl) : "",
       photoUrl: data.photoUrl ? cleanText(data.photoUrl) : null,
-      sharePhonePublic: data.sharePhonePublic,
+      sharePhonePublic: Boolean(data.phone) && data.sharePhonePublic,
       consentPublicList: data.consentPublicList
     },
     select: {

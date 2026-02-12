@@ -14,21 +14,32 @@ const linkedInValidator = z
 
 const phoneSchema = z
   .string()
-  .min(7, "ტელეფონის ნომერი სავალდებულოა")
+  .min(7, "ტელეფონის ნომერი ძალიან მოკლეა")
   .max(30, "ტელეფონის ნომერი ძალიან გრძელია")
   .regex(/^\+?[0-9()\-\s]{7,30}$/, "ტელეფონის ფორმატი არასწორია");
 
+const optionalPhoneSchema = z
+  .string()
+  .optional()
+  .or(z.literal(""))
+  .refine((value) => !value || phoneSchema.safeParse(value).success, "ტელეფონის ფორმატი არასწორია");
+
+const optionalLinkedInValidator = z
+  .string()
+  .optional()
+  .or(z.literal(""))
+  .refine((value) => !value || linkedInValidator.safeParse(value).success, "LinkedIn ბმული არასწორია");
+
 export const registerSchema = z.object({
   conferenceId: z.string().cuid("კონფერენციის იდენტიფიკატორი არასწორია"),
-  fullName: z.string().min(2, "სახელი და გვარი სავალდებულოა").max(120, "მაქსიმუმ 120 სიმბოლო"),
-  company: z.string().min(2, "კომპანია სავალდებულოა").max(120, "მაქსიმუმ 120 სიმბოლო"),
+  fullName: z.string().min(2, "სახელი სავალდებულოა").max(120, "მაქსიმუმ 120 სიმბოლო"),
+  company: z.string().max(120, "მაქსიმუმ 120 სიმბოლო").optional().or(z.literal("")),
   position: z.string().min(2, "პოზიცია სავალდებულოა").max(120, "მაქსიმუმ 120 სიმბოლო"),
-  phone: phoneSchema,
-  linkedinUrl: linkedInValidator,
+  motivation: z.string().max(150, "მაქსიმუმ 150 სიმბოლო").optional().or(z.literal("")),
+  phone: optionalPhoneSchema,
+  linkedinUrl: optionalLinkedInValidator,
   photoUrl: z.string().url("ფოტოს ბმული არასწორია").optional().or(z.literal("")),
-  consentPublicList: z.literal(true, {
-    errorMap: () => ({ message: "მონიშნე თანხმობა საჯარო სიაში გამოსაჩენად" })
-  }),
+  consentPublicList: z.boolean().default(true),
   sharePhonePublic: z.boolean().default(false),
   website: z.string().optional(),
   formStartedAt: z.number()
@@ -48,11 +59,12 @@ export const attendeeStatusSchema = z.object({
 });
 
 export const attendeeProfileUpdateSchema = z.object({
-  fullName: z.string().min(2, "სახელი და გვარი სავალდებულოა").max(120),
+  fullName: z.string().min(2, "სახელი სავალდებულოა").max(120),
   company: z.string().max(120).optional().or(z.literal("")),
-  position: z.string().max(120).optional().or(z.literal("")),
-  phone: phoneSchema,
-  linkedinUrl: linkedInValidator,
+  position: z.string().min(2, "პოზიცია სავალდებულოა").max(120),
+  motivation: z.string().max(150, "მაქსიმუმ 150 სიმბოლო").optional().or(z.literal("")),
+  phone: optionalPhoneSchema,
+  linkedinUrl: optionalLinkedInValidator,
   photoUrl: z.string().url("ფოტოს ბმული არასწორია").optional().or(z.literal("")),
   sharePhonePublic: z.boolean(),
   consentPublicList: z.boolean()

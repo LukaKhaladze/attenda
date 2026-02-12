@@ -1,27 +1,18 @@
-import { ConferenceCard } from "@/components/conference-card";
 import { Shell } from "@/components/shell";
-import { prisma } from "@/lib/prisma";
-
-export const revalidate = 60;
 
 export default async function HomePage() {
-  const conferences = await prisma.conference.findMany({
-    orderBy: { date: "asc" }
-  });
-
   return (
     <Shell>
-      {conferences.length > 0 ? (
-        <section className="space-y-4 pb-4">
-          {conferences.map((conference) => (
-            <ConferenceCard key={conference.id} conference={conference} />
-          ))}
-        </section>
-      ) : (
-        <section className="rounded-lg border border-gray-200 bg-white p-6 text-sm text-gray-700 shadow-sm">
-          კონფერენცია ჯერ არ არის დამატებული. ადმინისტრატორმა უნდა შეავსოს ინფორმაცია.
-        </section>
-      )}
+      <section className="space-y-4 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+        <h1 className="text-2xl font-bold text-primary">კონფერენციის მოწვევა ბმულით ან QR-ით</h1>
+        <p className="text-sm leading-6 text-gray-700">
+          დამსწრეებისთვის ყველა ღონისძიების სია აღარ ჩანს საჯაროდ. ჰოსტმა უნდა გაგიზიაროს კონკრეტული
+          კონფერენციის ბმული ან QR კოდი.
+        </p>
+        <p className="text-sm text-gray-700">
+          ღონისძიების შესაქმნელად და გაზიარების ბმულის/QR-ის მისაღებად გამოიყენე <a className="text-primary underline" href="/admin">ადმინის პანელი</a>.
+        </p>
+      </section>
     </Shell>
   );
 }

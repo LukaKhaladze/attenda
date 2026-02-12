@@ -42,7 +42,7 @@ export function MeetingOfferForm({ recipientAttendeeId }: Props) {
       })
     });
 
-    const data = await response.json();
+    const data = await response.json().catch(() => ({}));
     setLoading(false);
 
     if (!response.ok) {

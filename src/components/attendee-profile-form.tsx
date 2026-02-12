@@ -9,6 +9,7 @@ type AttendeeProfile = {
   fullName: string;
   company: string | null;
   position: string | null;
+  motivation: string | null;
   phone: string;
   linkedinUrl: string;
   photoUrl: string | null;
@@ -25,6 +26,7 @@ export function AttendeeProfileForm() {
     fullName: "",
     company: "",
     position: "",
+    motivation: "",
     phone: "",
     linkedinUrl: "",
     photoUrl: "",
@@ -46,6 +48,7 @@ export function AttendeeProfileForm() {
         fullName: data.item.fullName || "",
         company: data.item.company || "",
         position: data.item.position || "",
+        motivation: data.item.motivation || "",
         phone: data.item.phone || "",
         linkedinUrl: data.item.linkedinUrl || "",
         photoUrl: data.item.photoUrl || "",
@@ -93,6 +96,7 @@ export function AttendeeProfileForm() {
       fullName: form.fullName,
       company: form.company || "",
       position: form.position || "",
+      motivation: form.motivation || "",
       phone: form.phone,
       linkedinUrl: form.linkedinUrl,
       photoUrl,
@@ -126,11 +130,21 @@ export function AttendeeProfileForm() {
   return (
     <form onSubmit={onSubmit} className="space-y-3">
       <UICard className="space-y-3">
-        <UIInput label="სახელი და გვარი" value={form.fullName} onChange={(event) => setForm((prev) => ({ ...prev, fullName: event.target.value }))} required />
+        <UIInput label="სახელი" value={form.fullName} onChange={(event) => setForm((prev) => ({ ...prev, fullName: event.target.value }))} required />
         <UIInput label="კომპანია" value={form.company || ""} onChange={(event) => setForm((prev) => ({ ...prev, company: event.target.value }))} />
-        <UIInput label="პოზიცია" value={form.position || ""} onChange={(event) => setForm((prev) => ({ ...prev, position: event.target.value }))} />
-        <UIInput label="ტელეფონი" value={form.phone} onChange={(event) => setForm((prev) => ({ ...prev, phone: event.target.value }))} required />
-        <UIInput label="LinkedIn ბმული" type="url" value={form.linkedinUrl} onChange={(event) => setForm((prev) => ({ ...prev, linkedinUrl: event.target.value }))} required />
+        <UIInput label="პოზიცია" value={form.position || ""} onChange={(event) => setForm((prev) => ({ ...prev, position: event.target.value }))} required />
+        <label className="block space-y-1.5">
+          <span className="text-sm font-medium text-gray-700">ღონისძიებაზე დასწრების მოტივაცია</span>
+          <textarea
+            value={form.motivation || ""}
+            onChange={(event) => setForm((prev) => ({ ...prev, motivation: event.target.value }))}
+            maxLength={150}
+            rows={3}
+            placeholder="მაქს. 150 სიმბოლო"
+          />
+        </label>
+        <UIInput label="ტელეფონი" value={form.phone} onChange={(event) => setForm((prev) => ({ ...prev, phone: event.target.value }))} />
+        <UIInput label="LinkedIn ბმული" type="url" value={form.linkedinUrl} onChange={(event) => setForm((prev) => ({ ...prev, linkedinUrl: event.target.value }))} />
         <label className="block space-y-1.5">
           <span className="text-sm font-medium text-gray-700">ახალი პროფილის ფოტო</span>
           <input name="photo" type="file" accept="image/*" className="w-full" />

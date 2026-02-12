@@ -5,9 +5,12 @@ import { UICard } from "@/components/ui-card";
 
 type Props = {
   conference: Conference & { agendaHighlights: string[] | null; speakers: string[] | null };
+  shareUrl: string;
 };
 
-export function ConferencePage({ conference }: Props) {
+export function ConferencePage({ conference, shareUrl }: Props) {
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(shareUrl)}`;
+
   return (
     <section className="space-y-4 pb-24">
       <UICard className="overflow-hidden p-0">
@@ -45,6 +48,15 @@ export function ConferencePage({ conference }: Props) {
         <Link href={`/register?conferenceId=${conference.id}`} className="block rounded-md bg-primary px-4 py-3 text-center font-medium text-white">
           დარეგისტრირდი
         </Link>
+      </UICard>
+
+      <UICard className="space-y-3">
+        <h2 className="text-base font-semibold text-primary">გააზიარე ეს კონფერენცია</h2>
+        <div className="flex justify-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={qrUrl} alt="კონფერენციის QR კოდი" className="h-44 w-44 rounded-lg border border-gray-200 bg-white p-2" />
+        </div>
+        <p className="break-all rounded-md bg-gray-50 px-3 py-2 text-xs text-gray-700">{shareUrl}</p>
       </UICard>
 
       <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-gray-200 bg-white p-4">

@@ -43,6 +43,7 @@ model Attendee {
   fullName          String
   company           String?
   position          String?
+  motivation        String?
   phone             String
   linkedinUrl       String
   photoUrl          String?

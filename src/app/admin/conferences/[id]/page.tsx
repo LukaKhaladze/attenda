@@ -119,6 +119,11 @@ export default async function AdminConferencePage({ params }: { params: { id: st
 
   const agenda = ((conference.agendaHighlights as string[] | null) ?? []).join("\n");
   const speakers = ((conference.speakers as string[] | null) ?? []).join("\n");
+  const origin =
+    process.env.NEXTAUTH_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
+  const shareUrl = `${origin}/conference/${conference.slug}`;
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(shareUrl)}`;
 
   return (
     <Shell>
@@ -167,6 +172,27 @@ export default async function AdminConferencePage({ params }: { params: { id: st
             </button>
           </div>
         </form>
+
+        <div className="rounded-2xl border border-brand-100 bg-white p-5 shadow-soft">
+          <h2 className="mb-3 text-xl font-semibold text-brand-900">გაზიარება (ჰოსტისთვის)</h2>
+          <p className="mb-3 text-sm text-brand-700">ეს ბმული ან QR გაუგზავნე ჰოსტს, რომ დამსწრეებს გაუზიაროს.</p>
+          <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-start">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={qrUrl} alt="კონფერენციის QR კოდი" className="h-44 w-44 rounded-lg border border-brand-100 bg-white p-2" />
+            <div className="w-full">
+              <p className="mb-1 text-xs text-brand-700">კონფერენციის ბმული</p>
+              <p className="break-all rounded-md bg-brand-50 px-3 py-2 text-sm text-brand-900">{shareUrl}</p>
+              <a
+                href={shareUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-3 inline-flex rounded-lg border border-brand-200 px-3 py-2 text-sm text-brand-800 hover:bg-brand-50"
+              >
+                გვერდის გახსნა
+              </a>
+            </div>
+          </div>
+        </div>
 
         <div className="rounded-2xl border border-brand-100 bg-white p-5 shadow-soft">
           <div className="mb-4 flex items-center justify-between">

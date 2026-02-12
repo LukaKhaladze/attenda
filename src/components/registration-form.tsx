@@ -70,6 +70,7 @@ export function RegistrationForm({ conferenceId }: Props) {
         fullName: String(formData.get("fullName") || ""),
         company: String(formData.get("company") || ""),
         position: String(formData.get("position") || ""),
+        motivation: String(formData.get("motivation") || ""),
         phone: String(formData.get("phone") || ""),
         linkedinUrl: String(formData.get("linkedinUrl") || ""),
         photoUrl,
@@ -107,8 +108,8 @@ export function RegistrationForm({ conferenceId }: Props) {
           <input id="website" name="website" autoComplete="off" tabIndex={-1} />
         </div>
 
-        <UIInput label="სახელი და გვარი" name="fullName" required requiredMark maxLength={120} />
-        <UIInput label="კომპანია" name="company" required requiredMark maxLength={120} placeholder="მაგ: TechCorp Georgia" />
+        <UIInput label="სახელი" name="fullName" required requiredMark maxLength={120} />
+        <UIInput label="კომპანია" name="company" maxLength={120} placeholder="მაგ: TechCorp Georgia" />
         <label className="block space-y-1.5">
           <span className="text-sm font-medium text-gray-700">
             პოზიცია <span className="text-error">*</span>
@@ -127,13 +128,20 @@ export function RegistrationForm({ conferenceId }: Props) {
             ))}
           </datalist>
         </label>
-        <UIInput label="ტელეფონი" name="phone" required requiredMark placeholder="+995..." />
+        <label className="block space-y-1.5">
+          <span className="text-sm font-medium text-gray-700">ღონისძიებაზე დასწრების მოტივაცია</span>
+          <textarea
+            name="motivation"
+            maxLength={150}
+            rows={3}
+            placeholder="მოკლედ აღწერე რატომ გინდა დასწრება (მაქს. 150 სიმბოლო)"
+          />
+        </label>
+        <UIInput label="ტელეფონი" name="phone" placeholder="+995..." />
         <UIInput
           label="LinkedIn ბმული"
           name="linkedinUrl"
           type="url"
-          required
-          requiredMark
           placeholder="https://linkedin.com/in/..."
         />
 
@@ -148,8 +156,8 @@ export function RegistrationForm({ conferenceId }: Props) {
         </label>
 
         <label className="flex items-start gap-2 text-sm text-gray-700">
-          <input type="checkbox" name="consentPublicList" required className="mt-1" />
-          <span>ვეთანხმები, რომ ჩემი ინფორმაცია გამოჩნდეს სიაში *</span>
+          <input type="checkbox" name="consentPublicList" className="mt-1" defaultChecked />
+          <span>ვეთანხმები, რომ ჩემი ინფორმაცია გამოჩნდეს სიაში</span>
         </label>
 
         {error ? <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-error">{error}</p> : null}

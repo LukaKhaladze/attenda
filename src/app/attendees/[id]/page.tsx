@@ -34,9 +34,13 @@ export default async function AttendeeDetailPage({ params }: { params: { id: str
         </UICard>
 
         <UICard className="space-y-3">
-          <a href={attendee.linkedinUrl} target="_blank" rel="noreferrer" className="block rounded-md bg-primary px-4 py-3 text-center text-sm font-medium text-white">
-            LinkedIn-ზე გადასვლა
-          </a>
+          {attendee.linkedinUrl ? (
+            <a href={attendee.linkedinUrl} target="_blank" rel="noreferrer" className="block rounded-md bg-primary px-4 py-3 text-center text-sm font-medium text-white">
+              LinkedIn-ზე გადასვლა
+            </a>
+          ) : (
+            <p className="rounded-md bg-gray-100 px-4 py-3 text-center text-sm text-gray-600">LinkedIn ბმული არ არის მითითებული</p>
+          )}
           <Link href="/attendees" className="block rounded-md border border-gray-300 px-4 py-3 text-center text-sm font-medium text-gray-700">
             უკან სიაში
           </Link>
@@ -45,8 +49,13 @@ export default async function AttendeeDetailPage({ params }: { params: { id: str
         <MeetingOfferForm recipientAttendeeId={attendee.id} />
 
         <UICard>
+          <h2 className="mb-2 text-base font-semibold text-primary">მოტივაცია</h2>
+          <p className="text-sm text-gray-700">{attendee.motivation || "მოტივაცია არ არის მითითებული."}</p>
+        </UICard>
+
+        <UICard>
           <h2 className="mb-2 text-base font-semibold text-primary">საკონტაქტო</h2>
-          {attendee.sharePhonePublic ? (
+          {attendee.sharePhonePublic && attendee.phone ? (
             <div className="flex items-center gap-2 text-sm text-gray-700">
               <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
                 <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden>
