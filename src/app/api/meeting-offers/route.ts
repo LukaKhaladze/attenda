@@ -25,9 +25,18 @@ export async function POST(request: NextRequest) {
     }
 
     const data = parsed.data;
-    const senderAttendeeId = request.cookies.get("attendee_id")?.value ?? null;
+    const senderAttendeeId = request.cookies.get("attendee_id")?.value;
 
-    if (senderAttendeeId && senderAttendeeId === data.recipientAttendeeId) {
+    if (!senderAttendeeId) {
+      return NextResponse.json({ error: "შეთავაზების გასაგზავნად საჭიროა დამსწრედ ავტორიზაცია" }, { status: 401 });
+    }
+
+    const senderAttendee = await prisma.attendee.findUnique({ where: { id: senderAttendeeId } });
+    if (!senderAttendee || senderAttendee.status !== "APPROVED") {
+      return NextResponse.json({ error: "გამომგზავნის პროფილი ვერ მოიძებნა" }, { status: 401 });
+    }
+
+    if (senderAttendeeId === data.recipientAttendeeId) {
       return NextResponse.json({ error: "საკუთარ თავთან შეხვედრის შეთავაზება არ შეიძლება" }, { status: 400 });
     }
 

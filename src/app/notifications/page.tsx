@@ -54,6 +54,31 @@ export default async function NotificationsPage() {
   let loadError: string | null = null;
 
   try {
+    const currentAttendee = await prisma.attendee.findUnique({
+      where: { id: attendeeId },
+      select: {
+        phone: true,
+        linkedinUrl: true
+      }
+    });
+
+    if (!currentAttendee) {
+      return (
+        <Shell>
+          <section className="space-y-3">
+            <UIHeader title="შეტყობინებები" backHref="/" />
+            <UICard>
+              <p className="text-sm text-gray-700">დამსწრის პროფილი ვერ მოიძებნა.</p>
+            </UICard>
+          </section>
+        </Shell>
+      );
+    }
+
+    const legacySenderContactMatches = [currentAttendee.phone, currentAttendee.linkedinUrl]
+      .map((item) => item?.trim())
+      .filter((item): item is string => Boolean(item));
+
     const [received, sent] = await Promise.all([
       prisma.meetingOffer.findMany({
         where: { recipientAttendeeId: attendeeId },
@@ -62,8 +87,18 @@ export default async function NotificationsPage() {
       }),
       prisma.meetingOffer.findMany({
         where: {
-          senderAttendeeId: attendeeId,
-          status: { not: MeetingOfferStatus.PENDING }
+          status: { not: MeetingOfferStatus.PENDING },
+          OR: [
+            { senderAttendeeId: attendeeId },
+            ...(legacySenderContactMatches.length > 0
+              ? [
+                  {
+                    senderAttendeeId: null,
+                    senderContact: { in: legacySenderContactMatches }
+                  }
+                ]
+              : [])
+          ]
         },
         orderBy: { createdAt: "desc" },
         include: {
