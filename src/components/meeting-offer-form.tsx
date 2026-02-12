@@ -75,7 +75,13 @@ export function MeetingOfferForm({ recipientAttendeeId }: Props) {
         />
         <label className="block space-y-1.5">
           <span className="text-sm font-medium text-gray-700">შენიშვნა</span>
-          <textarea name="note" rows={3} placeholder="დაწერე მოკლე ტექსტი შეხვედრის მიზანზე" maxLength={500} />
+          <textarea
+            name="note"
+            rows={3}
+            placeholder="დაწერე მოკლე ტექსტი შეხვედრის მიზანზე"
+            maxLength={500}
+            className="w-full resize-none"
+          />
         </label>
         <UIButton type="submit" disabled={loading} fullWidth>
           {loading ? "იგზავნება..." : "შეთავაზების გაგზავნა"}

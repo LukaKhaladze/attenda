@@ -42,5 +42,21 @@ export async function GET(request: NextRequest) {
     take: 120
   });
 
-  return NextResponse.json({ items });
+  const positionsRaw = await prisma.attendee.findMany({
+    where: {
+      status: "APPROVED",
+      consentPublicList: true,
+      ...(conferenceId ? { conferenceId } : {}),
+      position: { not: null }
+    },
+    select: { position: true },
+    distinct: ["position"]
+  });
+
+  const positions = positionsRaw
+    .map((item) => item.position?.trim())
+    .filter((value): value is string => Boolean(value))
+    .sort((a, b) => a.localeCompare(b, "ka"));
+
+  return NextResponse.json({ items, positions });
 }

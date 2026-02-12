@@ -115,19 +115,14 @@ export function RegistrationForm({ conferenceId }: Props) {
           <span className="text-sm font-medium text-gray-700">
             პოზიცია <span className="text-error">*</span>
           </span>
-          <input
-            name="position"
-            list="position-options"
-            placeholder="მაგ: CTO"
-            maxLength={120}
-            className="w-full"
-            required
-          />
-          <datalist id="position-options">
+          <select name="position" required defaultValue="">
+            <option value="" disabled>
+              აირჩიე პოზიცია
+            </option>
             {positionOptions.map((item) => (
               <option key={item} value={item} />
             ))}
-          </datalist>
+          </select>
         </label>
         <label className="block space-y-1.5">
           <span className="text-sm font-medium text-gray-700">ღონისძიებაზე დასწრების მოტივაცია</span>

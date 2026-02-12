@@ -18,10 +18,18 @@ type Props = {
   initialItems?: Attendee[];
 };
 
-const positionPresets = ["ყველა", "დამფუძნებელი", "CEO", "CTO", "დიზაინერი", "ვებ დეველოპერი", "პროდუქტის მენეჯერი"];
-
 export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
   const [attendees, setAttendees] = useState<Attendee[]>(initialItems);
+  const [positionTerms, setPositionTerms] = useState<string[]>(() => {
+    const unique = Array.from(
+      new Set(
+        initialItems
+          .map((item) => item.position?.trim())
+          .filter((value): value is string => Boolean(value))
+      )
+    );
+    return unique.sort((a, b) => a.localeCompare(b, "ka"));
+  });
   const [loading, setLoading] = useState(false);
   const [q, setQ] = useState("");
   const [debouncedQ, setDebouncedQ] = useState("");
@@ -51,6 +59,7 @@ export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
       const response = await fetch(`/api/attendees?${params.toString()}`, { signal: controller.signal });
       const data = await response.json();
       setAttendees(data.items ?? []);
+      setPositionTerms(Array.isArray(data.positions) ? data.positions : []);
       setLoading(false);
     }
     load().catch(() => setLoading(false));
@@ -71,7 +80,7 @@ export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
         </div>
 
         <div className="flex gap-2 overflow-x-auto pb-1">
-          {positionPresets.map((item) => (
+          {["ყველა", ...positionTerms].map((item) => (
             <button
               key={item}
               type="button"
