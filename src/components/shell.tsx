@@ -86,18 +86,41 @@ export function Shell({ children }: { children: ReactNode }) {
           ) : null}
 
           {hasAttendeeCookie ? (
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 px-3 py-1.5 text-xs text-gray-700 sm:text-sm"
-            >
-              <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
-                <path d="M10 17l-5-5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <path d="M5 12h11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <path d="M14 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4" stroke="currentColor" strokeWidth="2" />
-              </svg>
-              <span>გამოსვლა</span>
-            </button>
+            <>
+              <NavItem
+                href="/me"
+                label="ჩემი გვერდი"
+                icon={
+                  <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
+                    <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
+                    <path d="M4 20c1.8-3.2 5-5 8-5s6.2 1.8 8 5" stroke="currentColor" strokeWidth="2" />
+                  </svg>
+                }
+              />
+              <Link
+                href="/notifications"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 text-primary"
+                aria-label="შეტყობინებები"
+                title="შეტყობინებები"
+              >
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <path d="M15 17h5l-1.4-1.4a2 2 0 01-.6-1.4V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h11z" stroke="currentColor" strokeWidth="2" />
+                  <path d="M10 20a2 2 0 004 0" stroke="currentColor" strokeWidth="2" />
+                </svg>
+              </Link>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 px-3 py-1.5 text-xs text-gray-700 sm:text-sm"
+              >
+                <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <path d="M10 17l-5-5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M5 12h11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M14 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4" stroke="currentColor" strokeWidth="2" />
+                </svg>
+                <span>გამოსვლა</span>
+              </button>
+            </>
           ) : null}
         </nav>
       </header>
