@@ -30,11 +30,11 @@ export function ConferencePage({ conference }: Props) {
       </UICard>
 
       <UICard>
-        <h2 className="mb-2 text-base font-semibold text-primary">რას მიიღებ</h2>
+        <h2 className="mb-2 text-base font-semibold text-gray-900">რას მიიღებ</h2>
         <div className="space-y-2">
-          {(conference.agendaHighlights || ["ქსელური გაცნობა", "პრაქტიკული სესიები", "კარიერული კავშირები"]).map((item) => (
-            <div key={item} className="rounded-md bg-gray-50 px-3 py-2 text-sm text-gray-700">
-              👥 {item}
+          {(conference.agendaHighlights || ["დავაკავშირებდები 500+ პროფესიონალს", "შექმენი ახალი ბიზნეს კავშირები", "გაიგებ იდეებს და გამოცდილებას", "მიიღე ექსკლუზიური შესაძლებლობები"]).map((item) => (
+            <div key={item} className="rounded-md border border-gray-100 bg-white px-3 py-3 text-sm text-gray-700 shadow-sm">
+              {item}
             </div>
           ))}
         </div>
@@ -45,7 +45,7 @@ export function ConferencePage({ conference }: Props) {
           <Link href={`/register?conferenceId=${conference.id}`} className="w-full rounded-md bg-primary px-4 py-3 text-center font-medium text-white">
             დარეგისტრირდი
           </Link>
-          <Link href="/attendees" className="w-full rounded-md border-2 border-primary px-4 py-3 text-center font-medium text-primary">
+          <Link href={`/attendees?conferenceId=${conference.id}`} className="w-full rounded-md border-2 border-primary px-4 py-3 text-center font-medium text-primary">
             დამსწრეთა ნახვა
           </Link>
         </div>

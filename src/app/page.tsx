@@ -1,26 +1,24 @@
-import { ConferencePage } from "@/components/conference-page";
+import { ConferenceCard } from "@/components/conference-card";
 import { Shell } from "@/components/shell";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const conference = await prisma.conference.findFirst({
+  const conferences = await prisma.conference.findMany({
     orderBy: { date: "asc" }
   });
 
   return (
     <Shell>
-      {conference ? (
-        <ConferencePage
-          conference={{
-            ...conference,
-            agendaHighlights: (conference.agendaHighlights as string[] | null) ?? null,
-            speakers: (conference.speakers as string[] | null) ?? null
-          }}
-        />
+      {conferences.length > 0 ? (
+        <section className="space-y-4 pb-4">
+          {conferences.map((conference) => (
+            <ConferenceCard key={conference.id} conference={conference} />
+          ))}
+        </section>
       ) : (
-        <section className="rounded-3xl border border-brand-100 bg-white p-6 text-brand-800 shadow-soft">
+        <section className="rounded-lg border border-gray-200 bg-white p-6 text-sm text-gray-700 shadow-sm">
           კონფერენცია ჯერ არ არის დამატებული. ადმინისტრატორმა უნდა შეავსოს ინფორმაცია.
         </section>
       )}

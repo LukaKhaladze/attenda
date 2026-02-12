@@ -52,7 +52,8 @@ export const attendeeQuerySchema = z.object({
   q: z.string().optional(),
   hasCompany: z.enum(["true", "false"]).optional(),
   hasLinkedin: z.enum(["true", "false"]).optional(),
-  sort: z.enum(["az", "new"]).optional()
+  sort: z.enum(["az", "new"]).optional(),
+  conferenceId: z.string().cuid().optional()
 });
 
 export const attendeeStatusSchema = z.object({

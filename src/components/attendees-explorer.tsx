@@ -15,7 +15,11 @@ type Attendee = {
   linkedinUrl: string;
 };
 
-export function AttendeesExplorer() {
+type Props = {
+  conferenceId?: string;
+};
+
+export function AttendeesExplorer({ conferenceId }: Props) {
   const [attendees, setAttendees] = useState<Attendee[]>([]);
   const [loading, setLoading] = useState(true);
   const [q, setQ] = useState("");
@@ -28,6 +32,7 @@ export function AttendeesExplorer() {
     async function load() {
       setLoading(true);
       const params = new URLSearchParams({ q, hasCompany, hasLinkedin, sort });
+      if (conferenceId) params.set("conferenceId", conferenceId);
       const response = await fetch(`/api/attendees?${params.toString()}`, { signal: controller.signal });
       const data = await response.json();
       setAttendees(data.items ?? []);
@@ -35,7 +40,7 @@ export function AttendeesExplorer() {
     }
     load().catch(() => setLoading(false));
     return () => controller.abort();
-  }, [q, hasCompany, hasLinkedin, sort]);
+  }, [q, hasCompany, hasLinkedin, sort, conferenceId]);
 
   return (
     <section className="space-y-3">
