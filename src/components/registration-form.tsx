@@ -16,6 +16,7 @@ export function RegistrationForm({ conferenceId }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [uploadNotice, setUploadNotice] = useState<string | null>(null);
   const startedAt = useMemo(() => Date.now(), []);
 
   async function uploadPhoto(file: File) {
@@ -32,6 +33,7 @@ export function RegistrationForm({ conferenceId }: Props) {
     setLoading(true);
     setError(null);
     setSuccess(null);
+    setUploadNotice(null);
 
     try {
       const form = event.currentTarget;
@@ -39,7 +41,14 @@ export function RegistrationForm({ conferenceId }: Props) {
       const file = formData.get("photo") as File;
       let photoUrl = "";
 
-      if (file && file.size > 0) photoUrl = await uploadPhoto(file);
+      if (file && file.size > 0) {
+        try {
+          photoUrl = await uploadPhoto(file);
+        } catch {
+          photoUrl = "";
+          setUploadNotice("ფოტოს ატვირთვა ვერ მოხერხდა, რეგისტრაცია გაგრძელდა ფოტოს გარეშე.");
+        }
+      }
 
       const payload = {
         conferenceId,
@@ -112,6 +121,7 @@ export function RegistrationForm({ conferenceId }: Props) {
         </label>
 
         {error ? <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-error">{error}</p> : null}
+        {uploadNotice ? <p className="rounded-md bg-amber-50 px-3 py-2 text-sm text-amber-700">{uploadNotice}</p> : null}
         {success ? <p className="rounded-md bg-emerald-50 px-3 py-2 text-sm text-success">{success}</p> : null}
       </UICard>
 
