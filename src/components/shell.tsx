@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { signOut } from "next-auth/react";
 import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -23,29 +22,13 @@ function NavItem({ href, label, icon }: NavItemProps) {
 export function Shell({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [hasAttendeeCookie, setHasAttendeeCookie] = useState(false);
-  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
 
   useEffect(() => {
     function updateAttendeeState() {
       setHasAttendeeCookie(document.cookie.includes("attendee_id="));
     }
 
-    async function updateAdminState() {
-      try {
-        const response = await fetch("/api/auth/session", { cache: "no-store" });
-        if (!response.ok) {
-          setIsAdminLoggedIn(false);
-          return;
-        }
-        const data = await response.json();
-        setIsAdminLoggedIn(Boolean(data?.user?.email));
-      } catch {
-        setIsAdminLoggedIn(false);
-      }
-    }
-
     updateAttendeeState();
-    updateAdminState();
 
     window.addEventListener("focus", updateAttendeeState);
     return () => {
@@ -55,17 +38,9 @@ export function Shell({ children }: { children: ReactNode }) {
 
   async function handleLogout() {
     await fetch("/api/attendee/logout", { method: "POST" }).catch(() => null);
-
-    if (isAdminLoggedIn) {
-      await signOut({ callbackUrl: "/" });
-      return;
-    }
-
     setHasAttendeeCookie(false);
     router.refresh();
   }
-
-  const isLoggedIn = hasAttendeeCookie || isAdminLoggedIn;
 
   return (
     <div className="space-y-4">
@@ -110,20 +85,7 @@ export function Shell({ children }: { children: ReactNode }) {
             </>
           ) : null}
 
-          {isAdminLoggedIn ? (
-            <NavItem
-              href="/admin"
-              label="ადმინი"
-              icon={
-                <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
-                  <path d="M12 3l7 4v10l-7 4-7-4V7l7-4z" stroke="currentColor" strokeWidth="2" />
-                  <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              }
-            />
-          ) : null}
-
-          {isLoggedIn ? (
+          {hasAttendeeCookie ? (
             <button
               type="button"
               onClick={handleLogout}
@@ -136,19 +98,7 @@ export function Shell({ children }: { children: ReactNode }) {
               </svg>
               <span>გამოსვლა</span>
             </button>
-          ) : (
-            <NavItem
-              href="/auth/signin"
-              label="შესვლა"
-              icon={
-                <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
-                  <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4" stroke="currentColor" strokeWidth="2" />
-                  <path d="M10 17l5-5-5-5" stroke="currentColor" strokeWidth="2" />
-                  <path d="M15 12H3" stroke="currentColor" strokeWidth="2" />
-                </svg>
-              }
-            />
-          )}
+          ) : null}
         </nav>
       </header>
       {children}
