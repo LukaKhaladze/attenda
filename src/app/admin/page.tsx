@@ -6,6 +6,7 @@ import { AdminLogoutButton } from "@/components/admin-logout-button";
 import { Shell } from "@/components/shell";
 import { isAdminEmail } from "@/lib/admin";
 import { authOptions } from "@/lib/auth";
+import { uploadImageFile } from "@/lib/image-upload";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -32,6 +33,11 @@ async function createConference(formData: FormData) {
   const location = String(formData.get("location_ka") || "").trim();
   const dateRaw = String(formData.get("date") || "");
   const date = new Date(dateRaw);
+  const coverImageFile = formData.get("coverImageFile");
+  const coverImageUrl =
+    coverImageFile instanceof File && coverImageFile.size > 0
+      ? await uploadImageFile(coverImageFile, "conference-covers")
+      : null;
 
   if (!title || !location || Number.isNaN(date.valueOf())) {
     return;
@@ -46,6 +52,7 @@ async function createConference(formData: FormData) {
       title_ka: title,
       location_ka: location,
       date,
+      coverImageUrl,
       description_ka: "კონფერენციის აღწერა მალე განახლდება.",
       agendaHighlights: [],
       speakers: []
@@ -112,6 +119,10 @@ export default async function AdminPage() {
             <input name="title_ka" placeholder="სათაური" required />
             <input name="location_ka" placeholder="ლოკაცია" required />
             <input type="datetime-local" name="date" required />
+            <label className="sm:col-span-3">
+              <span className="mb-1 block text-sm font-medium text-brand-800">ქავერის სურათი</span>
+              <input type="file" name="coverImageFile" accept="image/*" className="w-full border-dashed" />
+            </label>
             <button className="rounded-xl bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700 sm:col-span-3 sm:justify-self-start">
               დამატება
             </button>
