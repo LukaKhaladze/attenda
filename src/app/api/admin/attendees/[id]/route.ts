@@ -1,27 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
+import { isAdminEmail } from "@/lib/admin";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { attendeeStatusSchema } from "@/lib/validation";
 
-async function updateStatus(request: NextRequest, id: string) {
+async function ensureAdmin() {
   const session = await getServerSession(authOptions);
-
-  if (!session?.user?.email) {
-    return NextResponse.json({ error: "არ გაქვს წვდომა" }, { status: 401 });
+  if (!session?.user?.email || !isAdminEmail(session.user.email)) {
+    return null;
   }
 
-  const contentType = request.headers.get("content-type") || "";
+  return session;
+}
 
-  let status: string | null = null;
-  if (contentType.includes("application/json")) {
-    const body = await request.json();
-    status = body.status ?? null;
-  } else {
-    const formData = await request.formData();
-    status = String(formData.get("status") || "");
-  }
-
+async function updateStatusByValue(id: string, status: string | null) {
   const parsed = attendeeStatusSchema.safeParse({ status });
 
   if (!parsed.success) {
@@ -39,15 +32,29 @@ async function updateStatus(request: NextRequest, id: string) {
 }
 
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
-  return updateStatus(request, params.id);
+  const admin = await ensureAdmin();
+  if (!admin) {
+    return NextResponse.json({ error: "არ გაქვს წვდომა" }, { status: 401 });
+  }
+
+  const body = await request.json().catch(() => null);
+  return updateStatusByValue(params.id, body?.status ?? null);
 }
 
 export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
-  const result = await updateStatus(request, params.id);
-
-  if (request.headers.get("content-type")?.includes("application/x-www-form-urlencoded") || request.headers.get("content-type")?.includes("multipart/form-data")) {
-    return NextResponse.redirect(new URL("/admin", request.url), 303);
+  const admin = await ensureAdmin();
+  if (!admin) {
+    return NextResponse.json({ error: "არ გაქვს წვდომა" }, { status: 401 });
   }
 
-  return result;
+  const formData = await request.formData();
+  const status = String(formData.get("status") || "");
+  const redirectTo = String(formData.get("redirectTo") || "/admin");
+
+  const result = await updateStatusByValue(params.id, status);
+  if (!result.ok) {
+    return result;
+  }
+
+  return NextResponse.redirect(new URL(redirectTo, request.url), 303);
 }

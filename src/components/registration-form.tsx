@@ -108,10 +108,19 @@ export function RegistrationForm({ conferenceId }: Props) {
         </div>
 
         <UIInput label="სახელი და გვარი" name="fullName" required requiredMark maxLength={120} />
-        <UIInput label="კომპანია" name="company" maxLength={120} />
+        <UIInput label="კომპანია" name="company" required requiredMark maxLength={120} placeholder="მაგ: TechCorp Georgia" />
         <label className="block space-y-1.5">
-          <span className="text-sm font-medium text-gray-700">პოზიცია</span>
-          <input name="position" list="position-options" placeholder="აირჩიე ან ჩაწერე პოზიცია" maxLength={120} className="w-full" />
+          <span className="text-sm font-medium text-gray-700">
+            პოზიცია <span className="text-error">*</span>
+          </span>
+          <input
+            name="position"
+            list="position-options"
+            placeholder="მაგ: CTO"
+            maxLength={120}
+            className="w-full"
+            required
+          />
           <datalist id="position-options">
             {positionOptions.map((item) => (
               <option key={item} value={item} />

@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { UIButton } from "@/components/ui-button";
+import { UICard } from "@/components/ui-card";
+import { UIInput } from "@/components/ui-input";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -25,7 +28,7 @@ export default function SignUpPage() {
       body: JSON.stringify({ email, password, name })
     });
 
-    const data = await response.json();
+    const data = await response.json().catch(() => ({}));
     setLoading(false);
 
     if (!response.ok) {
@@ -37,37 +40,51 @@ export default function SignUpPage() {
   }
 
   return (
-    <section className="mx-auto mt-20 max-w-md space-y-5 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-      <h1 className="text-2xl font-bold text-gray-900">ადმინ რეგისტრაცია</h1>
-      <p className="text-sm text-gray-700">შექმენი ადმინისტრატორის ანგარიში ელფოსტით და პაროლით.</p>
+    <section className="mx-auto mt-10 max-w-md px-4">
+      <UICard className="space-y-5 p-6">
+        <h1 className="text-4xl font-bold tracking-tight text-gray-900">ადმინ რეგისტრაცია</h1>
+        <p className="text-sm leading-6 text-gray-700">შექმენი ადმინისტრატორის ანგარიში ელფოსტით და პაროლით.</p>
 
-      <form onSubmit={onSubmit} className="space-y-3">
-        <div className="space-y-1">
-          <label className="text-sm font-medium">სახელი</label>
-          <input value={name} onChange={(event) => setName(event.target.value)} required />
-        </div>
-        <div className="space-y-1">
-          <label className="text-sm font-medium">ელფოსტა</label>
-          <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
-        </div>
-        <div className="space-y-1">
-          <label className="text-sm font-medium">პაროლი</label>
-          <input type="password" minLength={8} value={password} onChange={(event) => setPassword(event.target.value)} required />
-        </div>
+        <form onSubmit={onSubmit} className="space-y-4">
+          <UIInput
+            label="სახელი"
+            name="name"
+            required
+            requiredMark
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+          />
+          <UIInput
+            label="ელფოსტა"
+            name="email"
+            type="email"
+            required
+            requiredMark
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+          <UIInput
+            label="პაროლი"
+            name="password"
+            type="password"
+            minLength={8}
+            required
+            requiredMark
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
 
-        {error ? <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p> : null}
+          {error ? <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p> : null}
 
-        <button
-          disabled={loading}
-          className="w-full rounded-md bg-primary px-4 py-3 font-medium text-white hover:bg-[#1e40af] disabled:opacity-60"
-        >
-          {loading ? "მიმდინარეობს..." : "რეგისტრაცია"}
-        </button>
-      </form>
+          <UIButton fullWidth size="lg" disabled={loading} type="submit">
+            {loading ? "მიმდინარეობს..." : "რეგისტრაცია"}
+          </UIButton>
+        </form>
 
-      <p className="text-sm text-gray-700">
-        უკვე გაქვს ანგარიში? <Link href="/auth/signin" className="text-primary underline">შესვლა</Link>
-      </p>
+        <p className="text-sm text-gray-700">
+          უკვე გაქვს ანგარიში? <Link href="/auth/signin" className="text-primary underline">შესვლა</Link>
+        </p>
+      </UICard>
     </section>
   );
 }

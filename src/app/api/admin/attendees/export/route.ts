@@ -1,17 +1,22 @@
 import { NextResponse } from "next/server";
 import { stringify } from "csv-stringify/sync";
 import { getServerSession } from "next-auth";
+import { isAdminEmail } from "@/lib/admin";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
-export async function GET() {
+export async function GET(request: Request) {
   const session = await getServerSession(authOptions);
 
-  if (!session?.user?.email) {
+  if (!session?.user?.email || !isAdminEmail(session.user.email)) {
     return NextResponse.json({ error: "არ გაქვს წვდომა" }, { status: 401 });
   }
 
+  const { searchParams } = new URL(request.url);
+  const conferenceId = searchParams.get("conferenceId");
+
   const attendees = await prisma.attendee.findMany({
+    where: conferenceId ? { conferenceId } : undefined,
     orderBy: { createdAt: "desc" },
     include: {
       conference: true
@@ -40,7 +45,7 @@ export async function GET() {
   return new NextResponse(csv, {
     headers: {
       "Content-Type": "text/csv; charset=utf-8",
-      "Content-Disposition": "attachment; filename=attendees.csv"
+      "Content-Disposition": `attachment; filename=${conferenceId ? "conference-attendees.csv" : "attendees.csv"}`
     }
   });
 }

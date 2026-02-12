@@ -43,10 +43,12 @@ Required values:
 - `DIRECT_URL`: direct PostgreSQL connection string for migrations
 - `NEXTAUTH_URL`: app URL (`http://localhost:3000` for local)
 - `NEXTAUTH_SECRET`: random secret for NextAuth
-- `ADMIN_EMAILS`: comma-separated admin emails allowed into `/admin`
+- `ADMIN_EMAILS`: optional comma-separated admin emails allowed into `/admin` (if empty, any authenticated user can access admin)
 - `BLOB_READ_WRITE_TOKEN`: Vercel Blob token
 - `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`: optional for Google Calendar API integration
 - `GOOGLE_CALENDAR_REDIRECT_URI`: optional, used for Google Calendar API flow
+- `RESEND_API_KEY`: optional, required to send password reset emails
+- `RESET_FROM_EMAIL`: optional, sender email for password reset messages
 
 ## Install
 

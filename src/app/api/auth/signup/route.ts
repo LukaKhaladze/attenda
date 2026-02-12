@@ -9,11 +9,6 @@ const schema = z.object({
   password: z.string().min(8, "პაროლი უნდა იყოს მინიმუმ 8 სიმბოლო")
 });
 
-const adminEmails = (process.env.ADMIN_EMAILS ?? "")
-  .split(",")
-  .map((value) => value.trim().toLowerCase())
-  .filter(Boolean);
-
 export async function POST(request: NextRequest) {
   const body = await request.json();
   const parsed = schema.safeParse(body);
@@ -23,10 +18,6 @@ export async function POST(request: NextRequest) {
   }
 
   const email = parsed.data.email.trim().toLowerCase();
-
-  if (adminEmails.length > 0 && !adminEmails.includes(email)) {
-    return NextResponse.json({ error: "ამ ელფოსტით რეგისტრაცია აკრძალულია" }, { status: 403 });
-  }
 
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {

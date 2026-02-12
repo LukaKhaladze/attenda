@@ -39,8 +39,8 @@ export async function POST(request: NextRequest) {
     data: {
       conferenceId: data.conferenceId,
       fullName: cleanText(data.fullName),
-      company: data.company ? cleanText(data.company) : null,
-      position: data.position ? cleanText(data.position) : null,
+      company: cleanText(data.company),
+      position: cleanText(data.position),
       phone: cleanText(data.phone),
       linkedinUrl: cleanText(data.linkedinUrl),
       photoUrl: data.photoUrl ? cleanText(data.photoUrl) : null,

@@ -21,8 +21,8 @@ const phoneSchema = z
 export const registerSchema = z.object({
   conferenceId: z.string().cuid("კონფერენციის იდენტიფიკატორი არასწორია"),
   fullName: z.string().min(2, "სახელი და გვარი სავალდებულოა").max(120, "მაქსიმუმ 120 სიმბოლო"),
-  company: z.string().max(120, "მაქსიმუმ 120 სიმბოლო").optional(),
-  position: z.string().max(120, "მაქსიმუმ 120 სიმბოლო").optional(),
+  company: z.string().min(2, "კომპანია სავალდებულოა").max(120, "მაქსიმუმ 120 სიმბოლო"),
+  position: z.string().min(2, "პოზიცია სავალდებულოა").max(120, "მაქსიმუმ 120 სიმბოლო"),
   phone: phoneSchema,
   linkedinUrl: linkedInValidator,
   photoUrl: z.string().url("ფოტოს ბმული არასწორია").optional().or(z.literal("")),

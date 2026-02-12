@@ -3,11 +3,6 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
 
-const adminEmails = (process.env.ADMIN_EMAILS ?? "")
-  .split(",")
-  .map((value) => value.trim().toLowerCase())
-  .filter(Boolean);
-
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt"
@@ -27,10 +22,6 @@ export const authOptions: NextAuthOptions = {
         const password = credentials?.password;
 
         if (!email || !password) {
-          return null;
-        }
-
-        if (adminEmails.length > 0 && !adminEmails.includes(email)) {
           return null;
         }
 
