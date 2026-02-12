@@ -11,7 +11,7 @@ Default UI language is **Georgian (ka-GE)**.
 - Prisma ORM + PostgreSQL (Neon / Vercel Postgres)
 - NextAuth (Credentials: email/password, admin-protected area)
 - Vercel Blob uploads for attendee profile images
-- Google Calendar integration + ICS fallback
+- ICS calendar fallback for meeting planning
 - Zod validation + server-side sanitization
 
 ## Features
@@ -21,7 +21,6 @@ Default UI language is **Georgian (ka-GE)**.
 - Public attendee directory with search/filter/sort (`/attendees`)
 - Public attendee detail with privacy-aware phone display (`/attendees/[id]`)
 - Meeting proposal actions:
-  - Google Calendar event creation (OAuth)
   - ICS file download fallback
 - Protected admin dashboard (`/admin`):
   - Conference create/read/update/delete
@@ -45,8 +44,6 @@ Required values:
 - `NEXTAUTH_SECRET`: random secret for NextAuth
 - `ADMIN_EMAILS`: optional comma-separated admin emails allowed into `/admin` (if empty, any authenticated user can access admin)
 - `BLOB_READ_WRITE_TOKEN`: Vercel Blob token
-- `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`: optional for Google Calendar API integration
-- `GOOGLE_CALENDAR_REDIRECT_URI`: optional, used for Google Calendar API flow
 - `RESEND_API_KEY`: optional, required to send password reset emails
 - `RESET_FROM_EMAIL`: optional, sender email for password reset messages
 

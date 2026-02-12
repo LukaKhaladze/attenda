@@ -5,13 +5,22 @@ import { useEffect, useState } from "react";
 
 export function AppPreloader() {
   const pathname = usePathname();
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
+  const [initialShown, setInitialShown] = useState(false);
 
   useEffect(() => {
+    if (initialShown) {
+      return;
+    }
+
     setVisible(true);
-    const timer = setTimeout(() => setVisible(false), 500);
+    const timer = setTimeout(() => {
+      setVisible(false);
+      setInitialShown(true);
+    }, 250);
+
     return () => clearTimeout(timer);
-  }, [pathname]);
+  }, [pathname, initialShown]);
 
   if (!visible) {
     return null;

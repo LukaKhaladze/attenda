@@ -15,13 +15,14 @@ type Attendee = {
 
 type Props = {
   conferenceId?: string;
+  initialItems?: Attendee[];
 };
 
 const positionPresets = ["ყველა", "დამფუძნებელი", "CEO", "CTO", "დიზაინერი", "ვებ დეველოპერი", "პროდუქტის მენეჯერი"];
 
-export function AttendeesExplorer({ conferenceId }: Props) {
-  const [attendees, setAttendees] = useState<Attendee[]>([]);
-  const [loading, setLoading] = useState(true);
+export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
+  const [attendees, setAttendees] = useState<Attendee[]>(initialItems);
+  const [loading, setLoading] = useState(false);
   const [q, setQ] = useState("");
   const [debouncedQ, setDebouncedQ] = useState("");
   const [position, setPosition] = useState("ყველა");
@@ -34,6 +35,13 @@ export function AttendeesExplorer({ conferenceId }: Props) {
   }, [q]);
 
   useEffect(() => {
+    const isDefaultFilter = debouncedQ.trim().length === 0 && effectivePosition.length === 0;
+    if (isDefaultFilter && initialItems.length > 0) {
+      setAttendees(initialItems);
+      setLoading(false);
+      return;
+    }
+
     const controller = new AbortController();
     async function load() {
       setLoading(true);
@@ -47,7 +55,7 @@ export function AttendeesExplorer({ conferenceId }: Props) {
     }
     load().catch(() => setLoading(false));
     return () => controller.abort();
-  }, [debouncedQ, effectivePosition, conferenceId]);
+  }, [debouncedQ, effectivePosition, conferenceId, initialItems]);
 
   return (
     <section className="space-y-2">

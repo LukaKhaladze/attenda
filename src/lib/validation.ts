@@ -57,11 +57,3 @@ export const attendeeProfileUpdateSchema = z.object({
   sharePhonePublic: z.boolean(),
   consentPublicList: z.boolean()
 });
-
-export const meetingSchema = z.object({
-  attendeeId: z.string().cuid(),
-  title: z.string().min(3, "შეხვედრის სათაური სავალდებულოა"),
-  startsAt: z.string().min(1, "აირჩიე დრო"),
-  durationMinutes: z.number().int().min(15).max(180),
-  notes: z.string().max(500).optional()
-});

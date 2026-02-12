@@ -1,9 +1,14 @@
-import Link from "next/link";
-import { cookies } from "next/headers";
-import { ReactNode } from "react";
+"use client";
 
-export async function Shell({ children }: { children: ReactNode }) {
-  const attendeeId = cookies().get("attendee_id")?.value;
+import Link from "next/link";
+import { ReactNode, useEffect, useState } from "react";
+
+export function Shell({ children }: { children: ReactNode }) {
+  const [hasAttendeeCookie, setHasAttendeeCookie] = useState(false);
+
+  useEffect(() => {
+    setHasAttendeeCookie(document.cookie.includes("attendee_id="));
+  }, []);
 
   return (
     <div className="space-y-4">
@@ -20,7 +25,7 @@ export async function Shell({ children }: { children: ReactNode }) {
             კონფერენციები
           </Link>
 
-          {attendeeId ? (
+          {hasAttendeeCookie ? (
             <>
               <Link href="/notifications" className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 text-primary" aria-label="შეტყობინებები">
                 <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden>

@@ -7,7 +7,7 @@ import { UICard } from "@/components/ui-card";
 import { UIHeader } from "@/components/ui-header";
 import { prisma } from "@/lib/prisma";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function AttendeeDetailPage({ params }: { params: { id: string } }) {
   const attendee = await prisma.attendee.findUnique({
@@ -22,7 +22,7 @@ export default async function AttendeeDetailPage({ params }: { params: { id: str
   return (
     <Shell>
       <section className="space-y-4 pb-8">
-        <UIHeader title="პროფილი" backHref="/attendees" />
+        <UIHeader title="პროფილი" backHref={`/attendees?conferenceId=${attendee.conferenceId}`} />
 
         <UICard className="bg-gradient-to-br from-primary to-accent text-center text-white">
           <div className="mb-3 flex justify-center">
