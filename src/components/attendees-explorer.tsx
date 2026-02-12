@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { UICard } from "@/components/ui-card";
+import { UIAvatar } from "@/components/ui-avatar";
 
 type Attendee = {
   id: string;
@@ -23,65 +25,70 @@ export function AttendeesExplorer() {
 
   useEffect(() => {
     const controller = new AbortController();
-
     async function load() {
       setLoading(true);
-      const params = new URLSearchParams({
-        q,
-        hasCompany,
-        hasLinkedin,
-        sort
-      });
-      const response = await fetch(`/api/attendees?${params.toString()}`, {
-        signal: controller.signal
-      });
+      const params = new URLSearchParams({ q, hasCompany, hasLinkedin, sort });
+      const response = await fetch(`/api/attendees?${params.toString()}`, { signal: controller.signal });
       const data = await response.json();
       setAttendees(data.items ?? []);
       setLoading(false);
     }
-
     load().catch(() => setLoading(false));
-
     return () => controller.abort();
   }, [q, hasCompany, hasLinkedin, sort]);
 
   return (
-    <section className="space-y-4">
-      <div className="grid gap-3 rounded-2xl border border-brand-100 bg-white p-4 md:grid-cols-4">
-        <input placeholder="ძიება სახელით ან კომპანიით" value={q} onChange={(event) => setQ(event.target.value)} />
-        <select value={hasCompany} onChange={(event) => setHasCompany(event.target.value)}>
-          <option value="false">კომპანია აქვს: ყველა</option>
-          <option value="true">მხოლოდ კომპანია აქვს</option>
-        </select>
+    <section className="space-y-3">
+      <UICard className="space-y-2">
+        <input placeholder="🔍 ძიება სახელით ან კომპანიით" value={q} onChange={(event) => setQ(event.target.value)} />
+        <div className="flex gap-2 overflow-x-auto">
+          <button
+            type="button"
+            onClick={() => setHasCompany("false")}
+            className={`rounded-full px-3 py-1.5 text-sm ${hasCompany === "false" ? "bg-primary text-white" : "border border-gray-300 text-gray-700"}`}
+          >
+            ყველა
+          </button>
+          <button
+            type="button"
+            onClick={() => setHasCompany("true")}
+            className={`rounded-full px-3 py-1.5 text-sm ${hasCompany === "true" ? "bg-primary text-white" : "border border-gray-300 text-gray-700"}`}
+          >
+            კომპანია აქვს
+          </button>
+          <button
+            type="button"
+            onClick={() => setSort(sort === "new" ? "az" : "new")}
+            className="rounded-full border border-gray-300 px-3 py-1.5 text-sm text-gray-700"
+          >
+            {sort === "new" ? "ახალი" : "A-Z"}
+          </button>
+        </div>
         <select value={hasLinkedin} onChange={(event) => setHasLinkedin(event.target.value)}>
-          <option value="false">LinkedIn აქვს: ყველა</option>
-          <option value="true">მხოლოდ LinkedIn აქვს</option>
+          <option value="false">LinkedIn: ყველა</option>
+          <option value="true">LinkedIn აქვს</option>
         </select>
-        <select value={sort} onChange={(event) => setSort(event.target.value)}>
-          <option value="new">ახალი დამატებული</option>
-          <option value="az">A-Z</option>
-        </select>
-      </div>
+      </UICard>
 
-      {loading ? <p className="text-sm text-brand-700">იტვირთება...</p> : null}
+      {loading ? <p className="text-sm text-gray-600">იტვირთება...</p> : null}
 
       {!loading && attendees.length === 0 ? (
-        <p className="rounded-2xl border border-brand-100 bg-white p-5 text-sm text-brand-700">
-          მონაცემი ვერ მოიძებნა. სცადე სხვა ფილტრი.
-        </p>
+        <UICard>
+          <p className="text-sm text-gray-600">მონაცემი ვერ მოიძებნა. სცადე სხვა ფილტრი.</p>
+        </UICard>
       ) : null}
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="space-y-3">
         {attendees.map((attendee) => (
-          <Link
-            key={attendee.id}
-            href={`/attendees/${attendee.id}`}
-            className="rounded-2xl border border-brand-100 bg-white p-4 shadow-soft hover:-translate-y-0.5"
-          >
-            <div className="mb-3 h-40 rounded-xl bg-brand-50 bg-cover bg-center" style={{ backgroundImage: attendee.photoUrl ? `url(${attendee.photoUrl})` : undefined }} />
-            <h3 className="font-semibold text-brand-900">{attendee.fullName}</h3>
-            <p className="text-sm text-brand-700">{attendee.company || "კომპანია მითითებული არ არის"}</p>
-            <p className="text-sm text-brand-700">{attendee.position || "პოზიცია მითითებული არ არის"}</p>
+          <Link key={attendee.id} href={`/attendees/${attendee.id}`}>
+            <UICard className="flex items-center gap-3 active:scale-[0.98]">
+              <UIAvatar src={attendee.photoUrl} alt={attendee.fullName} size="md" />
+              <div className="min-w-0">
+                <h3 className="truncate font-semibold text-gray-900">{attendee.fullName}</h3>
+                <p className="truncate text-sm text-gray-700">{attendee.position || "პოზიცია არ არის მითითებული"}</p>
+                <p className="truncate text-sm text-gray-600">{attendee.company || "კომპანია არ არის მითითებული"}</p>
+              </div>
+            </UICard>
           </Link>
         ))}
       </div>
