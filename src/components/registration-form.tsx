@@ -113,12 +113,14 @@ export function RegistrationForm({ conferenceId }: Props) {
           <span className="text-sm font-medium text-gray-700">
             პოზიცია <span className="text-error">*</span>
           </span>
-          <select name="position" required defaultValue="">
+          <select name="position" required defaultValue="" className="w-full">
             <option value="" disabled>
               აირჩიე პოზიცია
             </option>
             {positionOptions.map((item) => (
-              <option key={item} value={item} />
+              <option key={item} value={item}>
+                {item}
+              </option>
             ))}
           </select>
         </label>
