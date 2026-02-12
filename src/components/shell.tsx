@@ -24,8 +24,13 @@ export function Shell({ children }: { children: ReactNode }) {
   const [hasAttendeeCookie, setHasAttendeeCookie] = useState(false);
 
   useEffect(() => {
-    function updateAttendeeState() {
-      setHasAttendeeCookie(document.cookie.includes("attendee_id="));
+    async function updateAttendeeState() {
+      try {
+        const response = await fetch("/api/attendee-profile", { cache: "no-store" });
+        setHasAttendeeCookie(response.ok);
+      } catch {
+        setHasAttendeeCookie(false);
+      }
     }
 
     updateAttendeeState();
