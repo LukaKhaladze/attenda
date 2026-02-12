@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { Prisma } from "@prisma/client";
 import { format } from "date-fns";
 import { Shell } from "@/components/shell";
 import { UICard } from "@/components/ui-card";
@@ -23,18 +24,40 @@ export default async function NotificationsPage() {
     );
   }
 
-  const offers = await prisma.meetingOffer.findMany({
-    where: { recipientAttendeeId: attendeeId },
-    orderBy: { createdAt: "desc" },
-    take: 100
-  });
+  let offers: Array<{
+    id: string;
+    senderName: string;
+    senderContact: string | null;
+    proposedAt: Date | null;
+    note: string | null;
+    status: string;
+  }> = [];
+  let loadError: string | null = null;
+
+  try {
+    offers = await prisma.meetingOffer.findMany({
+      where: { recipientAttendeeId: attendeeId },
+      orderBy: { createdAt: "desc" },
+      take: 100
+    });
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2021") {
+      loadError = "შეტყობინებები დროებით მიუწვდომელია. საჭიროა ბაზის მიგრაციის გაშვება.";
+    } else {
+      loadError = "შეტყობინებების ჩატვირთვა ვერ მოხერხდა. სცადე მოგვიანებით.";
+    }
+  }
 
   return (
     <Shell>
       <section className="space-y-3">
         <UIHeader title="შეტყობინებები" backHref="/" />
 
-        {offers.length === 0 ? (
+        {loadError ? (
+          <UICard>
+            <p className="text-sm text-red-700">{loadError}</p>
+          </UICard>
+        ) : offers.length === 0 ? (
           <UICard>
             <p className="text-sm text-gray-700">ახალი შეხვედრის შეთავაზებები ჯერ არ გაქვს.</p>
           </UICard>
