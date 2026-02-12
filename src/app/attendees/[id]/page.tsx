@@ -47,7 +47,20 @@ export default async function AttendeeDetailPage({ params }: { params: { id: str
         <UICard>
           <h2 className="mb-2 text-base font-semibold text-primary">საკონტაქტო</h2>
           {attendee.sharePhonePublic ? (
-            <p className="text-sm text-gray-700">📞 {attendee.phone}</p>
+            <div className="flex items-center gap-2 text-sm text-gray-700">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <path
+                    d="M5 4h3l1.2 4-1.7 1.7a16 16 0 007.8 7.8L17 15.8 21 17v3a2 2 0 01-2 2c-8.8 0-16-7.2-16-16a2 2 0 012-2z"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+              <span>{attendee.phone}</span>
+            </div>
           ) : (
             <p className="text-sm text-gray-700">ტელეფონი დამალულია — დაუკავშირდი LinkedIn-ით</p>
           )}
