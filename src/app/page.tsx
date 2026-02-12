@@ -2,6 +2,8 @@ import { ConferencePage } from "@/components/conference-page";
 import { Shell } from "@/components/shell";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const conference = await prisma.conference.findFirst({
     orderBy: { date: "asc" }

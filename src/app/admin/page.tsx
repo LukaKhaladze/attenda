@@ -6,6 +6,8 @@ import { Shell } from "@/components/shell";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 const statusLabels: Record<AttendeeStatus, string> = {
   APPROVED: "დამტკიცებული",
   HIDDEN: "დამალული",

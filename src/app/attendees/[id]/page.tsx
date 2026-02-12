@@ -4,6 +4,8 @@ import { MeetingActions } from "@/components/meeting-actions";
 import { Shell } from "@/components/shell";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export default async function AttendeeDetailPage({ params }: { params: { id: string } }) {
   const attendee = await prisma.attendee.findUnique({
     where: { id: params.id },
