@@ -3,22 +3,25 @@
 import { FormEvent, useMemo, useState } from "react";
 import { UIButton } from "@/components/ui-button";
 import { UICard } from "@/components/ui-card";
+import { UIInput } from "@/components/ui-input";
 
 type Props = { recipientAttendeeId: string };
 
 export function MeetingOfferForm({ recipientAttendeeId }: Props) {
-  const defaultStart = useMemo(() => {
+  const initialProposedAt = useMemo(() => {
     const now = new Date();
     now.setHours(now.getHours() + 24);
     now.setMinutes(0);
     now.setSeconds(0);
     now.setMilliseconds(0);
-    return now.toISOString().slice(0, 16);
+    const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+    return local.toISOString().slice(0, 16);
   }, []);
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [proposedAt, setProposedAt] = useState(initialProposedAt);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -47,18 +50,33 @@ export function MeetingOfferForm({ recipientAttendeeId }: Props) {
       return;
     }
 
-    setMessage("შეხვედრის შეთავაზება გაგზავნილია.");
+    setMessage("შეხვედრის შეთავაზება წარმატებით გაიგზავნა.");
     event.currentTarget.reset();
+    setProposedAt(initialProposedAt);
   }
 
   return (
     <UICard className="space-y-3">
       <h3 className="text-base font-semibold text-primary">შეხვედრის შეთავაზება</h3>
-      <form onSubmit={onSubmit} className="space-y-2">
-        <input name="senderName" placeholder="შენი სახელი" required />
-        <input name="senderContact" placeholder="კონტაქტი (ტელეფონი/ელფოსტა)" />
-        <input name="proposedAt" type="datetime-local" defaultValue={defaultStart} />
-        <textarea name="note" rows={3} placeholder="შენიშვნა" />
+      <form onSubmit={onSubmit} className="space-y-3">
+        <UIInput label="შენი სახელი" name="senderName" required requiredMark placeholder="მაგ: ნინო ბერიძე" maxLength={100} />
+        <UIInput
+          label="კონტაქტი"
+          name="senderContact"
+          placeholder="ტელეფონი ან ელფოსტა"
+          maxLength={120}
+        />
+        <UIInput
+          label="შემოთავაზებული დრო"
+          name="proposedAt"
+          type="datetime-local"
+          value={proposedAt}
+          onChange={(event) => setProposedAt(event.target.value)}
+        />
+        <label className="block space-y-1.5">
+          <span className="text-sm font-medium text-gray-700">შენიშვნა</span>
+          <textarea name="note" rows={3} placeholder="დაწერე მოკლე ტექსტი შეხვედრის მიზანზე" maxLength={500} />
+        </label>
         <UIButton type="submit" disabled={loading} fullWidth>
           {loading ? "იგზავნება..." : "შეთავაზების გაგზავნა"}
         </UIButton>

@@ -5,9 +5,12 @@ import { cleanText } from "@/lib/sanitize";
 
 const schema = z.object({
   recipientAttendeeId: z.string().cuid(),
-  senderName: z.string().min(2).max(100),
-  senderContact: z.string().max(120).optional(),
-  proposedAt: z.string().optional(),
+  senderName: z.string().min(2, "სახელი სავალდებულოა").max(100, "სახელი ძალიან გრძელია"),
+  senderContact: z.string().max(120, "კონტაქტი ძალიან გრძელია").optional(),
+  proposedAt: z
+    .string()
+    .optional()
+    .refine((value) => !value || !Number.isNaN(new Date(value).getTime()), "შეხვედრის დრო არასწორია"),
   note: z.string().max(500).optional()
 });
 
