@@ -2,7 +2,7 @@ import { MeetingOfferStatus } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-async function getRelatedAttendee(attendeeId: string) {
+async function getCurrentAttendee(attendeeId: string) {
   const currentAttendee = await prisma.attendee.findUnique({
     where: { id: attendeeId },
     select: {
@@ -21,20 +21,8 @@ async function getRelatedAttendee(attendeeId: string) {
     .map((item) => item?.trim())
     .filter((item): item is string => Boolean(item));
 
-  const relatedAttendeeIds = await prisma.attendee.findMany({
-    where: {
-      OR: [
-        { id: currentAttendee.id },
-        ...(currentAttendee.phone ? [{ phone: currentAttendee.phone }] : []),
-        ...(currentAttendee.linkedinUrl ? [{ linkedinUrl: currentAttendee.linkedinUrl }] : []),
-        ...(currentAttendee.fullName ? [{ fullName: currentAttendee.fullName }] : [])
-      ]
-    },
-    select: { id: true }
-  });
-
   return {
-    senderIds: Array.from(new Set(relatedAttendeeIds.map((item) => item.id))),
+    id: currentAttendee.id,
     legacySenderContactMatches,
     fullName: currentAttendee.fullName
   };
@@ -46,7 +34,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ unread: 0, total: 0 });
   }
 
-  const related = await getRelatedAttendee(attendeeId);
+  const related = await getCurrentAttendee(attendeeId);
   if (!related) {
     return NextResponse.json({ unread: 0, total: 0 });
   }
@@ -59,7 +47,7 @@ export async function GET(request: NextRequest) {
       where: {
         status: { not: MeetingOfferStatus.PENDING },
         OR: [
-          { senderAttendeeId: { in: related.senderIds } },
+          { senderAttendeeId: related.id },
           ...(related.legacySenderContactMatches.length > 0
             ? [
                 {
@@ -88,5 +76,7 @@ export async function GET(request: NextRequest) {
   const seenCount = seenFor === attendeeId ? Number(seenRaw || "0") : 0;
   const unread = Math.max(total - (Number.isFinite(seenCount) ? seenCount : 0), 0);
 
-  return NextResponse.json({ unread, total });
+  const response = NextResponse.json({ unread, total });
+  response.headers.set("Cache-Control", "private, max-age=10, stale-while-revalidate=30");
+  return response;
 }

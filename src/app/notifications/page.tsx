@@ -82,20 +82,6 @@ export default async function NotificationsPage() {
       .map((item) => item?.trim())
       .filter((item): item is string => Boolean(item));
 
-    const relatedAttendeeIds = await prisma.attendee.findMany({
-      where: {
-        OR: [
-          { id: currentAttendee.id },
-          ...(currentAttendee.phone ? [{ phone: currentAttendee.phone }] : []),
-          ...(currentAttendee.linkedinUrl ? [{ linkedinUrl: currentAttendee.linkedinUrl }] : []),
-          ...(currentAttendee.fullName ? [{ fullName: currentAttendee.fullName }] : [])
-        ]
-      },
-      select: { id: true }
-    });
-
-    const senderIds = Array.from(new Set(relatedAttendeeIds.map((item) => item.id)));
-
     const [received, sent] = await Promise.all([
       prisma.meetingOffer.findMany({
         where: { recipientAttendeeId: attendeeId },
@@ -106,7 +92,7 @@ export default async function NotificationsPage() {
         where: {
           status: { not: MeetingOfferStatus.PENDING },
           OR: [
-            { senderAttendeeId: { in: senderIds } },
+            { senderAttendeeId: currentAttendee.id },
             ...(legacySenderContactMatches.length > 0
               ? [
                   {

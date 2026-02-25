@@ -2,7 +2,7 @@ import { MeetingOfferStatus } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-async function getRelatedAttendee(attendeeId: string) {
+async function getCurrentAttendee(attendeeId: string) {
   const currentAttendee = await prisma.attendee.findUnique({
     where: { id: attendeeId },
     select: {
@@ -21,20 +21,8 @@ async function getRelatedAttendee(attendeeId: string) {
     .map((item) => item?.trim())
     .filter((item): item is string => Boolean(item));
 
-  const relatedAttendeeIds = await prisma.attendee.findMany({
-    where: {
-      OR: [
-        { id: currentAttendee.id },
-        ...(currentAttendee.phone ? [{ phone: currentAttendee.phone }] : []),
-        ...(currentAttendee.linkedinUrl ? [{ linkedinUrl: currentAttendee.linkedinUrl }] : []),
-        ...(currentAttendee.fullName ? [{ fullName: currentAttendee.fullName }] : [])
-      ]
-    },
-    select: { id: true }
-  });
-
   return {
-    senderIds: Array.from(new Set(relatedAttendeeIds.map((item) => item.id))),
+    id: currentAttendee.id,
     legacySenderContactMatches,
     fullName: currentAttendee.fullName
   };
@@ -46,7 +34,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
 
-  const related = await getRelatedAttendee(attendeeId);
+  const related = await getCurrentAttendee(attendeeId);
   if (!related) {
     return NextResponse.json({ ok: false }, { status: 404 });
   }
@@ -57,7 +45,7 @@ export async function POST(request: NextRequest) {
       where: {
         status: { not: MeetingOfferStatus.PENDING },
         OR: [
-          { senderAttendeeId: { in: related.senderIds } },
+          { senderAttendeeId: related.id },
           ...(related.legacySenderContactMatches.length > 0
             ? [
                 {

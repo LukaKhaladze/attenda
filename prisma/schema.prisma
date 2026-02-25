@@ -56,6 +56,8 @@ model Attendee {
   sentOffers        MeetingOffer[] @relation("SentOffers")
 
   @@index([conferenceId, status])
+  @@index([conferenceId, status, consentPublicList, createdAt])
+  @@index([conferenceId, consentPublicList, position])
   @@index([fullName])
   @@index([company])
 }
@@ -75,6 +77,8 @@ model MeetingOffer {
 
   @@index([recipientAttendeeId, createdAt])
   @@index([senderAttendeeId, createdAt])
+  @@index([senderAttendeeId, status, createdAt])
+  @@index([senderContact, status, createdAt])
 }
 
 model User {
