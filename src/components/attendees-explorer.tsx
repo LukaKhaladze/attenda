@@ -91,29 +91,49 @@ export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
   }, [debouncedQ, effectivePosition, conferenceId, initialItems]);
 
   return (
-    <section className="space-y-2">
-      <UICard className="space-y-2 p-3 sm:p-4">
+    <section className="space-y-4">
+      <UICard className="space-y-4 p-4">
         <div className="relative">
           <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden>
               <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
               <path d="M20 20l-4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </span>
-          <input className="h-10 w-full rounded-md pl-9 text-sm" placeholder="მოძებნე ადამიანის სახელი ან პოზიცია" value={q} onChange={(event) => setQ(event.target.value)} />
+          <input
+            className="h-11 w-full rounded-xl pl-11 text-sm"
+            placeholder="მოძებნე ადამიანი ან კომპანია"
+            value={q}
+            onChange={(event) => setQ(event.target.value)}
+          />
         </div>
 
-        <div className="flex gap-2 overflow-x-auto pb-1">
-          {["ყველა", ...positionTerms].map((item) => (
-            <button
-              key={item}
-              type="button"
-              onClick={() => setPosition(item)}
-              className={`whitespace-nowrap rounded-full px-3 py-1 text-xs ${position === item ? "bg-primary text-white" : "border border-gray-300 text-gray-700"}`}
-            >
-              {item}
-            </button>
-          ))}
+        <div className="flex items-center gap-2">
+          <div className="flex min-w-0 flex-1 gap-2 overflow-x-auto pb-1">
+            {["ყველა", ...positionTerms].map((item) => (
+              <button
+                key={item}
+                type="button"
+                onClick={() => setPosition(item)}
+                className={`h-11 whitespace-nowrap rounded-full px-3 text-sm transition-all duration-200 ${
+                  position === item
+                    ? "bg-primary text-white shadow-sm"
+                    : "border border-gray-300 bg-white text-gray-700"
+                }`}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+          <button
+            type="button"
+            aria-label="ფილტრი"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-gray-300 text-primary"
+          >
+            <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <path d="M4 7h16M7 12h10M10 17h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
         </div>
       </UICard>
 
@@ -125,12 +145,12 @@ export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
         </UICard>
       ) : null}
 
-      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {attendees.map((attendee) => (
           <Link key={attendee.id} href={`/attendees/${attendee.id}`}>
-            <UICard className="flex items-center gap-3 active:scale-[0.98]">
-              <UIAvatar src={attendee.photoUrl} alt={attendee.fullName} size="md" />
-              <div className="min-w-0">
+            <UICard className="flex items-center gap-3 p-4 active:scale-[0.98]">
+              <UIAvatar src={attendee.photoUrl} alt={attendee.fullName} size="sm" />
+              <div className="min-w-0 space-y-1">
                 <h3 className="truncate font-semibold text-gray-900">{attendee.fullName}</h3>
                 <p className="truncate text-sm text-gray-700">{attendee.position || "პოზიცია არ არის მითითებული"}</p>
                 <p className="truncate text-sm text-gray-600">{attendee.company || "კომპანია არ არის მითითებული"}</p>

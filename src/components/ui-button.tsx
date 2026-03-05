@@ -17,8 +17,8 @@ const variantClasses: Record<ButtonVariant, string> = {
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
-  md: "px-6 py-3 text-base",
-  lg: "px-8 py-4 text-lg"
+  md: "min-h-11 px-5 py-2.5 text-base",
+  lg: "min-h-11 px-6 py-3 text-lg"
 };
 
 export function UIButton({
@@ -31,7 +31,7 @@ export function UIButton({
 }: Props) {
   return (
     <button
-      className={`rounded-md font-medium transition duration-200 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60 ${variantClasses[variant]} ${sizeClasses[size]} ${fullWidth ? "w-full" : ""} ${className}`}
+      className={`rounded-xl font-medium transition duration-200 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60 ${variantClasses[variant]} ${sizeClasses[size]} ${fullWidth ? "w-full" : ""} ${className}`}
       {...props}
     >
       {children}
