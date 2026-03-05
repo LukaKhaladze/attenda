@@ -47,7 +47,10 @@ export default async function AttendeeDetailPage({ params }: { params: { id: str
                 className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/20 text-white"
               >
                 <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden>
-                  <path d="M7 8v9M7 5h.01M12 17v-5a2 2 0 114 0v5M3 8h4v9H3zM11 8h4v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  <rect x="3.5" y="3.5" width="17" height="17" rx="3" stroke="currentColor" strokeWidth="2" />
+                  <circle cx="8" cy="8" r="1.2" fill="currentColor" />
+                  <path d="M8 11v5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M12 16v-5m0 1.6c.5-.9 1.2-1.6 2.3-1.6 1.6 0 2.7 1.1 2.7 3.2V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                 </svg>
               </a>
             ) : null}
@@ -59,7 +62,7 @@ export default async function AttendeeDetailPage({ params }: { params: { id: str
             href="#meeting-form"
             className="flex min-h-11 items-center justify-center rounded-xl border border-primary px-4 py-3 text-center text-sm font-medium text-primary"
           >
-            შეხვედრის დანიშვნა
+            შეხვედრის დაჯავშნა
           </a>
         </UICard>
 
