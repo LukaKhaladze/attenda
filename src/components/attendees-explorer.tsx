@@ -94,7 +94,8 @@ export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
   return (
     <section className="space-y-4">
       <UICard className="space-y-4 p-4">
-        <div className="relative">
+        <div className="flex items-center gap-2">
+          <div className="relative min-w-0 flex-1">
           <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
             <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden>
               <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
@@ -107,9 +108,7 @@ export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
             value={q}
             onChange={(event) => setQ(event.target.value)}
           />
-        </div>
-
-        <div className="flex items-center justify-end">
+          </div>
           <button
             type="button"
             aria-label="ფილტრი"

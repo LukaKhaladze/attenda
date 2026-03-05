@@ -36,22 +36,25 @@ export default async function AttendeeDetailPage({ params }: { params: { id: str
           </div>
           <h1 className="text-2xl font-bold">{attendee.fullName}</h1>
           <p className="text-sm text-white/95">{attendee.position || "პოზიცია არ არის მითითებული"}</p>
-          <p className="text-sm text-white/95">{attendee.company || "კომპანია არ არის მითითებული"}</p>
+          <div className="flex items-center justify-center gap-2">
+            <p className="text-sm text-white/95">{attendee.company || "კომპანია არ არის მითითებული"}</p>
+            {attendee.linkedinUrl ? (
+              <a
+                href={attendee.linkedinUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="LinkedIn"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/20 text-white"
+              >
+                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <path d="M7 8v9M7 5h.01M12 17v-5a2 2 0 114 0v5M3 8h4v9H3zM11 8h4v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              </a>
+            ) : null}
+          </div>
         </UICard>
 
         <UICard className="space-y-3">
-          {attendee.linkedinUrl ? (
-            <a
-              href={attendee.linkedinUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="flex min-h-11 items-center justify-center rounded-xl bg-primary px-4 py-3 text-center text-sm font-medium text-white"
-            >
-              LinkedIn-ზე გადასვლა
-            </a>
-          ) : (
-            <p className="rounded-md bg-gray-100 px-4 py-3 text-center text-sm text-gray-600">LinkedIn ბმული არ არის მითითებული</p>
-          )}
           <a
             href="#meeting-form"
             className="flex min-h-11 items-center justify-center rounded-xl border border-primary px-4 py-3 text-center text-sm font-medium text-primary"
@@ -65,45 +68,8 @@ export default async function AttendeeDetailPage({ params }: { params: { id: str
         </div>
 
         <UICard>
-          <h2 className="mb-2 text-base font-semibold text-primary">ამ ადამიანის შესახებ</h2>
+          <h2 className="mb-2 text-base font-semibold text-primary">ამ ღინისძიებიდან მაინტერესებს</h2>
           <p className="text-sm leading-7 text-gray-700">{attendee.motivation || "მოტივაცია არ არის მითითებული."}</p>
-        </UICard>
-
-        <UICard className="space-y-3">
-          <h2 className="text-base font-semibold text-primary">საკონტაქტო ინფორმაცია</h2>
-          {attendee.sharePhonePublic && attendee.phone ? (
-            <div className="flex items-center gap-2 text-sm text-gray-700">
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden>
-                  <path
-                    d="M5 4h3l1.2 4-1.7 1.7a16 16 0 007.8 7.8L17 15.8 21 17v3a2 2 0 01-2 2c-8.8 0-16-7.2-16-16a2 2 0 012-2z"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </span>
-              <span>{attendee.phone}</span>
-            </div>
-          ) : (
-            <p className="text-sm text-gray-700">ტელეფონი დამალულია — დაუკავშირდი LinkedIn-ით</p>
-          )}
-          {attendee.linkedinUrl ? (
-            <a
-              href={attendee.linkedinUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-2 text-sm text-primary underline"
-            >
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden>
-                  <path d="M7 8v9M7 5h.01M12 17v-5a2 2 0 114 0v5M3 8h4v9H3zM11 8h4v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                </svg>
-              </span>
-              LinkedIn პროფილი
-            </a>
-          ) : null}
         </UICard>
 
         <UICard>
