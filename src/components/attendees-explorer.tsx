@@ -25,6 +25,7 @@ export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
   const [q, setQ] = useState("");
   const [debouncedQ, setDebouncedQ] = useState("");
   const [position, setPosition] = useState("ყველა");
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const effectivePosition = useMemo(() => (position === "ყველა" ? "" : position), [position]);
 
@@ -108,8 +109,23 @@ export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
           />
         </div>
 
-        <div className="flex items-center gap-2">
-          <div className="flex min-w-0 flex-1 gap-2 overflow-x-auto pb-1">
+        <div className="flex items-center justify-end">
+          <button
+            type="button"
+            aria-label="ფილტრი"
+            onClick={() => setFiltersOpen((value) => !value)}
+            className={`inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border text-primary transition-colors ${
+              filtersOpen ? "border-primary bg-primary/5" : "border-gray-300"
+            }`}
+          >
+            <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <path d="M4 7h16M7 12h10M10 17h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
+        </div>
+
+        <div className={`overflow-hidden transition-all duration-200 ${filtersOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0"}`}>
+          <div className="flex min-w-0 gap-2 overflow-x-auto pb-1 pt-1">
             {["ყველა", ...positionTerms].map((item) => (
               <button
                 key={item}
@@ -125,15 +141,6 @@ export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
               </button>
             ))}
           </div>
-          <button
-            type="button"
-            aria-label="ფილტრი"
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-gray-300 text-primary"
-          >
-            <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden>
-              <path d="M4 7h16M7 12h10M10 17h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </button>
         </div>
       </UICard>
 

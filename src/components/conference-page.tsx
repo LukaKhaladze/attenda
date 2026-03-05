@@ -68,7 +68,7 @@ export function ConferencePage({ conference, shareUrl }: Props) {
                 <path d="M3 20c1.2-3.1 3.5-5 5-5s3.8 1.9 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
               </svg>
             </span>
-            <span className="text-sm font-semibold text-gray-900">👥 500+ მონაწილე</span>
+            <span className="text-sm font-semibold text-gray-900">დამსწრეები 500+</span>
           </UICard>
         </Link>
 
@@ -80,7 +80,7 @@ export function ConferencePage({ conference, shareUrl }: Props) {
                 <path d="M8 3v4M16 3v4M3 10h18" stroke="currentColor" strokeWidth="2" />
               </svg>
             </span>
-            <span className="text-sm font-semibold text-gray-900">📅 Agenda {agendaCount > 0 ? `(${agendaCount})` : ""}</span>
+            <span className="text-sm font-semibold text-gray-900">დღის წესრიგი {agendaCount > 0 ? `(${agendaCount})` : ""}</span>
           </UICard>
         </a>
 
@@ -91,7 +91,7 @@ export function ConferencePage({ conference, shareUrl }: Props) {
                 <path d="M12 3v18M3 9h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
               </svg>
             </span>
-            <span className="text-sm font-semibold text-gray-900">🎤 Speakers {speakerCount > 0 ? `(${speakerCount})` : ""}</span>
+            <span className="text-sm font-semibold text-gray-900">სპიკერები {speakerCount > 0 ? `(${speakerCount})` : ""}</span>
           </UICard>
         </a>
 
@@ -102,14 +102,14 @@ export function ConferencePage({ conference, shareUrl }: Props) {
                 <path d="M12 2l2.4 4.8L20 8l-4 3.8L17 17l-5-2.6L7 17l1-5.2L4 8l5.6-1.2L12 2z" stroke="currentColor" strokeWidth="2" />
               </svg>
             </span>
-            <span className="text-sm font-semibold text-gray-900">⭐ Guests</span>
+            <span className="text-sm font-semibold text-gray-900">სტუმრები</span>
           </UICard>
         </Link>
       </div>
 
       {agendaCount > 0 ? (
         <UICard id="agenda" className="space-y-2">
-          <h2 className="text-base font-semibold text-primary">Agenda</h2>
+          <h2 className="text-base font-semibold text-primary">დღის წესრიგი</h2>
           <ul className="space-y-2">
             {conference.agendaHighlights?.map((item) => (
               <li key={item} className="text-sm text-gray-700">• {item}</li>
@@ -120,7 +120,7 @@ export function ConferencePage({ conference, shareUrl }: Props) {
 
       {speakerCount > 0 ? (
         <UICard id="speakers" className="space-y-2">
-          <h2 className="text-base font-semibold text-primary">Speakers</h2>
+          <h2 className="text-base font-semibold text-primary">სპიკერები</h2>
           <ul className="space-y-2">
             {conference.speakers?.map((item) => (
               <li key={item} className="text-sm text-gray-700">• {item}</li>
