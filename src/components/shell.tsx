@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ReactNode, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
-export function Shell({ children }: { children: ReactNode }) {
+export function Shell({ children, hideHeader = false }: { children: ReactNode; hideHeader?: boolean }) {
   const router = useRouter();
   const pathname = usePathname();
   const [hasAttendeeCookie, setHasAttendeeCookie] = useState(false);
@@ -115,7 +115,8 @@ export function Shell({ children }: { children: ReactNode }) {
 
   return (
     <div className="space-y-4">
-      <header className="sticky top-0 z-40 rounded-lg border border-gray-100 bg-white px-3 py-3 shadow-sm sm:px-4">
+      {!hideHeader ? (
+        <header className="sticky top-0 z-40 rounded-lg border border-gray-100 bg-white px-3 py-3 shadow-sm sm:px-4">
         <div className="flex items-center justify-between gap-2">
           <Link href="/" className="text-lg font-bold text-primary">
             Attenda.ge
@@ -237,7 +238,8 @@ export function Shell({ children }: { children: ReactNode }) {
             )}
           </div>
         ) : null}
-      </header>
+        </header>
+      ) : null}
       {children}
     </div>
   );

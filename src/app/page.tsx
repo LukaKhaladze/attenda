@@ -7,36 +7,69 @@ import { Shell } from "@/components/shell";
 import { UICard } from "@/components/ui-card";
 import { prisma } from "@/lib/prisma";
 
-const benefits = [
+const audience = [
   {
-    title: "ადმინისტრატორი ამზადებს სტრუქტურას",
-    body: "კონფერენცია, საჯარო გვერდი, QR, სუბდომენი და ჰოსტის წვდომა ერთიანად იქმნება ადმინისტრატორის პანელიდან."
+    title: "კონფერენციის ორგანიზატორებისთვის",
+    body: "თუ გჭირდება ბრენდირებული რეგისტრაციის გვერდი, QR, სუბდომენი და სწრაფი დამტკიცება ერთი სივრციდან, ეს პლატფორმა შენთვისაა."
   },
   {
-    title: "ჰოსტი მართავს ოპერაციას",
-    body: "მინიჭებული ჰოსტი შედის საკუთარ /host პანელში, ამტკიცებს რეგისტრაციებს და ანახლებს ღონისძიების შიგთავსს."
+    title: "ივენთ ჰოსტებისთვის",
+    body: "ჰოსტი შედის საკუთარ /host პანელში, ამტკიცებს დამსწრეებს ერთი კლიკით და ცვლის ღონისძიების შიგთავსს ადმინისტრატორის გარეშე."
   },
   {
-    title: "დამსწრე იღებს მარტივ გამოცდილებას",
-    body: "რეგისტრაცია, საჯარო სია, პროფილი, შეხვედრის შეთავაზება და შეტყობინებები აგებულია ერთი ბუნებრივი ნაკადით."
+    title: "B2B ნეთვორქინგზე ორიენტირებული გუნდებისთვის",
+    body: "დამსწრეები ხედავენ ერთმანეთს, ფილტრავენ პროფილებს და აგზავნიან შეხვედრის შეთავაზებებს ღონისძიების დაწყებამდე."
+  }
+];
+
+const featureStories = [
+  {
+    title: "ქასთომ კონფერენციის გვერდი და სუბდომენი",
+    body: "თითო ღონისძიება იღებს საკუთარ საჯარო გვერდს, უნიკალურ ბმულს, QR კოდს და სურვილის შემთხვევაში მისამართს, როგორიცაა itmeet.yourdomain.com. ეს ნიშნავს ძლიერ ბრენდინგს და უფრო სანდო რეგისტრაციის გამოცდილებას.",
+    image:
+      "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1400&q=80"
+  },
+  {
+    title: "ჰოსტის პანელი მინიჭებული კონფერენციისთვის",
+    body: "ადმინისტრატორი ქმნის ღონისძიებას და ჰოსტს უგზავნის წვდომას. ჰოსტი ხედავს მხოლოდ თავის კონფერენციას, ამტკიცებს ან მალავს რეგისტრაციებს, არეგულირებს აღწერას, დღის წესრიგს და ვიზუალს.",
+    image:
+      "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1400&q=80"
+  },
+  {
+    title: "დამსწრეთა სია, რომელიც რეალურ კავშირებს აჩენს",
+    body: "რეგისტრაციის შემდეგ დამტკიცებული პროფილები ავტომატურად ჩნდება კონკრეტული ღონისძიების საჯარო სიაში. სტუმრები პოულობენ ერთმანეთს კომპანიის, პოზიციის და კონტექსტის მიხედვით.",
+    image:
+      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1400&q=80"
+  },
+  {
+    title: "შეხვედრების შეთავაზებები და შეტყობინებები",
+    body: "პლატფორმა არ ჩერდება მხოლოდ რეგისტრაციაზე. დამსწრეები აგზავნიან შეხვედრის შეთავაზებებს, იღებენ დადასტურებას და მართავენ ნეთვორქინგს ღონისძიების დაწყებამდე.",
+    image:
+      "https://images.unsplash.com/photo-1515169067868-5387ec356754?auto=format&fit=crop&w=1400&q=80"
+  },
+  {
+    title: "ადმინისტრატორის სრული კონტროლი",
+    body: "ადმინი ქმნის კონფერენციებს, ნიშნავს ჰოსტებს, აწესებს საწყის წვდომებს და აკონტროლებს მთელ სისტემას ერთი პანელიდან. ეს მოდელი კარგია როგორც სააგენტოებისთვის, ისე დიდი ორგანიზატორებისთვის.",
+    image:
+      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1400&q=80"
   }
 ];
 
 const steps = [
   {
     step: "01",
-    title: "ადმინი ქმნის კონფერენციას",
-    body: "ადმინისტრატორი ამატებს კონფერენციას, აყენებს სუბდომენს და ჰოსტს უნიშნავს წვდომას."
+    title: "ადმინი ამატებს კონფერენციას",
+    body: "იქმნება ღონისძიება, სუბდომენი, საჯარო გვერდი და ჰოსტის წვდომა."
   },
   {
     step: "02",
     title: "ჰოსტი მართავს რეგისტრაციებს",
-    body: "ჰოსტი /host პანელიდან ამტკიცებს დამსწრეებს ერთი კლიკით და საჭიროების შემთხვევაში ცვლის კონფერენციის ინფორმაციას."
+    body: "ჰოსტი თავის პანელში ამტკიცებს დამსწრეებს და ანახლებს კონფერენციის ინფორმაციას."
   },
   {
     step: "03",
     title: "დამსწრეები უკეთ ნეთვორქინგობენ",
-    body: "დადასტურებული სტუმრები ჩანან საჯაროდ, პოულობენ ერთმანეთს და აგზავნიან შეხვედრის შეთავაზებებს."
+    body: "დადასტურებული დამსწრეები ჩანან საჯაროდ და აგზავნიან შეხვედრის შეთავაზებებს."
   }
 ];
 
@@ -88,245 +121,272 @@ export default async function HomePage() {
   }
 
   return (
-    <Shell>
-      <section className="space-y-8 pb-8">
-        <section className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[#0b1733] shadow-[0_20px_70px_rgba(11,23,51,0.28)]">
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-90"
-            style={{
-              backgroundImage:
-                "url(https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1800&q=80)"
-            }}
-          />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(34,25,17,0.22),rgba(29,22,18,0.34)_18%,rgba(11,16,28,0.66)_54%,rgba(8,12,24,0.9)_78%,rgba(7,11,22,0.96)_100%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,214,170,0.26),transparent_34%),radial-gradient(circle_at_right_bottom,rgba(243,141,56,0.14),transparent_18%)]" />
+    <Shell hideHeader>
+      <section className="space-y-12 pb-12">
+        <section className="px-4 pt-4 sm:px-6 lg:px-8">
+          <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-[#0b1733] shadow-[0_24px_80px_rgba(11,23,51,0.26)]">
+            <div
+              className="absolute inset-0 bg-cover bg-center opacity-90"
+              style={{
+                backgroundImage:
+                  "url(https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1800&q=80)"
+              }}
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(37,27,18,0.2),rgba(25,19,18,0.34)_16%,rgba(11,16,28,0.66)_54%,rgba(8,12,24,0.92)_82%,rgba(7,11,22,0.96)_100%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,214,170,0.22),transparent_32%),radial-gradient(circle_at_right_bottom,rgba(243,141,56,0.12),transparent_16%)]" />
 
-          <div className="relative flex min-h-[720px] items-end px-6 py-10 sm:px-10 sm:py-12 lg:min-h-[820px] lg:px-14 lg:py-14">
-            <div className="max-w-[620px] space-y-7 text-white">
-              <span className="inline-flex min-h-10 items-center rounded-full border border-white/30 bg-white/82 px-4 text-sm font-semibold text-[#5c5751] shadow-[0_10px_30px_rgba(0,0,0,0.14)] backdrop-blur">
-                The future of professional networking
-              </span>
-
-              <div className="space-y-5">
-                <h1 className="max-w-[620px] text-5xl font-bold leading-[0.92] tracking-[-0.045em] sm:text-6xl lg:text-[5.35rem]">
-                  Meet people
-                  <br />
-                  who <span className="text-[#f28b34]">matter</span>
-                </h1>
-                <p className="max-w-[520px] text-lg leading-8 text-white/84 sm:text-[1.35rem] sm:leading-9">
-                  Launch branded conference pages, manage registrations, approve attendees,
-                  and turn event traffic into real meetings from one host-ready platform.
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-4 pt-1 sm:flex-row">
-                <Link
-                  href="#features"
-                  className="inline-flex min-h-14 items-center justify-center rounded-[18px] bg-[#f28b34] px-9 py-4 text-lg font-semibold text-white shadow-[0_16px_40px_rgba(242,139,52,0.32)] transition hover:bg-[#ef7f20]"
-                >
-                  Explore Features
+            <header className="relative px-4 py-4 sm:px-6 lg:px-8">
+              <div className="mx-auto flex max-w-[1280px] items-center justify-between rounded-[22px] border border-white/40 bg-white/92 px-5 py-4 shadow-[0_18px_40px_rgba(14,17,23,0.12)] backdrop-blur">
+                <Link href="/" className="flex items-center gap-3 text-[1.35rem] font-bold tracking-[-0.03em] text-gray-900">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#f28b34] text-white shadow-[0_10px_24px_rgba(242,139,52,0.3)]">
+                    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden>
+                      <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor" />
+                    </svg>
+                  </span>
+                  <span>Attenda</span>
                 </Link>
-                <Link
-                  href="/host/signin"
-                  className="inline-flex min-h-14 items-center justify-center rounded-[18px] bg-white/88 px-9 py-4 text-lg font-semibold text-gray-900 shadow-[0_16px_40px_rgba(0,0,0,0.16)] backdrop-blur transition hover:bg-white"
-                >
-                  Host Login
-                </Link>
-              </div>
 
-              <div className="grid max-w-[430px] grid-cols-3 gap-7 pt-6">
-                <div>
-                  <p className="text-[2.15rem] font-bold tracking-[-0.05em] text-white">{attendeeCount > 0 ? `${attendeeCount}+` : "2.4K+"}</p>
-                  <p className="mt-1 text-sm text-white/70">Registered Attendees</p>
-                </div>
-                <div>
-                  <p className="text-[2.15rem] font-bold tracking-[-0.05em] text-white">{conferences.length > 0 ? `${conferences.length * 50}+` : "150+"}</p>
-                  <p className="mt-1 text-sm text-white/70">Event Pages Live</p>
-                </div>
-                <div>
-                  <p className="text-[2.15rem] font-bold tracking-[-0.05em] text-white">{approvedMeetingCount > 0 ? `${approvedMeetingCount}+` : "8K+"}</p>
-                  <p className="mt-1 text-sm text-white/70">Meetings Coordinated</p>
+                <nav className="hidden items-center gap-10 text-sm font-medium text-gray-500 md:flex">
+                  <a href="#features" className="transition hover:text-gray-900">ფუნქციები</a>
+                  <a href="#examples" className="transition hover:text-gray-900">კონფერენციები</a>
+                  <a href="#contact" className="transition hover:text-gray-900">კონტაქტი</a>
+                </nav>
+
+                <div className="flex items-center gap-3">
+                  <Link href="/host/signin" className="hidden text-sm font-medium text-gray-900 md:inline-flex">
+                    Host
+                  </Link>
+                  <a
+                    href="#contact"
+                    className="inline-flex min-h-11 items-center justify-center rounded-2xl bg-[#f28b34] px-5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(242,139,52,0.32)] transition hover:bg-[#ef7f20]"
+                  >
+                    Contact
+                  </a>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
+            </header>
 
-        <section id="features" className="space-y-5">
-          <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f28b34]">რატომ იყენებენ ორგანიზატორები</p>
-            <h2 className="text-3xl font-bold text-gray-900">პლატფორმა, რომელიც კონფერენციის მფლობელს სრულ კონტროლს აძლევს</h2>
-            <p className="max-w-2xl text-sm leading-7 text-gray-600">
-              Attenda მუშაობს როგორც საკონფერენციო ოპერაციული სისტემა: ადმინისტრატორი ამზადებს ღონისძიებას,
-              ჰოსტი მართავს საკუთარ პანელს, დამსწრეები კი იღებენ მარტივ გამოცდილებას რეგისტრაციიდან შეხვედრებამდე.
-            </p>
-          </div>
-
-          <div className="grid gap-4 lg:grid-cols-3">
-            <UICard className="min-h-[196px] bg-[linear-gradient(180deg,#ffffff,#f9fbff)]">
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden>
-                  <rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="2" />
-                  <path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                </svg>
-              </div>
-              <h3 className="mt-5 text-xl font-semibold text-gray-900">ქასთომ ბმული, QR და სუბდომენი თითო ღონისძიებისთვის</h3>
-              <p className="mt-3 text-sm leading-7 text-gray-600">
-                თითო კონფერენცია იღებს საკუთარ საჯარო გვერდს, QR კოდს და სურვილის შემთხვევაში სუბდომენს, როგორიცაა
-                itmeet.yourdomain.com, რომ ბრენდინგი ღონისძიების იდენტობას დაემთხვეს.
-              </p>
-            </UICard>
-
-            <UICard className="min-h-[196px] bg-[linear-gradient(180deg,#ffffff,#fdfaf7)]">
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#f28b34]/10 text-[#f28b34]">
-                <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden>
-                  <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="2" />
-                  <circle cx="16" cy="9" r="2.5" stroke="currentColor" strokeWidth="2" />
-                  <path d="M3 20c1.2-3.1 3.5-5 5-5s3.8 1.9 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                </svg>
-              </div>
-              <h3 className="mt-5 text-xl font-semibold text-gray-900">ჰოსტის პანელი დამსწრეთა სწრაფი დამტკიცებით</h3>
-              <p className="mt-3 text-sm leading-7 text-gray-600">
-                ადმინისტრატორი კონფერენციას ჰოსტს უნიშნავს, ჰოსტი შედის საკუთარ /host პანელში, ამტკიცებს რეგისტრაციებს ერთი კლიკით
-                და მართავს საკუთარ ღონისძიებას ადმინის ჩარევის გარეშე.
-              </p>
-            </UICard>
-
-            <UICard className="min-h-[196px] bg-[linear-gradient(180deg,#ffffff,#f8fbfa)]">
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-600">
-                <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden>
-                  <path d="M7 12h10M12 7v10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                  <rect x="4" y="4" width="16" height="16" rx="4" stroke="currentColor" strokeWidth="2" />
-                </svg>
-              </div>
-              <h3 className="mt-5 text-xl font-semibold text-gray-900">ნეთვორქინგი, რომელიც რეალურ შეხვედრებად იქცევა</h3>
-              <p className="mt-3 text-sm leading-7 text-gray-600">
-                დამსწრეები წინასწარ ხედავენ ერთმანეთს, პოულობენ სწორ ადამიანებს, აგზავნიან შეხვედრის შეთავაზებებს და ღონისძიებაზე
-                უფრო მაღალი ხარისხის კავშირებით მოდიან.
-              </p>
-            </UICard>
-          </div>
-        </section>
-
-        <section className="space-y-5">
-          <div className="flex items-end justify-between gap-4">
-            <div className="space-y-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f28b34]">მაგალითები</p>
-              <h2 className="text-3xl font-bold text-gray-900">ადმინისტრატორის მიერ შექმნილი კონფერენციები ჰოსტისთვის მზადაა</h2>
-            </div>
-            <Link href="/admin" className="hidden text-sm font-semibold text-primary underline sm:inline">
-              ადმინის პანელის გახსნა
-            </Link>
-          </div>
-
-          <div className="grid gap-4 lg:grid-cols-3">
-            {conferences.length > 0 ? (
-              conferences.map((conference) => (
-                <Link key={conference.id} href={`/conference/${conference.slug}`}>
-                  <UICard className="h-full overflow-hidden p-0 transition-transform duration-200 hover:-translate-y-1">
-                    <div
-                      className="h-48 bg-cover bg-center"
-                      style={{
-                        backgroundImage: `linear-gradient(180deg, rgba(11,23,51,.08), rgba(11,23,51,.72)), url(${conference.coverImageUrl || "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80"})`
-                      }}
-                    >
-                      <div className="flex h-full flex-col justify-between p-4 text-white">
-                        <span className="inline-flex w-fit rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur">
-                          საჯარო გვერდი
-                        </span>
-                        <div>
-                          <p className="text-2xl font-bold">{conference.title_ka}</p>
-                          <p className="mt-2 text-sm text-white/80">{conference._count.attendees} რეგისტრაცია</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="space-y-3 p-4">
-                      <p className="flex items-center gap-2 text-sm text-gray-700">
-                        <svg className="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
-                          <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="2" />
-                          <path d="M8 3v4M16 3v4M3 10h18" stroke="currentColor" strokeWidth="2" />
-                        </svg>
-                        {format(conference.date, "dd MMMM, HH:mm")}
-                      </p>
-                      <p className="flex items-center gap-2 text-sm text-gray-700">
-                        <svg className="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
-                          <path d="M12 21s7-6.3 7-11a7 7 0 10-14 0c0 4.7 7 11 7 11z" stroke="currentColor" strokeWidth="2" />
-                          <circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="2" />
-                        </svg>
-                        {conference.location_ka}
-                      </p>
-                      <p className="line-clamp-3 text-sm leading-6 text-gray-600">{conference.description_ka}</p>
-                    </div>
-                  </UICard>
-                </Link>
-              ))
-            ) : (
-              <>
-                <UICard className="min-h-[240px] bg-[linear-gradient(180deg,#ffffff,#f9fbff)]">
-                  <p className="text-lg font-semibold text-gray-900">ადმინის მიერ მომზადებული კონფერენციის გვერდი</p>
-                  <p className="mt-3 text-sm leading-7 text-gray-600">
-                    ადმინისტრატორი ამზადებს გვერდს, მინიჭებს ჰოსტს, ხოლო ჰოსტი უკვე საკუთარ პანელში აგრძელებს კონფერენციის ოპერირებას.
-                  </p>
-                </UICard>
-                <UICard className="min-h-[240px] bg-[linear-gradient(180deg,#ffffff,#fdfaf7)]">
-                  <p className="text-lg font-semibold text-gray-900">რეგისტრაცია, დამტკიცება და საჯარო სია</p>
-                  <p className="mt-3 text-sm leading-7 text-gray-600">
-                    დამსწრე პირველად შედის მოლოდინში, ჰოსტი ადასტურებს ერთ კლიკში და ამის შემდეგ ის ავტომატურად ჩნდება საჯარო გვერდზე.
-                  </p>
-                </UICard>
-                <UICard className="min-h-[240px] bg-[linear-gradient(180deg,#ffffff,#f8fbfa)]">
-                  <p className="text-lg font-semibold text-gray-900">ჰოსტის ბრენდინგი და სუბდომენი</p>
-                  <p className="mt-3 text-sm leading-7 text-gray-600">
-                    საჭიროების შემთხვევაში თითო კონფერენცია მუშაობს საკუთარ მისამართზე, რაც პლატფორმას თეთრი ეტიკეტის პროდუქტად აქცევს.
-                  </p>
-                </UICard>
-              </>
-            )}
-          </div>
-        </section>
-
-        <section className="space-y-5 rounded-[28px] border border-gray-200 bg-white px-5 py-6 shadow-[0_18px_48px_rgba(17,24,39,0.06)] sm:px-6">
-          <div className="space-y-2 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f28b34]">როგორ მუშაობს</p>
-            <h2 className="text-3xl font-bold text-gray-900">სამი როლი, ერთი გამართული ნაკადი</h2>
-          </div>
-
-          <div className="grid gap-4 lg:grid-cols-3">
-            {steps.map((item) => (
-              <UICard key={item.step} className="min-h-[180px] border-gray-100 bg-[linear-gradient(180deg,#ffffff,#fbfcff)]">
-                <span className="inline-flex h-10 min-w-10 items-center justify-center rounded-2xl bg-primary text-sm font-semibold text-white">
-                  {item.step}
+            <div className="relative mx-auto flex min-h-[760px] max-w-[1280px] items-end px-4 py-10 sm:px-6 sm:py-12 lg:min-h-[860px] lg:px-8 lg:py-14">
+              <div className="max-w-[640px] space-y-7 text-white">
+                <span className="inline-flex min-h-10 items-center rounded-full border border-white/30 bg-white/82 px-4 text-sm font-semibold text-[#5c5751] shadow-[0_10px_30px_rgba(0,0,0,0.14)] backdrop-blur">
+                  The future of professional networking
                 </span>
-                <h3 className="mt-5 text-xl font-semibold text-gray-900">{item.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-gray-600">{item.body}</p>
-              </UICard>
+
+                <div className="space-y-5">
+                  <h1 className="max-w-[620px] text-5xl font-bold leading-[0.92] tracking-[-0.045em] sm:text-6xl lg:text-[5.35rem]">
+                    Meet people
+                    <br />
+                    who <span className="text-[#f28b34]">matter</span>
+                  </h1>
+                  <p className="max-w-[560px] text-lg leading-8 text-white/84 sm:text-[1.35rem] sm:leading-9">
+                    Launch branded conference pages, manage registrations, approve attendees,
+                    and turn event traffic into real meetings from one host-ready platform.
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-4 pt-1 sm:flex-row">
+                  <a
+                    href="#features"
+                    className="inline-flex min-h-14 items-center justify-center rounded-[18px] bg-[#f28b34] px-9 py-4 text-lg font-semibold text-white shadow-[0_16px_40px_rgba(242,139,52,0.32)] transition hover:bg-[#ef7f20]"
+                  >
+                    Explore Features
+                  </a>
+                  <a
+                    href="#contact"
+                    className="inline-flex min-h-14 items-center justify-center rounded-[18px] bg-white/88 px-9 py-4 text-lg font-semibold text-gray-900 shadow-[0_16px_40px_rgba(0,0,0,0.16)] backdrop-blur transition hover:bg-white"
+                  >
+                    Contact Us
+                  </a>
+                </div>
+
+                <div className="grid max-w-[460px] grid-cols-3 gap-7 pt-6">
+                  <div>
+                    <p className="text-[2.15rem] font-bold tracking-[-0.05em] text-white">{attendeeCount > 0 ? `${attendeeCount}+` : "2.4K+"}</p>
+                    <p className="mt-1 text-sm text-white/70">Registered Attendees</p>
+                  </div>
+                  <div>
+                    <p className="text-[2.15rem] font-bold tracking-[-0.05em] text-white">{conferences.length > 0 ? `${conferences.length * 50}+` : "150+"}</p>
+                    <p className="mt-1 text-sm text-white/70">Event Pages Live</p>
+                  </div>
+                  <div>
+                    <p className="text-[2.15rem] font-bold tracking-[-0.05em] text-white">{approvedMeetingCount > 0 ? `${approvedMeetingCount}+` : "8K+"}</p>
+                    <p className="mt-1 text-sm text-white/70">Meetings Coordinated</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="features" className="px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-[1280px] space-y-6">
+            <div className="space-y-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f28b34]">ვისთვის არის პლატფორმა</p>
+              <h2 className="max-w-3xl text-3xl font-bold text-gray-900 sm:text-4xl">კონფერენციის მართვა, რომელიც მხოლოდ რეგისტრაციაზე არ ჩერდება</h2>
+              <p className="max-w-3xl text-sm leading-7 text-gray-600 sm:text-base">
+                Attenda შექმნილია იმ ორგანიზატორებისთვის, ვინც უნდა მართოს ბრენდირებული ღონისძიება, მისცეს ჰოსტს საკუთარი სამუშაო სივრცე და დამსწრეებს უკეთესი ნეთვორქინგის გამოცდილება.
+              </p>
+            </div>
+
+            <div className="grid gap-4 lg:grid-cols-3">
+              {audience.map((item) => (
+                <UICard key={item.title} className="min-h-[190px] border border-gray-100 bg-[linear-gradient(180deg,#ffffff,#fbfcff)] p-6">
+                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                    <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden>
+                      <circle cx="12" cy="8" r="3.5" stroke="currentColor" strokeWidth="2" />
+                      <path d="M5 20c1.7-3.4 4.4-5 7-5s5.3 1.6 7 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  </div>
+                  <h3 className="mt-5 text-xl font-semibold text-gray-900">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-gray-600">{item.body}</p>
+                </UICard>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-[1280px] space-y-8">
+            {featureStories.map((feature, index) => (
+              <article key={feature.title} className={`grid gap-6 rounded-[28px] border border-gray-200 bg-white p-5 shadow-[0_18px_48px_rgba(17,24,39,0.06)] lg:grid-cols-2 lg:items-center lg:gap-10 lg:p-8 ${index % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""}`}>
+                <div
+                  className="min-h-[280px] rounded-[24px] bg-cover bg-center"
+                  style={{
+                    backgroundImage: `linear-gradient(180deg, rgba(15,23,42,.12), rgba(15,23,42,.4)), url(${feature.image})`
+                  }}
+                />
+                <div className="space-y-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f28b34]">Feature {index + 1}</p>
+                  <h3 className="text-3xl font-bold text-gray-900">{feature.title}</h3>
+                  <p className="text-base leading-8 text-gray-600">{feature.body}</p>
+                </div>
+              </article>
             ))}
           </div>
         </section>
 
-        <section className="overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#f28b34,#f49c47)] px-5 py-8 text-white shadow-[0_20px_60px_rgba(242,139,52,0.25)] sm:px-8">
-          <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
-            <div className="space-y-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/70">B2B კონფერენციებისთვის</p>
-              <h2 className="text-3xl font-bold">მართე კონფერენცია ბრენდირებული ლენდინგით და ჰოსტის საკუთარი პანელით</h2>
-              <p className="max-w-2xl text-sm leading-7 text-white/84">
-                გამოიყენე Attenda.ge როგორც პლატფორმა, სადაც ადმინი ამზადებს ღონისძიებას, ჰოსტი მართავს საკუთარ ოპერაციას და დამსწრეები
-                წინასწარ იწყებენ საჭირო კავშირების შექმნას.
-              </p>
-            </div>
-            <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-              <Link
-                href="/host/signin"
-                className="inline-flex min-h-11 items-center justify-center rounded-xl bg-white px-6 py-3 text-base font-semibold text-[#d56d18] transition hover:bg-[#fff7ef]"
-              >
-                ჰოსტის შესვლა
-              </Link>
-              <Link
-                href="/admin"
-                className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/35 px-6 py-3 text-base font-semibold text-white transition hover:bg-white/10"
-              >
+        <section id="examples" className="px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-[1280px] space-y-5">
+            <div className="flex items-end justify-between gap-4">
+              <div className="space-y-2">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f28b34]">კონფერენციები</p>
+                <h2 className="text-3xl font-bold text-gray-900">ადმინის მიერ შექმნილი ღონისძიებები, მზად ჰოსტისთვის და დამსწრეებისთვის</h2>
+              </div>
+              <Link href="/admin" className="hidden text-sm font-semibold text-primary underline sm:inline">
                 ადმინის პანელი
               </Link>
+            </div>
+
+            <div className="grid gap-4 lg:grid-cols-3">
+              {conferences.length > 0 ? (
+                conferences.map((conference) => (
+                  <Link key={conference.id} href={`/conference/${conference.slug}`}>
+                    <UICard className="h-full overflow-hidden p-0 transition-transform duration-200 hover:-translate-y-1">
+                      <div
+                        className="h-56 bg-cover bg-center"
+                        style={{
+                          backgroundImage: `linear-gradient(180deg, rgba(11,23,51,.08), rgba(11,23,51,.72)), url(${conference.coverImageUrl || "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80"})`
+                        }}
+                      >
+                        <div className="flex h-full flex-col justify-between p-4 text-white">
+                          <span className="inline-flex w-fit rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur">
+                            {conference.customSubdomain ? `subdomain: ${conference.customSubdomain}` : "საჯარო გვერდი"}
+                          </span>
+                          <div>
+                            <p className="text-2xl font-bold">{conference.title_ka}</p>
+                            <p className="mt-2 text-sm text-white/80">{conference._count.attendees} რეგისტრაცია</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="space-y-3 p-4">
+                        <p className="flex items-center gap-2 text-sm text-gray-700">
+                          <svg className="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
+                            <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="2" />
+                            <path d="M8 3v4M16 3v4M3 10h18" stroke="currentColor" strokeWidth="2" />
+                          </svg>
+                          {format(conference.date, "dd MMMM, HH:mm")}
+                        </p>
+                        <p className="flex items-center gap-2 text-sm text-gray-700">
+                          <svg className="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
+                            <path d="M12 21s7-6.3 7-11a7 7 0 10-14 0c0 4.7 7 11 7 11z" stroke="currentColor" strokeWidth="2" />
+                            <circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="2" />
+                          </svg>
+                          {conference.location_ka}
+                        </p>
+                        <p className="line-clamp-3 text-sm leading-6 text-gray-600">{conference.description_ka}</p>
+                      </div>
+                    </UICard>
+                  </Link>
+                ))
+              ) : (
+                [
+                  "ბრენდირებული კონფერენციის გვერდი",
+                  "ჰოსტის სამუშაო პანელი",
+                  "საჯარო რეგისტრაცია და დამტკიცება"
+                ].map((title) => (
+                  <UICard key={title} className="min-h-[220px] bg-[linear-gradient(180deg,#ffffff,#fbfcff)]">
+                    <p className="text-lg font-semibold text-gray-900">{title}</p>
+                    <p className="mt-3 text-sm leading-7 text-gray-600">
+                      ეს ბლოკი აჩვენებს როგორ გამოიყურება ღონისძიება, როდესაც ადმინი ამზადებს სტრუქტურას, ხოლო ჰოსტი უკვე თავის პანელში აგრძელებს მართვას.
+                    </p>
+                  </UICard>
+                ))
+              )}
+            </div>
+          </div>
+        </section>
+
+        <section className="px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-[1280px] space-y-5 rounded-[28px] border border-gray-200 bg-white px-5 py-6 shadow-[0_18px_48px_rgba(17,24,39,0.06)] sm:px-6 lg:px-8 lg:py-8">
+            <div className="space-y-2 text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f28b34]">როგორ მუშაობს</p>
+              <h2 className="text-3xl font-bold text-gray-900">სამი როლი, ერთი გამართული ნაკადი</h2>
+            </div>
+
+            <div className="grid gap-4 lg:grid-cols-3">
+              {steps.map((item) => (
+                <UICard key={item.step} className="min-h-[180px] border-gray-100 bg-[linear-gradient(180deg,#ffffff,#fbfcff)]">
+                  <span className="inline-flex h-10 min-w-10 items-center justify-center rounded-2xl bg-primary text-sm font-semibold text-white">
+                    {item.step}
+                  </span>
+                  <h3 className="mt-5 text-xl font-semibold text-gray-900">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-gray-600">{item.body}</p>
+                </UICard>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="contact" className="px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-[1280px] overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#f28b34,#f49c47)] px-5 py-8 text-white shadow-[0_20px_60px_rgba(242,139,52,0.25)] sm:px-8 lg:px-10 lg:py-10">
+            <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+              <div className="space-y-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/70">კონტაქტი</p>
+                <h2 className="text-3xl font-bold">თუ გჭირდება ბრენდირებული საკონფერენციო პლატფორმა, დავგეგმოთ დემო</h2>
+                <p className="max-w-2xl text-sm leading-7 text-white/84">
+                  გჭირდება პროდუქტი, სადაც ადმინი ამზადებს ღონისძიებას, ჰოსტი მართავს საკუთარ ოპერაციას და დამსწრეები იღებენ უკეთეს ნეთვორქინგის გამოცდილებას. დაგვიკავშირდი და გაჩვენებთ სამუშაო დემოს.
+                </p>
+              </div>
+              <div className="rounded-[24px] border border-white/20 bg-white/10 p-5 backdrop-blur">
+                <div className="space-y-4 text-sm">
+                  <div>
+                    <p className="font-semibold text-white/80">ელფოსტა</p>
+                    <a href="mailto:hello@attenda.ge" className="mt-1 block text-lg font-semibold text-white">hello@attenda.ge</a>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-white/80">ტელეფონი</p>
+                    <a href="tel:+995599000000" className="mt-1 block text-lg font-semibold text-white">+995 599 000 000</a>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-white/80">ჰოსტის შესვლა</p>
+                    <Link href="/host/signin" className="mt-1 block text-lg font-semibold text-white underline underline-offset-4">/host/signin</Link>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-white/80">ადმინის პანელი</p>
+                    <Link href="/admin" className="mt-1 block text-lg font-semibold text-white underline underline-offset-4">/admin</Link>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
