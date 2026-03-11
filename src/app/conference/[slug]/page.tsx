@@ -23,7 +23,10 @@ export default async function ConferenceSinglePage({ params }: { params: { slug:
     host
       ? `${forwardedProto || "https"}://${host}`
       : process.env.NEXTAUTH_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
-  const shareUrl = `${origin}/conference/${conference.slug}`;
+  const shareUrl =
+    conference.customSubdomain && process.env.NEXT_PUBLIC_ROOT_DOMAIN
+      ? `https://${conference.customSubdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`
+      : `${origin}/conference/${conference.slug}`;
 
   return (
     <Shell>

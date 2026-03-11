@@ -20,9 +20,15 @@ enum MeetingOfferStatus {
   DECLINED
 }
 
+enum UserRole {
+  ADMIN
+  HOST
+}
+
 model Conference {
   id               String     @id @default(cuid())
   slug             String     @unique
+  customSubdomain  String?    @unique
   title_ka         String
   description_ka   String
   date             DateTime
@@ -35,6 +41,7 @@ model Conference {
   createdAt        DateTime   @default(now())
   updatedAt        DateTime   @updatedAt
   attendees        Attendee[]
+  hostAssignments  HostConference[]
 }
 
 model Attendee {
@@ -86,10 +93,24 @@ model User {
   name          String?
   email         String?   @unique
   passwordHash  String?
+  role          UserRole  @default(HOST)
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  hostedConferences HostConference[]
+}
+
+model HostConference {
+  id           String     @id @default(cuid())
+  userId       String
+  conferenceId String
+  createdAt    DateTime   @default(now())
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  conference   Conference @relation(fields: [conferenceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, conferenceId])
+  @@index([conferenceId])
 }
 
 model Account {

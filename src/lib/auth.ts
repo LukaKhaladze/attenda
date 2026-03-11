@@ -1,4 +1,5 @@
 import { compare } from "bcryptjs";
+import { UserRole } from "@prisma/client";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
@@ -41,7 +42,8 @@ export const authOptions: NextAuthOptions = {
         return {
           id: user.id,
           email: user.email,
-          name: user.name
+          name: user.name,
+          role: user.role satisfies UserRole
         };
       }
     })
@@ -50,12 +52,14 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.role = (user as typeof user & { role?: UserRole }).role;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user && token.id) {
         session.user.id = String(token.id);
+        session.user.role = token.role;
       }
       return session;
     }

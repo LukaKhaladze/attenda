@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 import { stringify } from "csv-stringify/sync";
 import { getServerSession } from "next-auth";
-import { isAdminEmail } from "@/lib/admin";
+import { hasAdminAccess } from "@/lib/admin";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(request: Request) {
   const session = await getServerSession(authOptions);
 
-  if (!session?.user?.email || !isAdminEmail(session.user.email)) {
+  if (!hasAdminAccess(session?.user)) {
     return NextResponse.json({ error: "არ გაქვს წვდომა" }, { status: 401 });
   }
 

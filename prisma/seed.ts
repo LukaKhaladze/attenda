@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { hash } from "bcryptjs";
 
 const prisma = new PrismaClient();
 
@@ -6,6 +7,7 @@ async function main() {
   const conference = await prisma.conference.upsert({
     where: { slug: "tech-connect-tbilisi-2026" },
     update: {
+      customSubdomain: "techconnect",
       title_ka: "Tech Connect Tbilisi 2026",
       description_ka:
         "ყოველწლიური კონფერენცია ტექნოლოგიურ ლიდერებსა და დამსწრეებს შორის პირდაპირი პროფესიული კავშირების გასამყარებლად.",
@@ -24,6 +26,7 @@ async function main() {
     },
     create: {
       slug: "tech-connect-tbilisi-2026",
+      customSubdomain: "techconnect",
       title_ka: "Tech Connect Tbilisi 2026",
       description_ka:
         "ყოველწლიური კონფერენცია ტექნოლოგიურ ლიდერებსა და დამსწრეებს შორის პირდაპირი პროფესიული კავშირების გასამყარებლად.",
@@ -73,6 +76,35 @@ async function main() {
       }
     });
   }
+
+  const hostUser = await prisma.user.upsert({
+    where: { email: "host@attenda.ge" },
+    update: {
+      name: "დემო ჰოსტი",
+      role: "HOST",
+      passwordHash: await hash("Host12345!", 10)
+    },
+    create: {
+      name: "დემო ჰოსტი",
+      email: "host@attenda.ge",
+      role: "HOST",
+      passwordHash: await hash("Host12345!", 10)
+    }
+  });
+
+  await prisma.hostConference.upsert({
+    where: {
+      userId_conferenceId: {
+        userId: hostUser.id,
+        conferenceId: conference.id
+      }
+    },
+    update: {},
+    create: {
+      userId: hostUser.id,
+      conferenceId: conference.id
+    }
+  });
 
   console.log("Seed დასრულდა წარმატებით");
 }

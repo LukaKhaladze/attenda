@@ -4,7 +4,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AdminLogoutButton } from "@/components/admin-logout-button";
 import { Shell } from "@/components/shell";
-import { isAdminEmail } from "@/lib/admin";
+import { hasAdminAccess } from "@/lib/admin";
 import { authOptions } from "@/lib/auth";
 import { uploadImageFile } from "@/lib/image-upload";
 import { prisma } from "@/lib/prisma";
@@ -25,7 +25,7 @@ async function createConference(formData: FormData) {
   "use server";
 
   const session = await getServerSession(authOptions);
-  if (!session?.user?.email || !isAdminEmail(session.user.email)) {
+  if (!hasAdminAccess(session?.user)) {
     return;
   }
 
@@ -33,6 +33,7 @@ async function createConference(formData: FormData) {
   const location = String(formData.get("location_ka") || "").trim();
   const dateRaw = String(formData.get("date") || "");
   const date = new Date(dateRaw);
+  const customSubdomain = String(formData.get("customSubdomain") || "").trim().toLowerCase() || null;
   const coverImageFile = formData.get("coverImageFile");
   const coverImageUrl =
     coverImageFile instanceof File && coverImageFile.size > 0
@@ -49,6 +50,7 @@ async function createConference(formData: FormData) {
   const conference = await prisma.conference.create({
     data: {
       slug,
+      customSubdomain,
       title_ka: title,
       location_ka: location,
       date,
@@ -69,11 +71,11 @@ export default async function AdminPage() {
     redirect("/auth/signin");
   }
 
-  if (!isAdminEmail(session.user.email)) {
+  if (!hasAdminAccess(session.user)) {
     redirect("/");
   }
 
-  const [conferences, total, last24h] = await Promise.all([
+  const [conferences, total, last24h, hostCount] = await Promise.all([
     prisma.conference.findMany({
       orderBy: { date: "asc" },
       include: {
@@ -91,6 +93,9 @@ export default async function AdminPage() {
           gte: subHours(new Date(), 24)
         }
       }
+    }),
+    prisma.user.count({
+      where: { role: "HOST" }
     })
   ]);
 
@@ -102,7 +107,7 @@ export default async function AdminPage() {
           <AdminLogoutButton />
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-3">
           <article className="rounded-2xl border border-brand-100 bg-white p-4 shadow-soft">
             <p className="text-sm text-brand-700">ჯამური დამსწრეები</p>
             <p className="text-3xl font-bold text-brand-900">{total}</p>
@@ -110,6 +115,10 @@ export default async function AdminPage() {
           <article className="rounded-2xl border border-brand-100 bg-white p-4 shadow-soft">
             <p className="text-sm text-brand-700">ბოლო 24 საათი</p>
             <p className="text-3xl font-bold text-brand-900">{last24h}</p>
+          </article>
+          <article className="rounded-2xl border border-brand-100 bg-white p-4 shadow-soft">
+            <p className="text-sm text-brand-700">ჰოსტის ანგარიშები</p>
+            <p className="text-3xl font-bold text-brand-900">{hostCount}</p>
           </article>
         </div>
 
@@ -119,6 +128,7 @@ export default async function AdminPage() {
             <input name="title_ka" placeholder="სათაური" required />
             <input name="location_ka" placeholder="ლოკაცია" required />
             <input type="datetime-local" name="date" required />
+            <input name="customSubdomain" placeholder="ქასთომ სუბდომენი (მაგ: itmeet)" className="sm:col-span-3" />
             <label className="sm:col-span-3">
               <span className="mb-1 block text-sm font-medium text-brand-800">ქავერის სურათი</span>
               <input type="file" name="coverImageFile" accept="image/*" className="w-full border-dashed" />
@@ -145,6 +155,7 @@ export default async function AdminPage() {
                   <p className="mt-1 text-sm text-brand-700">{conference.location_ka}</p>
                   <p className="text-sm text-brand-700">{conference.date.toISOString().slice(0, 16).replace("T", " ")}</p>
                   <p className="mt-2 text-xs text-brand-800">დამსწრეები: {conference._count.attendees}</p>
+                  {conference.customSubdomain ? <p className="mt-1 text-xs text-brand-700">სუბდომენი: {conference.customSubdomain}</p> : null}
                 </Link>
               ))}
             </div>

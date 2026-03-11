@@ -1,15 +1,15 @@
 "use client";
 
+import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
 import { signIn } from "next-auth/react";
 import { Shell } from "@/components/shell";
 import { UIButton } from "@/components/ui-button";
 import { UICard } from "@/components/ui-card";
 import { UIInput } from "@/components/ui-input";
 
-export default function SignInPage() {
+export default function HostSignInPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,22 +27,23 @@ export default function SignInPage() {
       redirect: false
     });
 
-    setLoading(false);
-
     if (result?.error) {
+      setLoading(false);
       setError("ელფოსტა ან პაროლი არასწორია");
       return;
     }
 
     const sessionResponse = await fetch("/api/auth/session");
     const sessionData = await sessionResponse.json().catch(() => ({}));
-    const role = sessionData?.user?.role;
 
-    if (role === "HOST") {
-      router.push("/host");
-    } else {
-      router.push("/admin");
+    setLoading(false);
+
+    if (sessionData?.user?.role !== "HOST" && sessionData?.user?.role !== "ADMIN") {
+      setError("ეს ანგარიში ჰოსტის პანელისთვის არ არის გააქტიურებული");
+      return;
     }
+
+    router.push("/host");
     router.refresh();
   }
 
@@ -50,8 +51,8 @@ export default function SignInPage() {
     <Shell>
       <section className="mx-auto mt-10 max-w-md px-4">
         <UICard className="space-y-5 p-6">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900">ადმინ ავტორიზაცია</h1>
-          <p className="text-sm leading-6 text-gray-700">შედი ელფოსტით და პაროლით.</p>
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900">ჰოსტის პანელი</h1>
+          <p className="text-sm leading-6 text-gray-700">შედი იმ ელფოსტით და პაროლით, რომელიც ადმინისტრატორმა გამოგიგზავნა.</p>
 
           <form onSubmit={onSubmit} className="space-y-4">
             <UIInput
@@ -80,14 +81,9 @@ export default function SignInPage() {
             </UIButton>
           </form>
 
-          <div className="space-y-1 text-sm text-gray-700">
-            <p>
-              ანგარიში არ გაქვს? <Link href="/auth/signup" className="text-primary underline">რეგისტრაცია</Link>
-            </p>
-            <p>
-              პაროლი დაგავიწყდა? <Link href="/auth/forgot-password" className="text-primary underline">აღდგენა</Link>
-            </p>
-          </div>
+          <p className="text-sm text-gray-700">
+            ადმინისტრატორი ხარ? <Link href="/auth/signin" className="text-primary underline">ადმინ შესვლა</Link>
+          </p>
         </UICard>
       </section>
     </Shell>
