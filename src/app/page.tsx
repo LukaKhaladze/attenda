@@ -1,8 +1,6 @@
-import { format } from "date-fns";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import type { Conference } from "@prisma/client";
 import { Shell } from "@/components/shell";
 import { UICard } from "@/components/ui-card";
 import { prisma } from "@/lib/prisma";
@@ -14,7 +12,7 @@ const audience = [
   },
   {
     title: "ივენთ ჰოსტებისთვის",
-    body: "საკუთარი /host პანელი, სადაც დამსწრეების დამტკიცება და კონტენტის განახლება რამდენიმე წამში ხდება."
+    body: "საკუთარი პანელი, სადაც დამსწრეების დამტკიცება და კონტენტის განახლება რამდენიმე წამში ხდება."
   },
   {
     title: "B2B ნეთვორქინგზე ორიენტირებული გუნდებისთვის",
@@ -82,27 +80,19 @@ export default async function HomePage() {
     }
   }
 
-  let conferences: Array<Conference & { _count: { attendees: number } }> = [];
+  let conferenceCount = 0;
   let attendeeCount = 0;
   let approvedMeetingCount = 0;
 
   if (process.env.DATABASE_URL) {
     try {
-      [conferences, attendeeCount, approvedMeetingCount] = await Promise.all([
-        prisma.conference.findMany({
-          orderBy: { date: "asc" },
-          take: 3,
-          include: {
-            _count: {
-              select: { attendees: true }
-            }
-          }
-        }),
+      [conferenceCount, attendeeCount, approvedMeetingCount] = await Promise.all([
+        prisma.conference.count(),
         prisma.attendee.count({ where: { status: "APPROVED" } }),
         prisma.meetingOffer.count({ where: { status: "ACCEPTED" } })
       ]);
     } catch {
-      conferences = [];
+      conferenceCount = 0;
       attendeeCount = 0;
       approvedMeetingCount = 0;
     }
@@ -121,12 +111,12 @@ export default async function HomePage() {
               }}
             />
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(37,27,18,0.2),rgba(25,19,18,0.34)_16%,rgba(11,16,28,0.66)_54%,rgba(8,12,24,0.92)_82%,rgba(7,11,22,0.96)_100%)]" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,214,170,0.22),transparent_32%),radial-gradient(circle_at_right_bottom,rgba(243,141,56,0.12),transparent_16%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(96,165,250,0.24),transparent_34%),radial-gradient(circle_at_right_bottom,rgba(34,211,238,0.14),transparent_18%)]" />
 
             <header className="relative px-4 py-4 sm:px-6 lg:px-8">
               <div className="mx-auto flex max-w-screen-2xl items-center justify-between rounded-[22px] border border-white/40 bg-white/92 px-5 py-4 shadow-[0_18px_40px_rgba(14,17,23,0.12)] backdrop-blur">
                 <Link href="/" className="flex items-center gap-3 text-[1.35rem] font-bold tracking-[-0.03em] text-gray-900">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#f28b34] text-white shadow-[0_10px_24px_rgba(242,139,52,0.3)]">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#2563eb] text-white shadow-[0_10px_24px_rgba(37,99,235,0.34)]">
                     <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden>
                       <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor" />
                     </svg>
@@ -136,21 +126,16 @@ export default async function HomePage() {
 
                 <nav className="hidden items-center gap-10 text-sm font-medium text-gray-500 md:flex">
                   <a href="#features" className="transition hover:text-gray-900">ფუნქციები</a>
-                  <a href="#examples" className="transition hover:text-gray-900">კონფერენციები</a>
+                  <a href="#process" className="transition hover:text-gray-900">პროცესი</a>
                   <a href="#contact" className="transition hover:text-gray-900">კონტაქტი</a>
                 </nav>
 
-                <div className="flex items-center gap-3">
-                  <Link href="/host/signin" className="hidden text-sm font-medium text-gray-900 md:inline-flex">
-                    Host
-                  </Link>
-                  <a
-                    href="#contact"
-                    className="inline-flex min-h-11 items-center justify-center rounded-2xl bg-[#f28b34] px-5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(242,139,52,0.32)] transition hover:bg-[#ef7f20]"
-                  >
-                    Contact
-                  </a>
-                </div>
+                <a
+                  href="#contact"
+                  className="inline-flex min-h-11 items-center justify-center rounded-2xl bg-[#2563eb] px-5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(37,99,235,0.32)] transition hover:bg-[#1d4ed8]"
+                >
+                  კონტაქტი
+                </a>
               </div>
             </header>
 
@@ -164,7 +149,7 @@ export default async function HomePage() {
                   <h1 className="max-w-[620px] text-5xl font-bold leading-[0.92] tracking-[-0.045em] sm:text-6xl lg:text-[5.35rem]">
                     შექმენი ივენთი,
                     <br />
-                    რომელიც <span className="text-[#f28b34]">მუშაობს</span>
+                    რომელიც <span className="text-[#60a5fa]">მუშაობს</span>
                   </h1>
                   <p className="max-w-[560px] text-lg leading-8 text-white/84 sm:text-[1.35rem] sm:leading-9">
                     ბრენდირებული გვერდი, დამსწრეთა მართვა, ჰოსტის პანელი და შეხვედრების შეთავაზებები ერთ პლატფორმაში.
@@ -174,7 +159,7 @@ export default async function HomePage() {
                 <div className="flex flex-col gap-4 pt-1 sm:flex-row">
                   <a
                     href="#features"
-                    className="inline-flex min-h-14 items-center justify-center rounded-[18px] bg-[#f28b34] px-9 py-4 text-lg font-semibold text-white shadow-[0_16px_40px_rgba(242,139,52,0.32)] transition hover:bg-[#ef7f20]"
+                    className="inline-flex min-h-14 items-center justify-center rounded-[18px] bg-[#2563eb] px-9 py-4 text-lg font-semibold text-white shadow-[0_16px_40px_rgba(37,99,235,0.34)] transition hover:bg-[#1d4ed8]"
                   >
                     ნახე ფუნქციები
                   </a>
@@ -192,7 +177,7 @@ export default async function HomePage() {
                     <p className="mt-1 text-sm text-white/70">დადასტურებული დამსწრე</p>
                   </div>
                   <div>
-                    <p className="text-[2.15rem] font-bold tracking-[-0.05em] text-white">{conferences.length > 0 ? `${conferences.length * 50}+` : "150+"}</p>
+                    <p className="text-[2.15rem] font-bold tracking-[-0.05em] text-white">{conferenceCount > 0 ? `${conferenceCount}+` : "150+"}</p>
                     <p className="mt-1 text-sm text-white/70">აქტიური გვერდი</p>
                   </div>
                   <div>
@@ -208,7 +193,8 @@ export default async function HomePage() {
         <section id="features" className="px-5 sm:px-8 lg:px-10 2xl:px-12">
           <div className="mx-auto max-w-screen-2xl space-y-6">
             <div className="space-y-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f28b34]">ვისთვის არის პლატფორმა</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#2563eb]">ვისთვის არის პლატფორმა</p>
+              
               <h2 className="max-w-3xl text-3xl font-bold text-gray-900 sm:text-4xl">ერთი პლატფორმა სამი ძირითადი როლისთვის</h2>
               <p className="max-w-3xl text-sm leading-7 text-gray-600 sm:text-base">
                 ორგანიზატორი ამზადებს ინფრასტრუქტურას, ჰოსტი მართავს პროცესს, დამსწრე კი იღებს უკეთეს გამოცდილებას.
@@ -235,7 +221,7 @@ export default async function HomePage() {
         <section className="px-5 sm:px-8 lg:px-10 2xl:px-12">
           <div className="mx-auto max-w-screen-2xl space-y-8">
             {featureStories.map((feature, index) => (
-              <article key={feature.title} className={`grid gap-6 overflow-hidden rounded-[32px] border border-gray-200 bg-[linear-gradient(180deg,#ffffff,#f8faff)] p-5 shadow-[0_18px_48px_rgba(17,24,39,0.06)] lg:grid-cols-2 lg:items-center lg:gap-10 lg:p-8 ${index % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""}`}>
+              <article key={feature.title} className={`grid gap-6 overflow-hidden rounded-[32px] border border-gray-200 bg-[linear-gradient(180deg,#ffffff,#f4f9ff)] p-5 shadow-[0_18px_48px_rgba(17,24,39,0.06)] lg:grid-cols-2 lg:items-center lg:gap-10 lg:p-8 ${index % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""}`}>
                 <div
                   className="min-h-[280px] rounded-[24px] bg-cover bg-center"
                   style={{
@@ -243,7 +229,7 @@ export default async function HomePage() {
                   }}
                 />
                 <div className="space-y-5">
-                  <div className="inline-flex h-12 min-w-12 items-center justify-center rounded-2xl bg-[#f28b34] text-sm font-semibold text-white shadow-[0_12px_30px_rgba(242,139,52,0.28)]">
+                  <div className="inline-flex h-12 min-w-12 items-center justify-center rounded-2xl bg-[#2563eb] text-sm font-semibold text-white shadow-[0_12px_30px_rgba(37,99,235,0.28)]">
                     0{index + 1}
                   </div>
                   <div className="space-y-3">
@@ -260,79 +246,10 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section id="examples" className="px-5 sm:px-8 lg:px-10 2xl:px-12">
-          <div className="mx-auto max-w-screen-2xl space-y-5">
-            <div className="flex items-end justify-between gap-4">
-              <div className="space-y-2">
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f28b34]">კონფერენციები</p>
-                <h2 className="text-3xl font-bold text-gray-900">როგორ გამოიყურება მზა საკონფერენციო გვერდი</h2>
-              </div>
-              <Link href="/admin" className="hidden text-sm font-semibold text-primary underline sm:inline">
-                ადმინის პანელი
-              </Link>
-            </div>
-
-            <div className="grid gap-4 lg:grid-cols-3">
-              {conferences.length > 0 ? (
-                conferences.map((conference) => (
-                  <Link key={conference.id} href={`/conference/${conference.slug}`}>
-                    <UICard className="h-full overflow-hidden p-0 transition-transform duration-200 hover:-translate-y-1">
-                      <div
-                        className="h-56 bg-cover bg-center"
-                        style={{
-                          backgroundImage: `linear-gradient(180deg, rgba(11,23,51,.08), rgba(11,23,51,.72)), url(${conference.coverImageUrl || "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80"})`
-                        }}
-                      >
-                        <div className="flex h-full flex-col justify-between p-4 text-white">
-                          <span className="inline-flex w-fit rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur">
-                            {conference.customSubdomain ? `subdomain: ${conference.customSubdomain}` : "საჯარო გვერდი"}
-                          </span>
-                          <div>
-                            <p className="text-2xl font-bold">{conference.title_ka}</p>
-                            <p className="mt-2 text-sm text-white/80">{conference._count.attendees} რეგისტრაცია</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="space-y-3 p-4">
-                        <p className="flex items-center gap-2 text-sm text-gray-700">
-                          <svg className="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
-                            <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="2" />
-                            <path d="M8 3v4M16 3v4M3 10h18" stroke="currentColor" strokeWidth="2" />
-                          </svg>
-                          {format(conference.date, "dd MMMM, HH:mm")}
-                        </p>
-                        <p className="flex items-center gap-2 text-sm text-gray-700">
-                          <svg className="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
-                            <path d="M12 21s7-6.3 7-11a7 7 0 10-14 0c0 4.7 7 11 7 11z" stroke="currentColor" strokeWidth="2" />
-                            <circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="2" />
-                          </svg>
-                          {conference.location_ka}
-                        </p>
-                        <p className="line-clamp-3 text-sm leading-6 text-gray-600">{conference.description_ka}</p>
-                      </div>
-                    </UICard>
-                  </Link>
-                ))
-              ) : (
-                [
-                  "ბრენდირებული კონფერენციის გვერდი",
-                  "ჰოსტის სამუშაო პანელი",
-                  "საჯარო რეგისტრაცია და დამტკიცება"
-                ].map((title) => (
-                  <UICard key={title} className="min-h-[220px] bg-[linear-gradient(180deg,#ffffff,#fbfcff)]">
-                    <p className="text-lg font-semibold text-gray-900">{title}</p>
-                    <p className="mt-3 text-sm leading-7 text-gray-600">საჯარო გვერდი, რეგისტრაცია და ჰოსტის მართვა ერთი ნაკადით.</p>
-                  </UICard>
-                ))
-              )}
-            </div>
-          </div>
-        </section>
-
-        <section className="px-5 sm:px-8 lg:px-10 2xl:px-12">
+        <section id="process" className="px-5 sm:px-8 lg:px-10 2xl:px-12">
           <div className="mx-auto max-w-screen-2xl space-y-5 rounded-[28px] border border-gray-200 bg-white px-5 py-6 shadow-[0_18px_48px_rgba(17,24,39,0.06)] sm:px-6 lg:px-8 lg:py-8">
             <div className="space-y-2 text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f28b34]">როგორ მუშაობს</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#2563eb]">როგორ მუშაობს</p>
               <h2 className="text-3xl font-bold text-gray-900">სამი ნაბიჯი გაშვებიდან შეხვედრამდე</h2>
             </div>
 
@@ -351,7 +268,7 @@ export default async function HomePage() {
         </section>
 
         <section id="contact" className="px-5 sm:px-8 lg:px-10 2xl:px-12">
-          <div className="mx-auto max-w-screen-2xl overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#f28b34,#f49c47)] px-5 py-8 text-white shadow-[0_20px_60px_rgba(242,139,52,0.25)] sm:px-8 lg:px-10 lg:py-10">
+          <div className="mx-auto max-w-screen-2xl overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#1d4ed8,#38bdf8)] px-5 py-8 text-white shadow-[0_20px_60px_rgba(37,99,235,0.25)] sm:px-8 lg:px-10 lg:py-10">
             <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
               <div className="space-y-3">
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/70">კონტაქტი</p>
@@ -368,13 +285,9 @@ export default async function HomePage() {
                     <p className="font-semibold text-white/80">ტელეფონი</p>
                     <a href="tel:+995599000000" className="mt-1 block text-lg font-semibold text-white">+995 599 000 000</a>
                   </div>
-                  <div>
-                    <p className="font-semibold text-white/80">ჰოსტის შესვლა</p>
-                    <Link href="/host/signin" className="mt-1 block text-lg font-semibold text-white underline underline-offset-4">/host/signin</Link>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-white/80">ადმინის პანელი</p>
-                    <Link href="/admin" className="mt-1 block text-lg font-semibold text-white underline underline-offset-4">/admin</Link>
+                  <div className="rounded-2xl border border-white/20 bg-white/10 px-4 py-4">
+                    <p className="text-sm font-semibold text-white/80">დემოს მიზანი</p>
+                    <p className="mt-2 text-base font-semibold text-white">როგორ მიიღებთ მეტ რეგისტრაციას და უკეთეს ნეთვორქინგს ერთ პლატფორმაში.</p>
                   </div>
                 </div>
               </div>
