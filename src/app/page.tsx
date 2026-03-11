@@ -10,48 +10,36 @@ import { prisma } from "@/lib/prisma";
 const audience = [
   {
     title: "კონფერენციის ორგანიზატორებისთვის",
-    body: "თუ გჭირდება ბრენდირებული რეგისტრაციის გვერდი, QR, სუბდომენი და სწრაფი დამტკიცება ერთი სივრციდან, ეს პლატფორმა შენთვისაა."
+    body: "ბრენდირებული გვერდი, სუბდომენი, QR და სრული კონტროლი ერთი პლატფორმიდან."
   },
   {
     title: "ივენთ ჰოსტებისთვის",
-    body: "ჰოსტი შედის საკუთარ /host პანელში, ამტკიცებს დამსწრეებს ერთი კლიკით და ცვლის ღონისძიების შიგთავსს ადმინისტრატორის გარეშე."
+    body: "საკუთარი /host პანელი, სადაც დამსწრეების დამტკიცება და კონტენტის განახლება რამდენიმე წამში ხდება."
   },
   {
     title: "B2B ნეთვორქინგზე ორიენტირებული გუნდებისთვის",
-    body: "დამსწრეები ხედავენ ერთმანეთს, ფილტრავენ პროფილებს და აგზავნიან შეხვედრის შეთავაზებებს ღონისძიების დაწყებამდე."
+    body: "დამსწრეები ხედავენ ერთმანეთს, ფილტრავენ სიას და გეგმავენ შეხვედრებს ღონისძიებამდე."
   }
 ];
 
 const featureStories = [
   {
     title: "ქასთომ კონფერენციის გვერდი და სუბდომენი",
-    body: "თითო ღონისძიება იღებს საკუთარ საჯარო გვერდს, უნიკალურ ბმულს, QR კოდს და სურვილის შემთხვევაში მისამართს, როგორიცაა itmeet.yourdomain.com. ეს ნიშნავს ძლიერ ბრენდინგს და უფრო სანდო რეგისტრაციის გამოცდილებას.",
+    body: "თითო ღონისძიება იღებს საკუთარ საჯარო გვერდს, უნიკალურ ბმულს და სურვილის შემთხვევაში ქასთომ სუბდომენს.",
     image:
       "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1400&q=80"
   },
   {
     title: "ჰოსტის პანელი მინიჭებული კონფერენციისთვის",
-    body: "ადმინისტრატორი ქმნის ღონისძიებას და ჰოსტს უგზავნის წვდომას. ჰოსტი ხედავს მხოლოდ თავის კონფერენციას, ამტკიცებს ან მალავს რეგისტრაციებს, არეგულირებს აღწერას, დღის წესრიგს და ვიზუალს.",
+    body: "ჰოსტი ხედავს მხოლოდ თავის ღონისძიებას, ამტკიცებს რეგისტრაციებს და არედაქტირებს კონფერენციის მთავარ ინფორმაციას.",
     image:
       "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1400&q=80"
   },
   {
-    title: "დამსწრეთა სია, რომელიც რეალურ კავშირებს აჩენს",
-    body: "რეგისტრაციის შემდეგ დამტკიცებული პროფილები ავტომატურად ჩნდება კონკრეტული ღონისძიების საჯარო სიაში. სტუმრები პოულობენ ერთმანეთს კომპანიის, პოზიციის და კონტექსტის მიხედვით.",
+    title: "დამსწრეები, შეხვედრები და რეალური ნეთვორქინგი",
+    body: "დამტკიცებული პროფილები ჩნდება საჯარო სიაში, სადაც დამსწრეები პოულობენ ერთმანეთს და აგზავნიან შეხვედრის შეთავაზებებს.",
     image:
       "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1400&q=80"
-  },
-  {
-    title: "შეხვედრების შეთავაზებები და შეტყობინებები",
-    body: "პლატფორმა არ ჩერდება მხოლოდ რეგისტრაციაზე. დამსწრეები აგზავნიან შეხვედრის შეთავაზებებს, იღებენ დადასტურებას და მართავენ ნეთვორქინგს ღონისძიების დაწყებამდე.",
-    image:
-      "https://images.unsplash.com/photo-1515169067868-5387ec356754?auto=format&fit=crop&w=1400&q=80"
-  },
-  {
-    title: "ადმინისტრატორის სრული კონტროლი",
-    body: "ადმინი ქმნის კონფერენციებს, ნიშნავს ჰოსტებს, აწესებს საწყის წვდომებს და აკონტროლებს მთელ სისტემას ერთი პანელიდან. ეს მოდელი კარგია როგორც სააგენტოებისთვის, ისე დიდი ორგანიზატორებისთვის.",
-    image:
-      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1400&q=80"
   }
 ];
 
@@ -169,18 +157,17 @@ export default async function HomePage() {
             <div className="relative mx-auto flex min-h-[760px] max-w-screen-2xl items-end px-5 py-10 sm:px-8 sm:py-12 lg:min-h-[860px] lg:px-10 lg:py-14">
               <div className="max-w-[640px] space-y-7 text-white">
                 <span className="inline-flex min-h-10 items-center rounded-full border border-white/30 bg-white/82 px-4 text-sm font-semibold text-[#5c5751] shadow-[0_10px_30px_rgba(0,0,0,0.14)] backdrop-blur">
-                  The future of professional networking
+                  კონფერენციების მართვა და ნეთვორქინგი ერთ სივრცეში
                 </span>
 
                 <div className="space-y-5">
                   <h1 className="max-w-[620px] text-5xl font-bold leading-[0.92] tracking-[-0.045em] sm:text-6xl lg:text-[5.35rem]">
-                    Meet people
+                    შექმენი ივენთი,
                     <br />
-                    who <span className="text-[#f28b34]">matter</span>
+                    რომელიც <span className="text-[#f28b34]">მუშაობს</span>
                   </h1>
                   <p className="max-w-[560px] text-lg leading-8 text-white/84 sm:text-[1.35rem] sm:leading-9">
-                    Launch branded conference pages, manage registrations, approve attendees,
-                    and turn event traffic into real meetings from one host-ready platform.
+                    ბრენდირებული გვერდი, დამსწრეთა მართვა, ჰოსტის პანელი და შეხვედრების შეთავაზებები ერთ პლატფორმაში.
                   </p>
                 </div>
 
@@ -189,28 +176,28 @@ export default async function HomePage() {
                     href="#features"
                     className="inline-flex min-h-14 items-center justify-center rounded-[18px] bg-[#f28b34] px-9 py-4 text-lg font-semibold text-white shadow-[0_16px_40px_rgba(242,139,52,0.32)] transition hover:bg-[#ef7f20]"
                   >
-                    Explore Features
+                    ნახე ფუნქციები
                   </a>
                   <a
                     href="#contact"
                     className="inline-flex min-h-14 items-center justify-center rounded-[18px] bg-white/88 px-9 py-4 text-lg font-semibold text-gray-900 shadow-[0_16px_40px_rgba(0,0,0,0.16)] backdrop-blur transition hover:bg-white"
                   >
-                    Contact Us
+                    კონტაქტი
                   </a>
                 </div>
 
                 <div className="grid max-w-[460px] grid-cols-3 gap-7 pt-6">
                   <div>
                     <p className="text-[2.15rem] font-bold tracking-[-0.05em] text-white">{attendeeCount > 0 ? `${attendeeCount}+` : "2.4K+"}</p>
-                    <p className="mt-1 text-sm text-white/70">Registered Attendees</p>
+                    <p className="mt-1 text-sm text-white/70">დადასტურებული დამსწრე</p>
                   </div>
                   <div>
                     <p className="text-[2.15rem] font-bold tracking-[-0.05em] text-white">{conferences.length > 0 ? `${conferences.length * 50}+` : "150+"}</p>
-                    <p className="mt-1 text-sm text-white/70">Event Pages Live</p>
+                    <p className="mt-1 text-sm text-white/70">აქტიური გვერდი</p>
                   </div>
                   <div>
                     <p className="text-[2.15rem] font-bold tracking-[-0.05em] text-white">{approvedMeetingCount > 0 ? `${approvedMeetingCount}+` : "8K+"}</p>
-                    <p className="mt-1 text-sm text-white/70">Meetings Coordinated</p>
+                    <p className="mt-1 text-sm text-white/70">შეხვედრის შეთავაზება</p>
                   </div>
                 </div>
               </div>
@@ -222,15 +209,15 @@ export default async function HomePage() {
           <div className="mx-auto max-w-screen-2xl space-y-6">
             <div className="space-y-3">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f28b34]">ვისთვის არის პლატფორმა</p>
-              <h2 className="max-w-3xl text-3xl font-bold text-gray-900 sm:text-4xl">კონფერენციის მართვა, რომელიც მხოლოდ რეგისტრაციაზე არ ჩერდება</h2>
+              <h2 className="max-w-3xl text-3xl font-bold text-gray-900 sm:text-4xl">ერთი პლატფორმა სამი ძირითადი როლისთვის</h2>
               <p className="max-w-3xl text-sm leading-7 text-gray-600 sm:text-base">
-                Attenda შექმნილია იმ ორგანიზატორებისთვის, ვინც უნდა მართოს ბრენდირებული ღონისძიება, მისცეს ჰოსტს საკუთარი სამუშაო სივრცე და დამსწრეებს უკეთესი ნეთვორქინგის გამოცდილება.
+                ორგანიზატორი ამზადებს ინფრასტრუქტურას, ჰოსტი მართავს პროცესს, დამსწრე კი იღებს უკეთეს გამოცდილებას.
               </p>
             </div>
 
             <div className="grid gap-4 lg:grid-cols-3">
               {audience.map((item) => (
-                <UICard key={item.title} className="min-h-[190px] border border-gray-100 bg-[linear-gradient(180deg,#ffffff,#fbfcff)] p-6">
+                <UICard key={item.title} className="min-h-[190px] border border-gray-100 bg-[linear-gradient(180deg,#ffffff,#fbfcff)] p-6 transition-transform duration-200 hover:-translate-y-1">
                   <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                     <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden>
                       <circle cx="12" cy="8" r="3.5" stroke="currentColor" strokeWidth="2" />
@@ -248,17 +235,25 @@ export default async function HomePage() {
         <section className="px-5 sm:px-8 lg:px-10 2xl:px-12">
           <div className="mx-auto max-w-screen-2xl space-y-8">
             {featureStories.map((feature, index) => (
-              <article key={feature.title} className={`grid gap-6 rounded-[28px] border border-gray-200 bg-white p-5 shadow-[0_18px_48px_rgba(17,24,39,0.06)] lg:grid-cols-2 lg:items-center lg:gap-10 lg:p-8 ${index % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""}`}>
+              <article key={feature.title} className={`grid gap-6 overflow-hidden rounded-[32px] border border-gray-200 bg-[linear-gradient(180deg,#ffffff,#f8faff)] p-5 shadow-[0_18px_48px_rgba(17,24,39,0.06)] lg:grid-cols-2 lg:items-center lg:gap-10 lg:p-8 ${index % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""}`}>
                 <div
                   className="min-h-[280px] rounded-[24px] bg-cover bg-center"
                   style={{
                     backgroundImage: `linear-gradient(180deg, rgba(15,23,42,.12), rgba(15,23,42,.4)), url(${feature.image})`
                   }}
                 />
-                <div className="space-y-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f28b34]">Feature {index + 1}</p>
-                  <h3 className="text-3xl font-bold text-gray-900">{feature.title}</h3>
-                  <p className="text-base leading-8 text-gray-600">{feature.body}</p>
+                <div className="space-y-5">
+                  <div className="inline-flex h-12 min-w-12 items-center justify-center rounded-2xl bg-[#f28b34] text-sm font-semibold text-white shadow-[0_12px_30px_rgba(242,139,52,0.28)]">
+                    0{index + 1}
+                  </div>
+                  <div className="space-y-3">
+                    <h3 className="text-3xl font-bold text-gray-900">{feature.title}</h3>
+                    <p className="max-w-xl text-base leading-8 text-gray-600">{feature.body}</p>
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <div className="rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700">ბრენდირებული გამოცდილება</div>
+                    <div className="rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700">სწრაფი ოპერაცია</div>
+                  </div>
                 </div>
               </article>
             ))}
@@ -270,7 +265,7 @@ export default async function HomePage() {
             <div className="flex items-end justify-between gap-4">
               <div className="space-y-2">
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f28b34]">კონფერენციები</p>
-                <h2 className="text-3xl font-bold text-gray-900">ადმინის მიერ შექმნილი ღონისძიებები, მზად ჰოსტისთვის და დამსწრეებისთვის</h2>
+                <h2 className="text-3xl font-bold text-gray-900">როგორ გამოიყურება მზა საკონფერენციო გვერდი</h2>
               </div>
               <Link href="/admin" className="hidden text-sm font-semibold text-primary underline sm:inline">
                 ადმინის პანელი
@@ -326,9 +321,7 @@ export default async function HomePage() {
                 ].map((title) => (
                   <UICard key={title} className="min-h-[220px] bg-[linear-gradient(180deg,#ffffff,#fbfcff)]">
                     <p className="text-lg font-semibold text-gray-900">{title}</p>
-                    <p className="mt-3 text-sm leading-7 text-gray-600">
-                      ეს ბლოკი აჩვენებს როგორ გამოიყურება ღონისძიება, როდესაც ადმინი ამზადებს სტრუქტურას, ხოლო ჰოსტი უკვე თავის პანელში აგრძელებს მართვას.
-                    </p>
+                    <p className="mt-3 text-sm leading-7 text-gray-600">საჯარო გვერდი, რეგისტრაცია და ჰოსტის მართვა ერთი ნაკადით.</p>
                   </UICard>
                 ))
               )}
@@ -340,7 +333,7 @@ export default async function HomePage() {
           <div className="mx-auto max-w-screen-2xl space-y-5 rounded-[28px] border border-gray-200 bg-white px-5 py-6 shadow-[0_18px_48px_rgba(17,24,39,0.06)] sm:px-6 lg:px-8 lg:py-8">
             <div className="space-y-2 text-center">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f28b34]">როგორ მუშაობს</p>
-              <h2 className="text-3xl font-bold text-gray-900">სამი როლი, ერთი გამართული ნაკადი</h2>
+              <h2 className="text-3xl font-bold text-gray-900">სამი ნაბიჯი გაშვებიდან შეხვედრამდე</h2>
             </div>
 
             <div className="grid gap-4 lg:grid-cols-3">
@@ -363,9 +356,7 @@ export default async function HomePage() {
               <div className="space-y-3">
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/70">კონტაქტი</p>
                 <h2 className="text-3xl font-bold">თუ გჭირდება ბრენდირებული საკონფერენციო პლატფორმა, დავგეგმოთ დემო</h2>
-                <p className="max-w-2xl text-sm leading-7 text-white/84">
-                  გჭირდება პროდუქტი, სადაც ადმინი ამზადებს ღონისძიებას, ჰოსტი მართავს საკუთარ ოპერაციას და დამსწრეები იღებენ უკეთეს ნეთვორქინგის გამოცდილებას. დაგვიკავშირდი და გაჩვენებთ სამუშაო დემოს.
-                </p>
+                <p className="max-w-2xl text-sm leading-7 text-white/84">თუ გჭირდება პლატფორმა კონფერენციისთვის, გაჩვენებთ სამუშაო დემოს და დაგიგეგმავთ გაშვებას.</p>
               </div>
               <div className="rounded-[24px] border border-white/20 bg-white/10 p-5 backdrop-blur">
                 <div className="space-y-4 text-sm">
