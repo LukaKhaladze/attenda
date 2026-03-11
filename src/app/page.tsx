@@ -70,77 +70,62 @@ export default async function HomePage() {
       <section className="space-y-8 pb-8">
         <section className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[#0b1733] shadow-[0_20px_70px_rgba(11,23,51,0.28)]">
           <div
-            className="absolute inset-0 bg-cover bg-center opacity-35"
+            className="absolute inset-0 bg-cover bg-center opacity-90"
             style={{
               backgroundImage:
                 "url(https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1800&q=80)"
             }}
           />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(251,146,60,0.28),transparent_30%),linear-gradient(180deg,rgba(11,23,51,0.26),rgba(11,23,51,0.88))]" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(34,25,17,0.22),rgba(29,22,18,0.34)_18%,rgba(11,16,28,0.66)_54%,rgba(8,12,24,0.9)_78%,rgba(7,11,22,0.96)_100%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,214,170,0.26),transparent_34%),radial-gradient(circle_at_right_bottom,rgba(243,141,56,0.14),transparent_18%)]" />
 
-          <div className="relative grid gap-8 px-5 py-8 sm:px-8 sm:py-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
-            <div className="max-w-2xl space-y-6 text-white">
-              <span className="inline-flex min-h-11 items-center rounded-full border border-white/20 bg-white/10 px-4 text-sm font-medium backdrop-blur">
-                კონფერენციის ქსელი, რომელიც რეალურ შეხვედრებზეა აწყობილი
+          <div className="relative flex min-h-[720px] items-end px-6 py-10 sm:px-10 sm:py-12 lg:min-h-[820px] lg:px-14 lg:py-14">
+            <div className="max-w-[620px] space-y-7 text-white">
+              <span className="inline-flex min-h-10 items-center rounded-full border border-white/30 bg-white/82 px-4 text-sm font-semibold text-[#5c5751] shadow-[0_10px_30px_rgba(0,0,0,0.14)] backdrop-blur">
+                The future of professional networking
               </span>
 
-              <div className="space-y-4">
-                <h1 className="max-w-xl text-4xl font-bold leading-tight sm:text-5xl">
-                  შექმენი კონფერენცია,
+              <div className="space-y-5">
+                <h1 className="max-w-[620px] text-5xl font-bold leading-[0.92] tracking-[-0.045em] sm:text-6xl lg:text-[5.35rem]">
+                  Meet people
                   <br />
-                  გააზიარე QR და
-                  <br />
-                  გადააქციე სტუმრები ღირებულ კავშირებად
+                  who <span className="text-[#f28b34]">matter</span>
                 </h1>
-                <p className="max-w-xl text-base leading-7 text-white/82 sm:text-lg">
-                  Attenda.ge ეხმარება ღონისძიების ჰოსტებს დამსწრეთა მართვაში, ხოლო სტუმრებს აძლევს საშუალებას წინასწარ იპოვონ
-                  სწორი ადამიანები და დაჯავშნონ შეხვედრები უშუალოდ ღონისძიების კონტექსტში.
+                <p className="max-w-[520px] text-lg leading-8 text-white/84 sm:text-[1.35rem] sm:leading-9">
+                  Discover events, connect with inspiring professionals,
+                  and book meaningful 1:1 meetings - all in one place.
                 </p>
               </div>
 
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href="/admin"
-                  className="inline-flex min-h-11 items-center justify-center rounded-xl bg-[#f28b34] px-6 py-3 text-base font-semibold text-white transition hover:bg-[#f07d20]"
-                >
-                  ღონისძიების შექმნა
-                </Link>
+              <div className="flex flex-col gap-4 pt-1 sm:flex-row">
                 <Link
                   href={conferences[0] ? `/conference/${conferences[0].slug}` : "/register"}
-                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/30 bg-white/10 px-6 py-3 text-base font-semibold text-white backdrop-blur transition hover:bg-white/15"
+                  className="inline-flex min-h-14 items-center justify-center rounded-[18px] bg-[#f28b34] px-9 py-4 text-lg font-semibold text-white shadow-[0_16px_40px_rgba(242,139,52,0.32)] transition hover:bg-[#ef7f20]"
                 >
-                  დემო გვერდის ნახვა
+                  Explore Events
+                </Link>
+                <Link
+                  href="/attendees"
+                  className="inline-flex min-h-14 items-center justify-center rounded-[18px] bg-white/88 px-9 py-4 text-lg font-semibold text-gray-900 shadow-[0_16px_40px_rgba(0,0,0,0.16)] backdrop-blur transition hover:bg-white"
+                >
+                  Browse People
                 </Link>
               </div>
 
-              <div className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-3">
-                <div className="rounded-2xl border border-white/12 bg-white/8 px-4 py-4 backdrop-blur">
-                  <p className="text-2xl font-bold">{attendeeCount}+</p>
-                  <p className="text-sm text-white/72">რეგისტრირებული დამსწრე</p>
+              <div className="grid max-w-[430px] grid-cols-3 gap-7 pt-6">
+                <div>
+                  <p className="text-[2.15rem] font-bold tracking-[-0.05em] text-white">{attendeeCount > 0 ? `${attendeeCount}+` : "2.4K+"}</p>
+                  <p className="mt-1 text-sm text-white/70">Active Members</p>
                 </div>
-                <div className="rounded-2xl border border-white/12 bg-white/8 px-4 py-4 backdrop-blur">
-                  <p className="text-2xl font-bold">{conferences.length}+</p>
-                  <p className="text-sm text-white/72">აქტიური ღონისძიება</p>
+                <div>
+                  <p className="text-[2.15rem] font-bold tracking-[-0.05em] text-white">{conferences.length > 0 ? `${conferences.length * 50}+` : "150+"}</p>
+                  <p className="mt-1 text-sm text-white/70">Events Monthly</p>
                 </div>
-                <div className="rounded-2xl border border-white/12 bg-white/8 px-4 py-4 backdrop-blur">
-                  <p className="text-2xl font-bold">{approvedMeetingCount}+</p>
-                  <p className="text-sm text-white/72">დადასტურებული შეხვედრა</p>
+                <div>
+                  <p className="text-[2.15rem] font-bold tracking-[-0.05em] text-white">{approvedMeetingCount > 0 ? `${approvedMeetingCount}+` : "8K+"}</p>
+                  <p className="mt-1 text-sm text-white/70">Meetings Booked</p>
                 </div>
               </div>
-            </div>
-
-            <div className="grid gap-4">
-              <UICard className="border-white/15 bg-white/95 p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f28b34]">რატომ ჰოსტები იყენებენ</p>
-                <div className="mt-4 space-y-4">
-                  {benefits.map((benefit) => (
-                    <div key={benefit.title} className="rounded-2xl border border-gray-100 bg-white px-4 py-4">
-                      <p className="text-base font-semibold text-gray-900">{benefit.title}</p>
-                      <p className="mt-2 text-sm leading-6 text-gray-600">{benefit.body}</p>
-                    </div>
-                  ))}
-                </div>
-              </UICard>
             </div>
           </div>
         </section>
