@@ -191,7 +191,9 @@ export default async function HostConferencePage({ params }: { params: { id: str
                       <form action={`/api/host/attendees/${attendee.id}`} method="post">
                         <input type="hidden" name="redirectTo" value={`/host/conferences/${conference.id}`} />
                         <input type="hidden" name="status" value="APPROVED" />
-                        <button className="rounded-xl bg-brand-600 px-4 py-2 text-sm font-medium text-white">დადასტურება</button>
+                        <button className="inline-flex min-h-11 select-none items-center justify-center rounded-xl bg-primary px-4 py-2 text-sm font-semibold leading-none text-white shadow-sm transition hover:bg-[#1e40af]">
+                          დადასტურება
+                        </button>
                       </form>
                     ) : null}
 
@@ -199,7 +201,9 @@ export default async function HostConferencePage({ params }: { params: { id: str
                       <form action={`/api/host/attendees/${attendee.id}`} method="post">
                         <input type="hidden" name="redirectTo" value={`/host/conferences/${conference.id}`} />
                         <input type="hidden" name="status" value="HIDDEN" />
-                        <button className="rounded-lg border border-red-200 px-3 py-2 text-xs text-red-700">დამალვა</button>
+                        <button className="inline-flex min-h-11 select-none items-center justify-center rounded-xl border border-red-200 px-4 py-2 text-sm font-semibold leading-none text-red-700 transition hover:bg-red-50">
+                          დამალვა
+                        </button>
                       </form>
                     ) : null}
                   </div>
