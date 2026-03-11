@@ -185,16 +185,17 @@ export default async function HostConferencePage({ params }: { params: { id: str
                       </p>
                       <p className="text-xs text-brand-600">{statusLabels[attendee.status]}</p>
                     </div>
-                    {attendee.status !== "APPROVED" ? (
-                      <form action={`/api/host/attendees/${attendee.id}`} method="post" className="flex flex-wrap items-center gap-2">
+                  </div>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {attendee.status === "PENDING" || attendee.status === "HIDDEN" ? (
+                      <form action={`/api/host/attendees/${attendee.id}`} method="post">
                         <input type="hidden" name="redirectTo" value={`/host/conferences/${conference.id}`} />
                         <input type="hidden" name="status" value="APPROVED" />
                         <button className="rounded-xl bg-brand-600 px-4 py-2 text-sm font-medium text-white">დადასტურება</button>
                       </form>
                     ) : null}
-                  </div>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {attendee.status !== "HIDDEN" ? (
+
+                    {attendee.status === "PENDING" || attendee.status === "APPROVED" ? (
                       <form action={`/api/host/attendees/${attendee.id}`} method="post">
                         <input type="hidden" name="redirectTo" value={`/host/conferences/${conference.id}`} />
                         <input type="hidden" name="status" value="HIDDEN" />
