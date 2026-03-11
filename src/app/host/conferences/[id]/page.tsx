@@ -142,20 +142,61 @@ export default async function HostConferencePage({ params }: { params: { id: str
           <input type="hidden" name="id" value={conference.id} />
           <input type="hidden" name="existingCoverImageUrl" value={conference.coverImageUrl ?? ""} />
           <div className="grid gap-3 sm:grid-cols-2">
-            <input name="slug" defaultValue={conference.slug} placeholder="ბმულის სლაგი" required />
-            <input name="customSubdomain" defaultValue={conference.customSubdomain ?? ""} placeholder="ქასთომ სუბდომენი (მაგ: itmeet)" />
-            <input name="title_ka" defaultValue={conference.title_ka} placeholder="სათაური" required />
-            <input type="datetime-local" name="date" defaultValue={conference.date.toISOString().slice(0, 16)} required />
-            <input name="location_ka" defaultValue={conference.location_ka} placeholder="ლოკაცია" required />
-            <input name="websiteUrl" defaultValue={conference.websiteUrl ?? ""} placeholder="ვებსაიტის URL" />
-            <input name="mapUrl" defaultValue={conference.mapUrl ?? ""} placeholder="რუქის URL" />
+            <label className="space-y-1">
+              <span className="block text-sm font-medium text-brand-800">სლაგი</span>
+              <span className="block text-xs text-brand-600">გამოიყენება საჯარო ბმულში, მაგალითად `/conference/techsummit`.</span>
+              <input name="slug" defaultValue={conference.slug} placeholder="მაგ: techsummit-2026" required />
+            </label>
+            <label className="space-y-1">
+              <span className="block text-sm font-medium text-brand-800">ქასთომ სუბდომენი</span>
+              <span className="block text-xs text-brand-600">არასავალდებულოა. გამოიყენე თუ ღონისძიებას საკუთარი მისამართი უნდა ჰქონდეს.</span>
+              <input name="customSubdomain" defaultValue={conference.customSubdomain ?? ""} placeholder="მაგ: itmeet" />
+            </label>
+            <label className="space-y-1">
+              <span className="block text-sm font-medium text-brand-800">სათაური</span>
+              <span className="block text-xs text-brand-600">ეს არის მთავარი სახელი, რომელიც კონფერენციის გვერდზე გამოჩნდება.</span>
+              <input name="title_ka" defaultValue={conference.title_ka} placeholder="მაგ: Tech Summit 2026" required />
+            </label>
+            <label className="space-y-1">
+              <span className="block text-sm font-medium text-brand-800">თარიღი და დრო</span>
+              <span className="block text-xs text-brand-600">მიუთითე ღონისძიების დაწყების თარიღი და დრო.</span>
+              <input type="datetime-local" name="date" defaultValue={conference.date.toISOString().slice(0, 16)} required />
+            </label>
+            <label className="space-y-1">
+              <span className="block text-sm font-medium text-brand-800">ლოკაცია</span>
+              <span className="block text-xs text-brand-600">ჩაწერე ქალაქი, სივრცე ან სრული მისამართი.</span>
+              <input name="location_ka" defaultValue={conference.location_ka} placeholder="მაგ: თბილისი, სასტუმრო შერატონი" required />
+            </label>
+            <label className="space-y-1">
+              <span className="block text-sm font-medium text-brand-800">ვებსაიტის URL</span>
+              <span className="block text-xs text-brand-600">თუ ღონისძიებას ოფიციალური ვებსაიტი აქვს, აქ დაამატე.</span>
+              <input name="websiteUrl" defaultValue={conference.websiteUrl ?? ""} placeholder="https://example.com" />
+            </label>
+            <label className="space-y-1">
+              <span className="block text-sm font-medium text-brand-800">რუქის URL</span>
+              <span className="block text-xs text-brand-600">Google Maps ან სხვა რუკის ბმული მისასვლელად.</span>
+              <input name="mapUrl" defaultValue={conference.mapUrl ?? ""} placeholder="https://maps.google.com/..." />
+            </label>
             <label className="sm:col-span-2">
               <span className="mb-1 block text-sm font-medium text-brand-800">ქავერის სურათი</span>
+              <span className="mb-2 block text-xs text-brand-600">ეს სურათი გამოჩნდება კონფერენციის მთავარ header-ში და share preview-ში.</span>
               <input type="file" name="coverImageFile" accept="image/*" className="w-full border-dashed" />
             </label>
-            <textarea name="agenda" defaultValue={agenda} rows={5} placeholder="დღის წესრიგი — თითო ჩანაწერი ახალ ხაზზე" />
-            <textarea name="speakers" defaultValue={speakers} rows={5} placeholder="სპიკერები — თითო ჩანაწერი ახალ ხაზზე" />
-            <textarea className="sm:col-span-2" name="description_ka" defaultValue={conference.description_ka} rows={4} placeholder="აღწერა" required />
+            <label className="space-y-1">
+              <span className="block text-sm font-medium text-brand-800">დღის წესრიგი</span>
+              <span className="block text-xs text-brand-600">თითო ჩანაწერი ახალ ხაზზე. მაგალითად: გახსნა, პანელი, networking.</span>
+              <textarea name="agenda" defaultValue={agenda} rows={5} placeholder="მაგ: გახსნა\nპანელური დისკუსია\nNetworking" />
+            </label>
+            <label className="space-y-1">
+              <span className="block text-sm font-medium text-brand-800">სპიკერები</span>
+              <span className="block text-xs text-brand-600">ჩაწერე თითო სპიკერი ახალ ხაზზე.</span>
+              <textarea name="speakers" defaultValue={speakers} rows={5} placeholder="მაგ: გიორგი მელაძე\nანა კაპანაძე" />
+            </label>
+            <label className="space-y-1 sm:col-span-2">
+              <span className="block text-sm font-medium text-brand-800">აღწერა</span>
+              <span className="block text-xs text-brand-600">მოკლედ აუხსენი ვიზიტორს რას ეხება ღონისძიება და რატომ უნდა დარეგისტრირდეს.</span>
+              <textarea className="sm:col-span-2" name="description_ka" defaultValue={conference.description_ka} rows={4} placeholder="მოკლე აღწერა კონფერენციის თემის, სპიკერების და ღირებულების შესახებ" required />
+            </label>
           </div>
           <div className="flex items-center justify-between gap-3">
             <p className="text-xs text-brand-700 break-all">{shareUrl}</p>
