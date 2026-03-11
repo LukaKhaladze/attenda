@@ -140,7 +140,7 @@ export default async function HomePage() {
             </header>
 
             <div className="relative mx-auto flex min-h-[760px] max-w-screen-2xl items-end px-5 py-10 sm:px-8 sm:py-12 lg:min-h-[860px] lg:px-10 lg:py-14">
-              <div className="max-w-[640px] space-y-7 text-white">
+              <div className="max-w-[720px] space-y-7 text-white xl:max-w-[50%]">
                 <span className="inline-flex min-h-10 items-center rounded-full border border-white/30 bg-white/82 px-4 text-sm font-semibold text-[#5c5751] shadow-[0_10px_30px_rgba(0,0,0,0.14)] backdrop-blur">
                   კონფერენციების მართვა და ნეთვორქინგი ერთ სივრცეში
                 </span>
@@ -193,7 +193,7 @@ export default async function HomePage() {
         <section id="features" className="px-5 sm:px-8 lg:px-10 2xl:px-12">
           <div className="mx-auto max-w-screen-2xl space-y-6">
             <div className="space-y-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#2563eb]">ვისთვის არის პლატფორმა</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#2563eb]">ვისთვის არის პლატფორმა</p>
               
               <h2 className="max-w-3xl text-3xl font-bold text-gray-900 sm:text-4xl">ერთი პლატფორმა სამი ძირითადი როლისთვის</h2>
               <p className="max-w-3xl text-sm leading-7 text-gray-600 sm:text-base">
@@ -236,10 +236,6 @@ export default async function HomePage() {
                     <h3 className="text-3xl font-bold text-gray-900">{feature.title}</h3>
                     <p className="max-w-xl text-base leading-8 text-gray-600">{feature.body}</p>
                   </div>
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <div className="rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700">ბრენდირებული გამოცდილება</div>
-                    <div className="rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700">სწრაფი ოპერაცია</div>
-                  </div>
                 </div>
               </article>
             ))}
@@ -249,7 +245,7 @@ export default async function HomePage() {
         <section id="process" className="px-5 sm:px-8 lg:px-10 2xl:px-12">
           <div className="mx-auto max-w-screen-2xl space-y-5 rounded-[28px] border border-gray-200 bg-white px-5 py-6 shadow-[0_18px_48px_rgba(17,24,39,0.06)] sm:px-6 lg:px-8 lg:py-8">
             <div className="space-y-2 text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#2563eb]">როგორ მუშაობს</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#2563eb]">როგორ მუშაობს</p>
               <h2 className="text-3xl font-bold text-gray-900">სამი ნაბიჯი გაშვებიდან შეხვედრამდე</h2>
             </div>
 
@@ -271,7 +267,8 @@ export default async function HomePage() {
           <div className="mx-auto max-w-screen-2xl overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#1d4ed8,#38bdf8)] px-5 py-8 text-white shadow-[0_20px_60px_rgba(37,99,235,0.25)] sm:px-8 lg:px-10 lg:py-10">
             <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
               <div className="space-y-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/70">კონტაქტი</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/70">კონტაქტი</p>
+                
                 <h2 className="text-3xl font-bold">თუ გჭირდება ბრენდირებული საკონფერენციო პლატფორმა, დავგეგმოთ დემო</h2>
                 <p className="max-w-2xl text-sm leading-7 text-white/84">თუ გჭირდება პლატფორმა კონფერენციისთვის, გაჩვენებთ სამუშაო დემოს და დაგიგეგმავთ გაშვებას.</p>
               </div>
@@ -294,6 +291,42 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
+
+        <footer className="px-5 sm:px-8 lg:px-10 2xl:px-12">
+          <div className="mx-auto grid max-w-screen-2xl gap-8 rounded-[28px] bg-[#081225] px-6 py-8 text-white sm:px-8 lg:grid-cols-[1.2fr_0.8fr_0.8fr] lg:px-10">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 text-xl font-bold tracking-[-0.03em]">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#2563eb] text-white shadow-[0_10px_24px_rgba(37,99,235,0.34)]">
+                  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden>
+                    <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor" />
+                  </svg>
+                </span>
+                <span>Networkapp</span>
+              </div>
+              <p className="max-w-md text-sm leading-7 text-white/70">
+                პლატფორმა კონფერენციებისთვის, სადაც ერთ სივრცეში ერთიანდება რეგისტრაცია, დამსწრეთა დამტკიცება და ნეთვორქინგი.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/55">კონტაქტი</p>
+              <div className="space-y-3 text-sm">
+                <a href="mailto:hello@attenda.ge" className="block text-white/80 transition hover:text-white">hello@attenda.ge</a>
+                <a href="tel:+995599000000" className="block text-white/80 transition hover:text-white">+995 599 000 000</a>
+                <span className="block text-white/60">თბილისი, საქართველო</span>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/55">სოციალური არხები</p>
+              <div className="space-y-3 text-sm">
+                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="block text-white/80 transition hover:text-white">LinkedIn</a>
+                <a href="https://facebook.com" target="_blank" rel="noreferrer" className="block text-white/80 transition hover:text-white">Facebook</a>
+                <a href="https://instagram.com" target="_blank" rel="noreferrer" className="block text-white/80 transition hover:text-white">Instagram</a>
+              </div>
+            </div>
+          </div>
+        </footer>
       </section>
     </Shell>
   );
