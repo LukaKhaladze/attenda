@@ -132,7 +132,7 @@ export default async function HomePage() {
 
                 <a
                   href="#contact"
-                  className="inline-flex min-h-11 items-center justify-center rounded-2xl bg-[#2563eb] px-5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(37,99,235,0.32)] transition hover:bg-[#1d4ed8]"
+                  className="inline-flex min-h-11 items-center justify-center rounded-2xl bg-white px-5 text-sm font-semibold text-[#0b1733] shadow-[0_10px_24px_rgba(255,255,255,0.18)] transition hover:bg-white/90"
                 >
                   კონტაქტი
                 </a>
@@ -193,8 +193,6 @@ export default async function HomePage() {
         <section id="features" className="px-5 sm:px-8 lg:px-10 2xl:px-12">
           <div className="mx-auto max-w-screen-2xl space-y-6">
             <div className="space-y-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#2563eb]">ვისთვის არის პლატფორმა</p>
-              
               <h2 className="max-w-3xl text-3xl font-bold text-gray-900 sm:text-4xl">ერთი პლატფორმა სამი ძირითადი როლისთვის</h2>
               <p className="max-w-3xl text-sm leading-7 text-gray-600 sm:text-base">
                 ორგანიზატორი ამზადებს ინფრასტრუქტურას, ჰოსტი მართავს პროცესს, დამსწრე კი იღებს უკეთეს გამოცდილებას.
@@ -245,7 +243,6 @@ export default async function HomePage() {
         <section id="process" className="px-5 sm:px-8 lg:px-10 2xl:px-12">
           <div className="mx-auto max-w-screen-2xl space-y-5 rounded-[28px] border border-gray-200 bg-white px-5 py-6 shadow-[0_18px_48px_rgba(17,24,39,0.06)] sm:px-6 lg:px-8 lg:py-8">
             <div className="space-y-2 text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#2563eb]">როგორ მუშაობს</p>
               <h2 className="text-3xl font-bold text-gray-900">სამი ნაბიჯი გაშვებიდან შეხვედრამდე</h2>
             </div>
 
@@ -267,8 +264,6 @@ export default async function HomePage() {
           <div className="mx-auto max-w-screen-2xl overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#1d4ed8,#38bdf8)] px-5 py-8 text-white shadow-[0_20px_60px_rgba(37,99,235,0.25)] sm:px-8 lg:px-10 lg:py-10">
             <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
               <div className="space-y-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/70">კონტაქტი</p>
-                
                 <h2 className="text-3xl font-bold">თუ გჭირდება ბრენდირებული საკონფერენციო პლატფორმა, დავგეგმოთ დემო</h2>
                 <p className="max-w-2xl text-sm leading-7 text-white/84">თუ გჭირდება პლატფორმა კონფერენციისთვის, გაჩვენებთ სამუშაო დემოს და დაგიგეგმავთ გაშვებას.</p>
               </div>
@@ -309,7 +304,6 @@ export default async function HomePage() {
             </div>
 
             <div className="space-y-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/55">კონტაქტი</p>
               <div className="space-y-3 text-sm">
                 <a href="mailto:hello@attenda.ge" className="block text-white/80 transition hover:text-white">hello@attenda.ge</a>
                 <a href="tel:+995599000000" className="block text-white/80 transition hover:text-white">+995 599 000 000</a>
