@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="ka-GE">
       <body>
         <AppPreloader />
-        <main className="mx-auto min-h-screen w-full max-w-6xl bg-background px-4 py-4 sm:px-6 lg:px-8">
+        <main className="min-h-screen w-full bg-background px-4 py-4 sm:px-6 lg:px-8">
           {children}
         </main>
         <SpeedInsights />
