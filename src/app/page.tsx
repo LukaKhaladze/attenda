@@ -114,20 +114,20 @@ export default async function HomePage() {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(96,165,250,0.24),transparent_34%),radial-gradient(circle_at_right_bottom,rgba(34,211,238,0.14),transparent_18%)]" />
 
             <header className="relative px-4 py-4 sm:px-6 lg:px-8">
-              <div className="mx-auto flex max-w-screen-2xl items-center justify-between rounded-[22px] border border-white/40 bg-white/92 px-5 py-4 shadow-[0_18px_40px_rgba(14,17,23,0.12)] backdrop-blur">
-                <Link href="/" className="flex items-center gap-3 text-[1.35rem] font-bold tracking-[-0.03em] text-gray-900">
+              <div className="mx-auto flex max-w-screen-2xl items-center justify-between rounded-[22px] border border-white/20 bg-white/10 px-5 py-4 shadow-[0_18px_40px_rgba(14,17,23,0.22)] backdrop-blur-md">
+                <Link href="/" className="flex items-center gap-3 text-[1.35rem] font-bold tracking-[-0.03em] text-white">
                   <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#2563eb] text-white shadow-[0_10px_24px_rgba(37,99,235,0.34)]">
                     <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden>
                       <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor" />
                     </svg>
                   </span>
-                  <span>Attenda</span>
+                  <span>Networkapp</span>
                 </Link>
 
-                <nav className="hidden items-center gap-10 text-sm font-medium text-gray-500 md:flex">
-                  <a href="#features" className="transition hover:text-gray-900">ფუნქციები</a>
-                  <a href="#process" className="transition hover:text-gray-900">პროცესი</a>
-                  <a href="#contact" className="transition hover:text-gray-900">კონტაქტი</a>
+                <nav className="hidden items-center gap-10 text-sm font-medium text-white/82 md:flex">
+                  <a href="#features" className="transition hover:text-white">ფუნქციები</a>
+                  <a href="#process" className="transition hover:text-white">პროცესი</a>
+                  <a href="#contact" className="transition hover:text-white">კონტაქტი</a>
                 </nav>
 
                 <a
