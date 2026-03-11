@@ -165,7 +165,7 @@ export default async function HomePage() {
                   </a>
                   <a
                     href="#contact"
-                    className="inline-flex min-h-14 items-center justify-center rounded-[18px] bg-white/88 px-9 py-4 text-lg font-semibold text-gray-900 shadow-[0_16px_40px_rgba(0,0,0,0.16)] backdrop-blur transition hover:bg-white"
+                    className="inline-flex min-h-14 items-center justify-center rounded-[18px] border border-white/28 bg-white/8 px-9 py-4 text-lg font-semibold text-white shadow-[0_16px_40px_rgba(0,0,0,0.16)] backdrop-blur transition hover:bg-white hover:text-black"
                   >
                     კონტაქტი
                   </a>
