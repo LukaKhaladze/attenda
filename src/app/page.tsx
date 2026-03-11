@@ -124,7 +124,7 @@ export default async function HomePage() {
                   <span>Networkapp</span>
                 </Link>
 
-                <nav className="hidden items-center gap-10 text-sm font-medium text-white/82 md:flex">
+                <nav className="hidden items-center gap-10 text-sm font-medium text-white md:flex">
                   <a href="#features" className="transition hover:text-white">ფუნქციები</a>
                   <a href="#process" className="transition hover:text-white">პროცესი</a>
                   <a href="#contact" className="transition hover:text-white">კონტაქტი</a>
@@ -140,18 +140,18 @@ export default async function HomePage() {
             </header>
 
             <div className="relative mx-auto flex min-h-[760px] max-w-screen-2xl items-end px-5 py-10 sm:px-8 sm:py-12 lg:min-h-[860px] lg:px-10 lg:py-14">
-              <div className="max-w-[720px] space-y-7 text-white xl:max-w-[50%]">
-                <span className="inline-flex min-h-10 items-center rounded-full border border-white/30 bg-white/82 px-4 text-sm font-semibold text-[#5c5751] shadow-[0_10px_30px_rgba(0,0,0,0.14)] backdrop-blur">
+              <div className="max-w-[720px] space-y-7 text-white xl:max-w-[80%]">
+                <span className="inline-flex min-h-10 items-center rounded-full border border-white/30 bg-white/10 px-4 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(0,0,0,0.14)] backdrop-blur">
                   კონფერენციების მართვა და ნეთვორქინგი ერთ სივრცეში
                 </span>
 
                 <div className="space-y-5">
-                  <h1 className="max-w-[620px] text-5xl font-bold leading-[0.92] tracking-[-0.045em] sm:text-6xl lg:text-[5.35rem]">
+                  <h1 className="max-w-[1100px] text-5xl font-bold leading-[0.92] tracking-[-0.045em] sm:text-6xl lg:text-[5.35rem]">
                     შექმენი ივენთი,
                     <br />
                     რომელიც <span className="text-[#60a5fa]">მუშაობს</span>
                   </h1>
-                  <p className="max-w-[560px] text-lg leading-8 text-white/84 sm:text-[1.35rem] sm:leading-9">
+                  <p className="max-w-[880px] text-lg leading-8 text-white/84 sm:text-[1.35rem] sm:leading-9">
                     ბრენდირებული გვერდი, დამსწრეთა მართვა, ჰოსტის პანელი და შეხვედრების შეთავაზებები ერთ პლატფორმაში.
                   </p>
                 </div>
