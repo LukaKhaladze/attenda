@@ -123,7 +123,7 @@ export default async function HomePage() {
   return (
     <Shell hideHeader>
       <section className="space-y-12 pb-12">
-        <section className="px-4 pt-4 sm:px-6 lg:px-8">
+        <section className="px-5 pt-5 sm:px-8 lg:px-10 2xl:px-12">
           <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-[#0b1733] shadow-[0_24px_80px_rgba(11,23,51,0.26)]">
             <div
               className="absolute inset-0 bg-cover bg-center opacity-90"
@@ -136,7 +136,7 @@ export default async function HomePage() {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,214,170,0.22),transparent_32%),radial-gradient(circle_at_right_bottom,rgba(243,141,56,0.12),transparent_16%)]" />
 
             <header className="relative px-4 py-4 sm:px-6 lg:px-8">
-              <div className="mx-auto flex max-w-[1280px] items-center justify-between rounded-[22px] border border-white/40 bg-white/92 px-5 py-4 shadow-[0_18px_40px_rgba(14,17,23,0.12)] backdrop-blur">
+              <div className="mx-auto flex max-w-screen-2xl items-center justify-between rounded-[22px] border border-white/40 bg-white/92 px-5 py-4 shadow-[0_18px_40px_rgba(14,17,23,0.12)] backdrop-blur">
                 <Link href="/" className="flex items-center gap-3 text-[1.35rem] font-bold tracking-[-0.03em] text-gray-900">
                   <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#f28b34] text-white shadow-[0_10px_24px_rgba(242,139,52,0.3)]">
                     <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -166,7 +166,7 @@ export default async function HomePage() {
               </div>
             </header>
 
-            <div className="relative mx-auto flex min-h-[760px] max-w-[1280px] items-end px-4 py-10 sm:px-6 sm:py-12 lg:min-h-[860px] lg:px-8 lg:py-14">
+            <div className="relative mx-auto flex min-h-[760px] max-w-screen-2xl items-end px-5 py-10 sm:px-8 sm:py-12 lg:min-h-[860px] lg:px-10 lg:py-14">
               <div className="max-w-[640px] space-y-7 text-white">
                 <span className="inline-flex min-h-10 items-center rounded-full border border-white/30 bg-white/82 px-4 text-sm font-semibold text-[#5c5751] shadow-[0_10px_30px_rgba(0,0,0,0.14)] backdrop-blur">
                   The future of professional networking
@@ -218,8 +218,8 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section id="features" className="px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-[1280px] space-y-6">
+        <section id="features" className="px-5 sm:px-8 lg:px-10 2xl:px-12">
+          <div className="mx-auto max-w-screen-2xl space-y-6">
             <div className="space-y-3">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f28b34]">ვისთვის არის პლატფორმა</p>
               <h2 className="max-w-3xl text-3xl font-bold text-gray-900 sm:text-4xl">კონფერენციის მართვა, რომელიც მხოლოდ რეგისტრაციაზე არ ჩერდება</h2>
@@ -245,8 +245,8 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section className="px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-[1280px] space-y-8">
+        <section className="px-5 sm:px-8 lg:px-10 2xl:px-12">
+          <div className="mx-auto max-w-screen-2xl space-y-8">
             {featureStories.map((feature, index) => (
               <article key={feature.title} className={`grid gap-6 rounded-[28px] border border-gray-200 bg-white p-5 shadow-[0_18px_48px_rgba(17,24,39,0.06)] lg:grid-cols-2 lg:items-center lg:gap-10 lg:p-8 ${index % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""}`}>
                 <div
@@ -265,8 +265,8 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section id="examples" className="px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-[1280px] space-y-5">
+        <section id="examples" className="px-5 sm:px-8 lg:px-10 2xl:px-12">
+          <div className="mx-auto max-w-screen-2xl space-y-5">
             <div className="flex items-end justify-between gap-4">
               <div className="space-y-2">
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f28b34]">კონფერენციები</p>
@@ -336,8 +336,8 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section className="px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-[1280px] space-y-5 rounded-[28px] border border-gray-200 bg-white px-5 py-6 shadow-[0_18px_48px_rgba(17,24,39,0.06)] sm:px-6 lg:px-8 lg:py-8">
+        <section className="px-5 sm:px-8 lg:px-10 2xl:px-12">
+          <div className="mx-auto max-w-screen-2xl space-y-5 rounded-[28px] border border-gray-200 bg-white px-5 py-6 shadow-[0_18px_48px_rgba(17,24,39,0.06)] sm:px-6 lg:px-8 lg:py-8">
             <div className="space-y-2 text-center">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#f28b34]">როგორ მუშაობს</p>
               <h2 className="text-3xl font-bold text-gray-900">სამი როლი, ერთი გამართული ნაკადი</h2>
@@ -357,8 +357,8 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section id="contact" className="px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-[1280px] overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#f28b34,#f49c47)] px-5 py-8 text-white shadow-[0_20px_60px_rgba(242,139,52,0.25)] sm:px-8 lg:px-10 lg:py-10">
+        <section id="contact" className="px-5 sm:px-8 lg:px-10 2xl:px-12">
+          <div className="mx-auto max-w-screen-2xl overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#f28b34,#f49c47)] px-5 py-8 text-white shadow-[0_20px_60px_rgba(242,139,52,0.25)] sm:px-8 lg:px-10 lg:py-10">
             <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
               <div className="space-y-3">
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/70">კონტაქტი</p>
