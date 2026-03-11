@@ -185,23 +185,40 @@ export default async function HostConferencePage({ params }: { params: { id: str
                       </p>
                       <p className="text-xs text-brand-600">{statusLabels[attendee.status]}</p>
                     </div>
-                    <form action={`/api/host/attendees/${attendee.id}`} method="post" className="flex flex-wrap items-center gap-2">
-                      <input type="hidden" name="redirectTo" value={`/host/conferences/${conference.id}`} />
-                      <input type="hidden" name="status" value="APPROVED" />
-                      <button className="rounded-xl bg-brand-600 px-3 py-2 text-sm font-medium text-white">დადასტურება</button>
-                    </form>
+                    {attendee.status === "PENDING" ? (
+                      <form action={`/api/host/attendees/${attendee.id}`} method="post" className="flex flex-wrap items-center gap-2">
+                        <input type="hidden" name="redirectTo" value={`/host/conferences/${conference.id}`} />
+                        <input type="hidden" name="status" value="APPROVED" />
+                        <button className="rounded-xl bg-brand-600 px-4 py-2 text-sm font-medium text-white">დადასტურება</button>
+                      </form>
+                    ) : attendee.status === "APPROVED" ? (
+                      <span className="inline-flex rounded-full bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-700">
+                        საჯაროდ ჩანს
+                      </span>
+                    ) : (
+                      <form action={`/api/host/attendees/${attendee.id}`} method="post" className="flex flex-wrap items-center gap-2">
+                        <input type="hidden" name="redirectTo" value={`/host/conferences/${conference.id}`} />
+                        <input type="hidden" name="status" value="APPROVED" />
+                        <button className="rounded-xl bg-brand-600 px-4 py-2 text-sm font-medium text-white">სიაში დაბრუნება</button>
+                      </form>
+                    )}
                   </div>
                   <div className="mt-3 flex flex-wrap gap-2">
-                    <form action={`/api/host/attendees/${attendee.id}`} method="post">
-                      <input type="hidden" name="redirectTo" value={`/host/conferences/${conference.id}`} />
-                      <input type="hidden" name="status" value="PENDING" />
-                      <button className="rounded-lg border border-brand-200 px-3 py-2 text-xs text-brand-800">მოლოდინში დატოვება</button>
-                    </form>
-                    <form action={`/api/host/attendees/${attendee.id}`} method="post">
-                      <input type="hidden" name="redirectTo" value={`/host/conferences/${conference.id}`} />
-                      <input type="hidden" name="status" value="HIDDEN" />
-                      <button className="rounded-lg border border-red-200 px-3 py-2 text-xs text-red-700">დამალვა</button>
-                    </form>
+                    {attendee.status !== "PENDING" ? (
+                      <form action={`/api/host/attendees/${attendee.id}`} method="post">
+                        <input type="hidden" name="redirectTo" value={`/host/conferences/${conference.id}`} />
+                        <input type="hidden" name="status" value="PENDING" />
+                        <button className="rounded-lg border border-brand-200 px-3 py-2 text-xs text-brand-800">მოლოდინში დაბრუნება</button>
+                      </form>
+                    ) : null}
+
+                    {attendee.status !== "HIDDEN" ? (
+                      <form action={`/api/host/attendees/${attendee.id}`} method="post">
+                        <input type="hidden" name="redirectTo" value={`/host/conferences/${conference.id}`} />
+                        <input type="hidden" name="status" value="HIDDEN" />
+                        <button className="rounded-lg border border-red-200 px-3 py-2 text-xs text-red-700">დამალვა</button>
+                      </form>
+                    ) : null}
                   </div>
                 </article>
               ))}
