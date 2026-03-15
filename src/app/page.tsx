@@ -23,19 +23,19 @@ const valuePoints = [
 const featureStories = [
   {
     title: "ქასთომ კონფერენციის გვერდი და სუბდომენი",
-    body: "საკუთარი გვერდი, ბმული და სურვილის შემთხვევაში სუბდომენი.",
+    body: "საკუთარი გვერდი და სუბდომენი.",
     image:
       "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1400&q=80"
   },
   {
     title: "ჰოსტის პანელი მინიჭებული კონფერენციისთვის",
-    body: "ჰოსტი მართავს მხოლოდ თავის ღონისძიებას და ამტკიცებს რეგისტრაციებს.",
+    body: "ჰოსტი მართავს რეგისტრაციებს.",
     image:
       "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1400&q=80"
   },
   {
     title: "დამსწრეები, შეხვედრები და რეალური ნეთვორქინგი",
-    body: "დამტკიცებული პროფილები ჩნდება საჯაროდ და იწყება ნეთვორქინგი.",
+    body: "საჯარო პროფილები და შეხვედრები.",
     image:
       "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1400&q=80"
   }
@@ -195,13 +195,9 @@ export default async function HomePage() {
             <div className="grid gap-0 lg:grid-cols-[1.08fr_0.92fr]">
               <div className="space-y-8 px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
                 <div className="max-w-3xl space-y-5">
-                  <div className="inline-flex rounded-full border border-[#dbeafe] bg-[#eff6ff] px-4 py-2 text-sm font-medium text-primary">
-                    სხვა ვერსია: უფრო გაყიდვადი ბლოკი
-                  </div>
                   <h2 className="text-3xl font-bold leading-[1.02] tracking-[-0.05em] text-gray-900 sm:text-[2.85rem]">
-                    ერთი ეკრანიდან ხედავ landing page-ს, რეგისტრაციებს და შეხვედრების workflow-ს
+                    პლატფორმა, სადაც კონფერენციის მთავარი პროცესები ერთდება
                   </h2>
-                  <p className="max-w-2xl text-base leading-8 text-gray-600">სწრაფი გაშვება, მარტივი approval და უკეთესი ნეთვორქინგი.</p>
                 </div>
 
                 <div className="grid gap-4">
@@ -224,15 +220,15 @@ export default async function HomePage() {
                 <div className="grid gap-4 sm:grid-cols-3">
                   <div className="rounded-[28px] bg-[linear-gradient(180deg,#081225,#10285d)] p-5 text-white">
                     <p className="text-3xl font-bold">{conferenceCount > 0 ? `${conferenceCount}+` : "2+"}</p>
-                    <p className="mt-2 text-sm text-white/70">აქტიური ღონისძიება</p>
+                    <p className="mt-2 text-sm text-white/70">ღონისძიება</p>
                   </div>
                   <div className="rounded-[28px] border border-[#dbeafe] bg-[#f8fbff] p-5">
                     <p className="text-3xl font-bold text-gray-900">{attendeeCount > 0 ? `${attendeeCount}+` : "50+"}</p>
-                    <p className="mt-2 text-sm text-gray-600">დამტკიცებული დამსწრე</p>
+                    <p className="mt-2 text-sm text-gray-600">დამსწრე</p>
                   </div>
                   <div className="rounded-[28px] border border-[#dbeafe] bg-[#f8fbff] p-5">
                     <p className="text-3xl font-bold text-gray-900">{approvedMeetingCount > 0 ? `${approvedMeetingCount}+` : "10+"}</p>
-                    <p className="mt-2 text-sm text-gray-600">დაგეგმილი შეხვედრა</p>
+                    <p className="mt-2 text-sm text-gray-600">შეხვედრა</p>
                   </div>
                 </div>
               </div>
@@ -240,23 +236,19 @@ export default async function HomePage() {
               <div className="border-t border-[#dbeafe] bg-[radial-gradient(circle_at_top,rgba(96,165,250,0.18),transparent_32%),linear-gradient(180deg,#eef5ff,#ffffff)] px-6 py-8 sm:px-8 sm:py-10 lg:border-l lg:border-t-0 lg:px-10 lg:py-12">
                 <div className="space-y-5">
                   <div className="rounded-[32px] bg-[linear-gradient(135deg,#081225,#153371)] p-6 text-white shadow-[0_24px_60px_rgba(8,18,37,0.28)] sm:p-7">
-                    <p className="text-sm font-medium text-[#93c5fd]">რა იღებს ორგანიზატორი</p>
                     <h3 className="mt-3 text-2xl font-bold tracking-[-0.04em]">
-                      გაყიდვადი საჯარო გვერდი + ადმინისტრაციული კონტროლი ერთ სისტემაში
+                      საჯარო გვერდი, approval და ნეთვორქინგი
                     </h3>
-                    <p className="mt-3 text-sm leading-7 text-white/78">ყველაფერი ერთ სისტემაში, ზედმეტი ინსტრუმენტების გარეშე.</p>
                   </div>
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="rounded-[28px] border border-[#dbeafe] bg-white p-5 shadow-[0_12px_30px_rgba(37,99,235,0.06)]">
-                      <p className="text-sm font-medium text-primary">ბრენდინგი</p>
-                      <p className="mt-3 text-lg font-semibold text-gray-900">შენი დომენი, შენი ვიზუალი, შენი flow</p>
-                      <p className="mt-2 text-sm leading-7 text-gray-600">სუბდომენი და მთავარი კონტენტი ერთ გვერდზე.</p>
+                      <p className="text-lg font-semibold text-gray-900">ბრენდირებული გვერდი</p>
+                      <p className="mt-2 text-sm leading-7 text-gray-600">სუბდომენი და მთავარი კონტენტი.</p>
                     </div>
                     <div className="rounded-[28px] border border-[#dbeafe] bg-white p-5 shadow-[0_12px_30px_rgba(37,99,235,0.06)]">
-                      <p className="text-sm font-medium text-primary">მოქმედება</p>
-                      <p className="mt-3 text-lg font-semibold text-gray-900">რეგისტრაციიდან შეხვედრამდე</p>
-                      <p className="mt-2 text-sm leading-7 text-gray-600">approval და შეხვედრები ერთ flow-ში.</p>
+                      <p className="text-lg font-semibold text-gray-900">ერთი workflow</p>
+                      <p className="mt-2 text-sm leading-7 text-gray-600">რეგისტრაცია, approval და შეხვედრები.</p>
                     </div>
                   </div>
 
@@ -264,15 +256,12 @@ export default async function HomePage() {
                     <div className="grid gap-4 sm:grid-cols-3">
                       <div>
                         <p className="text-sm font-medium text-primary">საჯარო გვერდი</p>
-                        <p className="mt-2 text-sm leading-7 text-gray-600">ძლიერი პირველი შთაბეჭდილება.</p>
                       </div>
                       <div>
                         <p className="text-sm font-medium text-primary">ჰოსტის პანელი</p>
-                        <p className="mt-2 text-sm leading-7 text-gray-600">ნაკლები ხელით დამუშავება.</p>
                       </div>
                       <div>
                         <p className="text-sm font-medium text-primary">ნეთვორქინგი</p>
-                        <p className="mt-2 text-sm leading-7 text-gray-600">რეალური ბიზნეს-კონტაქტები.</p>
                       </div>
                     </div>
                   </div>
@@ -285,7 +274,6 @@ export default async function HomePage() {
         <section className="bg-[#081225] px-5 py-16 sm:px-8 lg:px-10 lg:py-20 2xl:px-12">
           <div className="mx-auto max-w-screen-2xl space-y-8">
             <div className="max-w-2xl space-y-4 text-white">
-              <p className="text-sm font-medium text-[#7dd3fc]">ძირითადი შესაძლებლობები</p>
               <h2 className="text-3xl font-bold leading-tight sm:text-[2.5rem]">სრული stack კონფერენციისთვის</h2>
             </div>
 
@@ -316,7 +304,6 @@ export default async function HomePage() {
         <section id="process" className="px-5 py-16 sm:px-8 lg:px-10 lg:py-20 2xl:px-12">
           <div className="mx-auto max-w-screen-2xl space-y-8">
             <div className="max-w-2xl space-y-4">
-              <p className="text-sm font-medium text-primary">ოპერაციული ნაკადი</p>
               <h2 className="text-3xl font-bold text-gray-900 sm:text-[2.5rem]">სამი ნაბიჯი გაშვებიდან შეხვედრამდე</h2>
             </div>
 
@@ -339,9 +326,6 @@ export default async function HomePage() {
           <div className="mx-auto max-w-screen-2xl overflow-hidden rounded-[40px] border border-[#d9e7ff] bg-[linear-gradient(180deg,#f8fbff,#eef5ff)] shadow-[0_24px_70px_rgba(15,23,42,0.08)]">
             <div className="grid gap-0 lg:grid-cols-[1.05fr_0.95fr]">
               <div className="space-y-6 p-8 sm:p-10 lg:p-14">
-                <div className="inline-flex rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
-                  დაჯავშნე დემო
-                </div>
                 <div className="space-y-4">
                   <h2 className="max-w-xl text-3xl font-bold leading-tight text-gray-900 sm:text-[2.6rem]">
                     თუ გჭირდება სისტემა კონფერენციისთვის, ერთად დავგეგმოთ როგორ გაეშვება
@@ -385,9 +369,6 @@ export default async function HomePage() {
                   </span>
                   <span>Networkapp</span>
                 </div>
-                <p className="max-w-md text-sm leading-7 text-white/68">
-                  ბრენდირებული პლატფორმა რეგისტრაციისთვის, approval-ისთვის და ნეთვორქინგისთვის.
-                </p>
               </div>
 
               <div className="space-y-4">
