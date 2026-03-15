@@ -278,36 +278,43 @@ export default async function HomePage() {
         </section>
 
         <footer id="contact" className="px-5 pb-12 pt-16 sm:px-8 lg:px-10 lg:pt-20 2xl:px-12">
-          <div className="mx-auto max-w-screen-2xl rounded-[40px] bg-[#07101f] px-6 py-8 text-white sm:px-8 lg:px-10 lg:py-10">
-            <div className="grid gap-10 lg:grid-cols-[1.2fr_0.7fr_0.7fr]">
-              <div className="space-y-5">
+          <div className="mx-auto max-w-screen-2xl bg-[#141c27] px-6 py-14 text-white sm:px-10 lg:px-14 lg:py-16">
+            <div className="grid gap-12 lg:grid-cols-[1.35fr_0.65fr_0.65fr]">
+              <div className="space-y-6">
                 <div className="flex items-center gap-3 text-xl font-bold tracking-[-0.03em]">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white shadow-[0_10px_24px_rgba(37,99,235,0.34)]">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#fb923c] text-white shadow-[0_10px_24px_rgba(249,115,22,0.28)]">
                     <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden>
                       <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor" />
                     </svg>
                   </span>
                   <span>Networkapp</span>
                 </div>
+                <p className="max-w-md text-base leading-8 text-white/62">
+                  პლატფორმა კონფერენციებისთვის, სადაც რეგისტრაცია, დამტკიცება და ნეთვორქინგი ერთდება.
+                </p>
               </div>
 
               <div className="space-y-4">
-                <p className="text-sm font-medium text-white/50">კონტაქტი</p>
-                <div className="space-y-3 text-sm">
-                  <a href="mailto:hello@attenda.ge" className="block text-white/80 transition hover:text-white">hello@attenda.ge</a>
-                  <a href="tel:+995599000000" className="block text-white/80 transition hover:text-white">+995 599 000 000</a>
-                  <span className="block text-white/55">თბილისი, საქართველო</span>
+                <p className="text-base font-semibold text-white">პროდუქტი</p>
+                <div className="space-y-3 text-base text-white/62">
+                  <a href="#features" className="block transition hover:text-white">ფუნქციები</a>
+                  <a href="#process" className="block transition hover:text-white">პროცესი</a>
+                  <a href="#contact" className="block transition hover:text-white">კონტაქტი</a>
                 </div>
               </div>
 
               <div className="space-y-4">
-                <p className="text-sm font-medium text-white/50">სოციალური არხები</p>
-                <div className="space-y-3 text-sm">
-                  <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="block text-white/80 transition hover:text-white">LinkedIn</a>
-                  <a href="https://facebook.com" target="_blank" rel="noreferrer" className="block text-white/80 transition hover:text-white">Facebook</a>
-                  <a href="https://instagram.com" target="_blank" rel="noreferrer" className="block text-white/80 transition hover:text-white">Instagram</a>
+                <p className="text-base font-semibold text-white">კომპანია</p>
+                <div className="space-y-3 text-base text-white/62">
+                  <a href="mailto:hello@attenda.ge" className="block transition hover:text-white">hello@attenda.ge</a>
+                  <a href="tel:+995599000000" className="block transition hover:text-white">+995 599 000 000</a>
+                  <span className="block text-white/50">თბილისი, საქართველო</span>
                 </div>
               </div>
+            </div>
+
+            <div className="mt-14 border-t border-white/10 pt-8 text-center text-sm text-white/40">
+              © 2026 Networkapp. ყველა უფლება დაცულია.
             </div>
           </div>
         </footer>
