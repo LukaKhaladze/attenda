@@ -7,16 +7,16 @@ import { prisma } from "@/lib/prisma";
 
 const audience = [
   {
-    title: "კონფერენციის ორგანიზატორებისთვის",
-    body: "ბრენდირებული გვერდი, სუბდომენი, QR და სრული კონტროლი ერთი პლატფორმიდან."
+    title: "ორგანიზატორისთვის",
+    body: "ბრენდირებული გვერდი, სუბდომენი, QR და სრული კონტროლი ერთი სივრციდან."
   },
   {
-    title: "ივენთ ჰოსტებისთვის",
-    body: "საკუთარი პანელი, სადაც დამსწრეების დამტკიცება და კონტენტის განახლება რამდენიმე წამში ხდება."
+    title: "ჰოსტისთვის",
+    body: "საკუთარი სამუშაო პანელი რეგისტრაციების სწრაფი დამტკიცებისთვის."
   },
   {
-    title: "B2B ნეთვორქინგზე ორიენტირებული გუნდებისთვის",
-    body: "დამსწრეები ხედავენ ერთმანეთს, ფილტრავენ სიას და გეგმავენ შეხვედრებს ღონისძიებამდე."
+    title: "დამსწრისთვის",
+    body: "საჯარო პროფილები, ფილტრები და შეხვედრის შეთავაზებები ღონისძიებამდე."
   }
 ];
 
@@ -101,8 +101,8 @@ export default async function HomePage() {
   return (
     <Shell hideHeader>
       <section className="-mx-4 space-y-12 pb-12 sm:-mx-6 lg:-mx-8">
-        <section className="px-5 pt-5 sm:px-8 lg:px-10 2xl:px-12">
-          <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-[#0b1733] shadow-[0_24px_80px_rgba(11,23,51,0.26)]">
+        <section className="px-0 pt-0">
+          <div className="relative overflow-hidden border-y border-white/10 bg-[#0b1733] shadow-[0_24px_80px_rgba(11,23,51,0.26)] sm:rounded-[0]">
             <div
               className="absolute inset-0 bg-cover bg-center opacity-90"
               style={{
@@ -113,7 +113,7 @@ export default async function HomePage() {
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(37,27,18,0.2),rgba(25,19,18,0.34)_16%,rgba(11,16,28,0.66)_54%,rgba(8,12,24,0.92)_82%,rgba(7,11,22,0.96)_100%)]" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(96,165,250,0.24),transparent_34%),radial-gradient(circle_at_right_bottom,rgba(34,211,238,0.14),transparent_18%)]" />
 
-            <header className="relative px-4 py-4 sm:px-6 lg:px-8">
+            <header className="relative px-5 py-5 sm:px-8 lg:px-10 2xl:px-12">
               <div className="mx-auto flex max-w-screen-2xl items-center justify-between rounded-[22px] border border-white/20 bg-white/10 px-5 py-4 shadow-[0_18px_40px_rgba(14,17,23,0.22)] backdrop-blur-md">
                 <Link href="/" className="flex items-center gap-3 text-[1.35rem] font-bold tracking-[-0.03em] text-white">
                   <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#2563eb] text-white shadow-[0_10px_24px_rgba(37,99,235,0.34)]">
@@ -139,7 +139,7 @@ export default async function HomePage() {
               </div>
             </header>
 
-            <div className="relative mx-auto flex min-h-[760px] max-w-screen-2xl items-end px-5 py-10 sm:px-8 sm:py-12 lg:min-h-[860px] lg:px-10 lg:py-14">
+            <div className="relative mx-auto flex min-h-[760px] max-w-screen-2xl items-end px-5 py-10 sm:px-8 sm:py-12 lg:min-h-[860px] lg:px-10 lg:py-14 2xl:px-12">
               <div className="max-w-[720px] space-y-7 text-white xl:max-w-[80%]">
                 <span className="inline-flex min-h-10 items-center rounded-full border border-white/30 bg-white/10 px-4 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(0,0,0,0.14)] backdrop-blur">
                   კონფერენციების მართვა და ნეთვორქინგი ერთ სივრცეში
@@ -191,25 +191,44 @@ export default async function HomePage() {
         </section>
 
         <section id="features" className="px-5 sm:px-8 lg:px-10 2xl:px-12">
-          <div className="mx-auto max-w-screen-2xl space-y-6">
-            <div className="space-y-3">
-              <h2 className="max-w-3xl text-3xl font-bold text-gray-900 sm:text-4xl">ერთი პლატფორმა სამი ძირითადი როლისთვის</h2>
-              <p className="max-w-3xl text-sm leading-7 text-gray-600 sm:text-base">
-                ორგანიზატორი ამზადებს ინფრასტრუქტურას, ჰოსტი მართავს პროცესს, დამსწრე კი იღებს უკეთეს გამოცდილებას.
+          <div className="mx-auto grid max-w-screen-2xl gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-stretch">
+            <div className="rounded-[32px] bg-[linear-gradient(145deg,#0b1733,#163b86)] p-7 text-white shadow-[0_24px_60px_rgba(17,24,39,0.16)] sm:p-8 lg:p-10">
+              <p className="text-sm font-medium text-white/68">რატომ ირჩევენ ორგანიზატორები ამ მოდელს</p>
+              <h2 className="mt-4 max-w-xl text-3xl font-bold leading-tight sm:text-4xl">
+                ერთი სისტემა, რომელიც გაყიდვად რეგისტრაციას და მართვად ოპერაციას აერთიანებს
+              </h2>
+              <p className="mt-4 max-w-xl text-base leading-8 text-white/76">
+                ორგანიზატორი ამზადებს ინფრასტრუქტურას, ჰოსტი მართავს პროცესს, დამსწრე კი იღებს სწრაფ და გამჭვირვალე გამოცდილებას.
               </p>
+
+              <div className="mt-8 grid gap-4 sm:grid-cols-3">
+                <div className="rounded-2xl border border-white/12 bg-white/8 p-4">
+                  <p className="text-2xl font-bold">{conferenceCount > 0 ? `${conferenceCount}+` : "2+"}</p>
+                  <p className="mt-1 text-sm text-white/68">გაშვებული კონფერენცია</p>
+                </div>
+                <div className="rounded-2xl border border-white/12 bg-white/8 p-4">
+                  <p className="text-2xl font-bold">{attendeeCount > 0 ? `${attendeeCount}+` : "50+"}</p>
+                  <p className="mt-1 text-sm text-white/68">დამტკიცებული დამსწრე</p>
+                </div>
+                <div className="rounded-2xl border border-white/12 bg-white/8 p-4">
+                  <p className="text-2xl font-bold">{approvedMeetingCount > 0 ? `${approvedMeetingCount}+` : "10+"}</p>
+                  <p className="mt-1 text-sm text-white/68">დაგეგმილი შეხვედრა</p>
+                </div>
+              </div>
             </div>
 
-            <div className="grid gap-4 lg:grid-cols-3">
-              {audience.map((item) => (
-                <UICard key={item.title} className="min-h-[190px] border border-gray-100 bg-[linear-gradient(180deg,#ffffff,#fbfcff)] p-6 transition-transform duration-200 hover:-translate-y-1">
-                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                    <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden>
-                      <circle cx="12" cy="8" r="3.5" stroke="currentColor" strokeWidth="2" />
-                      <path d="M5 20c1.7-3.4 4.4-5 7-5s5.3 1.6 7 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                    </svg>
+            <div className="grid gap-4">
+              {audience.map((item, index) => (
+                <UICard key={item.title} className="min-h-[180px] border border-gray-100 bg-[linear-gradient(180deg,#ffffff,#f8fbff)] p-6 shadow-[0_18px_40px_rgba(15,23,42,0.06)]">
+                  <div className="flex items-start gap-4">
+                    <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                      <span className="text-sm font-semibold">0{index + 1}</span>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900">{item.title}</h3>
+                      <p className="mt-3 text-sm leading-7 text-gray-600">{item.body}</p>
+                    </div>
                   </div>
-                  <h3 className="mt-5 text-xl font-semibold text-gray-900">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-gray-600">{item.body}</p>
                 </UICard>
               ))}
             </div>
@@ -219,9 +238,9 @@ export default async function HomePage() {
         <section className="px-5 sm:px-8 lg:px-10 2xl:px-12">
           <div className="mx-auto max-w-screen-2xl space-y-8">
             {featureStories.map((feature, index) => (
-              <article key={feature.title} className={`grid gap-6 overflow-hidden rounded-[32px] border border-gray-200 bg-[linear-gradient(180deg,#ffffff,#f4f9ff)] p-5 shadow-[0_18px_48px_rgba(17,24,39,0.06)] lg:grid-cols-2 lg:items-center lg:gap-10 lg:p-8 ${index % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""}`}>
+              <article key={feature.title} className={`grid gap-6 overflow-hidden rounded-[32px] border border-gray-200 bg-[linear-gradient(180deg,#ffffff,#f4f9ff)] p-5 shadow-[0_18px_48px_rgba(17,24,39,0.06)] lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-10 lg:p-8 ${index % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""}`}>
                 <div
-                  className="min-h-[280px] rounded-[24px] bg-cover bg-center"
+                  className="min-h-[320px] rounded-[24px] bg-cover bg-center"
                   style={{
                     backgroundImage: `linear-gradient(180deg, rgba(15,23,42,.12), rgba(15,23,42,.4)), url(${feature.image})`
                   }}
