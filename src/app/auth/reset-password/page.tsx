@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, Suspense, useMemo, useState } from "react";
 import { UIButton } from "@/components/ui-button";
 import { UICard } from "@/components/ui-card";
 import { UIInput } from "@/components/ui-input";
 
-export default function ResetPasswordPage() {
+function ResetPasswordContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams.get("token") ?? "";
@@ -86,5 +86,13 @@ export default function ResetPasswordPage() {
         </p>
       </UICard>
     </section>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<section className="mx-auto mt-10 max-w-md px-4" />}>
+      <ResetPasswordContent />
+    </Suspense>
   );
 }

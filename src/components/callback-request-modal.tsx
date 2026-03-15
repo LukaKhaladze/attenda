@@ -110,9 +110,9 @@ export function CallbackRequestModal({ triggerLabel, triggerClassName = "" }: Pr
                 </div>
               ) : (
                 <form onSubmit={onSubmit} className="space-y-5 text-left">
-                  <UIInput label="სახელი" name="name" required placeholder="მაგ: ნიკა ცინცაძე" />
-                  <UIInput label="ელფოსტა" name="email" type="email" required placeholder="you@company.com" />
-                  <UIInput label="ტელეფონი" name="phone" required placeholder="+995 5XX XX XX XX" />
+                  <UIInput label="სახელი" name="name" required />
+                  <UIInput label="ელფოსტა" name="email" type="email" required />
+                  <UIInput label="ტელეფონი" name="phone" required />
 
                   {error ? <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-error">{error}</p> : null}
 
