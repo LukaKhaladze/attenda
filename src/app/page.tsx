@@ -241,8 +241,46 @@ export default async function HomePage() {
               </div>
 
               <div className="border-t border-[#dbeafe] bg-[radial-gradient(circle_at_top,rgba(96,165,250,0.18),transparent_32%),linear-gradient(180deg,#eef5ff,#ffffff)] px-6 py-8 sm:px-8 sm:py-10 lg:border-l lg:border-t-0 lg:px-10 lg:py-12">
-                <div className="mx-auto max-w-xl lg:mx-0">
-                  <LeadCaptureForm />
+                <div className="space-y-5">
+                  <div className="rounded-[32px] bg-[linear-gradient(135deg,#081225,#153371)] p-6 text-white shadow-[0_24px_60px_rgba(8,18,37,0.28)] sm:p-7">
+                    <p className="text-sm font-medium text-[#93c5fd]">რა იღებს ორგანიზატორი</p>
+                    <h3 className="mt-3 text-2xl font-bold tracking-[-0.04em]">
+                      გაყიდვადი საჯარო გვერდი + ადმინისტრაციული კონტროლი ერთ სისტემაში
+                    </h3>
+                    <p className="mt-3 text-sm leading-7 text-white/78">
+                      ეს ნაწილი ახლა აღარ არის ფორმა. აქ ვაჩვენებთ რატომ არის პლატფორმა გაყიდვადი თავად პროდუქტის მხრიდან.
+                    </p>
+                  </div>
+
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="rounded-[28px] border border-[#dbeafe] bg-white p-5 shadow-[0_12px_30px_rgba(37,99,235,0.06)]">
+                      <p className="text-sm font-medium text-primary">ბრენდინგი</p>
+                      <p className="mt-3 text-lg font-semibold text-gray-900">შენი დომენი, შენი ვიზუალი, შენი flow</p>
+                      <p className="mt-2 text-sm leading-7 text-gray-600">ქასთომ სუბდომენი, cover image, agenda და სპიკერები ერთ გვერდზე.</p>
+                    </div>
+                    <div className="rounded-[28px] border border-[#dbeafe] bg-white p-5 shadow-[0_12px_30px_rgba(37,99,235,0.06)]">
+                      <p className="text-sm font-medium text-primary">მოქმედება</p>
+                      <p className="mt-3 text-lg font-semibold text-gray-900">რეგისტრაციიდან შეხვედრამდე</p>
+                      <p className="mt-2 text-sm leading-7 text-gray-600">approval, საჯარო დამსწრეები და შეხვედრების შეთავაზებები ერთ workflow-ში.</p>
+                    </div>
+                  </div>
+
+                  <div className="rounded-[28px] border border-[#dbeafe] bg-white p-5 shadow-[0_12px_30px_rgba(37,99,235,0.06)]">
+                    <div className="grid gap-4 sm:grid-cols-3">
+                      <div>
+                        <p className="text-sm font-medium text-primary">საჯარო გვერდი</p>
+                        <p className="mt-2 text-sm leading-7 text-gray-600">პირველი შთაბეჭდილება უკვე პროფესიონალურია.</p>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-primary">ჰოსტის პანელი</p>
+                        <p className="mt-2 text-sm leading-7 text-gray-600">გუნდს არ სჭირდება ცალკე ცხრილები და ხელით დამუშავება.</p>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-primary">ნეთვორქინგი</p>
+                        <p className="mt-2 text-sm leading-7 text-gray-600">ღონისძიება ტოვებს რეალურ ბიზნეს-კონტაქტებს.</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -335,28 +373,9 @@ export default async function HomePage() {
                 </div>
               </div>
 
-              <div className="grid gap-px bg-[#d9e7ff] lg:grid-cols-2">
-                <div className="bg-white p-6 sm:p-8">
-                  <p className="text-sm font-medium text-primary">ელფოსტა</p>
-                  <a href="mailto:hello@attenda.ge" className="mt-3 block text-2xl font-semibold text-gray-900">
-                    hello@attenda.ge
-                  </a>
-                  <p className="mt-3 text-sm leading-7 text-gray-600">მოგვწერე brief და დაგიბრუნდებით სამუშაო სცენარით.</p>
-                </div>
-                <div className="bg-white p-6 sm:p-8">
-                  <p className="text-sm font-medium text-primary">ტელეფონი</p>
-                  <a href="tel:+995599000000" className="mt-3 block text-2xl font-semibold text-gray-900">
-                    +995 599 000 000
-                  </a>
-                  <p className="mt-3 text-sm leading-7 text-gray-600">სწრაფი ჩართვისთვის დაგვიკავშირდი პირდაპირ.</p>
-                </div>
-                <div className="bg-white p-6 sm:p-8 lg:col-span-2">
-                  <p className="text-sm font-medium text-primary">რას ვფარავთ დემოზე</p>
-                  <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                    <div className="rounded-2xl bg-[linear-gradient(180deg,#f8fbff,#eef5ff)] px-4 py-4 text-sm font-medium text-gray-700">ბრენდირებული კონფერენციის გვერდი</div>
-                    <div className="rounded-2xl bg-[linear-gradient(180deg,#f8fbff,#eef5ff)] px-4 py-4 text-sm font-medium text-gray-700">ჰოსტის approval flow</div>
-                    <div className="rounded-2xl bg-[linear-gradient(180deg,#f8fbff,#eef5ff)] px-4 py-4 text-sm font-medium text-gray-700">დამსწრეთა ნეთვორქინგი</div>
-                  </div>
+              <div className="border-t border-[#d9e7ff] bg-[radial-gradient(circle_at_top,rgba(96,165,250,0.14),transparent_34%),linear-gradient(180deg,#eef5ff,#ffffff)] p-6 sm:p-8 lg:border-l lg:border-t-0 lg:p-10">
+                <div className="mx-auto max-w-xl lg:mx-0">
+                  <LeadCaptureForm />
                 </div>
               </div>
             </div>
