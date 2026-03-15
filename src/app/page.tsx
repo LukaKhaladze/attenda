@@ -1,22 +1,22 @@
 import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { LeadCaptureForm } from "@/components/lead-capture-form";
 import { Shell } from "@/components/shell";
-import { UICard } from "@/components/ui-card";
 import { prisma } from "@/lib/prisma";
 
-const audience = [
+const valuePoints = [
   {
-    title: "ორგანიზატორისთვის",
-    body: "ბრენდირებული გვერდი, სუბდომენი, QR და სრული კონტროლი ერთი სივრციდან."
+    title: "მზად landing page-სთან ერთად",
+    body: "ღონისძიებას მაშინვე აქვს ბრენდირებული გვერდი, QR და გაზიარებადი ბმული."
   },
   {
-    title: "ჰოსტისთვის",
-    body: "საკუთარი სამუშაო პანელი რეგისტრაციების სწრაფი დამტკიცებისთვის."
+    title: "ჰოსტის სწრაფი approval flow",
+    body: "ჰოსტი ერთ ეკრანიდან ამტკიცებს ან მალავს დამსწრეებს დამატებითი ქაოსის გარეშე."
   },
   {
-    title: "დამსწრისთვის",
-    body: "საჯარო პროფილები, ფილტრები და შეხვედრის შეთავაზებები ღონისძიებამდე."
+    title: "ნეთვორქინგი რეალურ შეხვედრებამდე",
+    body: "დამტკიცებული დამსწრეები ერთმანეთს პოულობენ და გზავნიან შეხვედრის შეთავაზებებს."
   }
 ];
 
@@ -191,40 +191,29 @@ export default async function HomePage() {
         </section>
 
         <section id="features" className="relative z-10 -mt-16 px-5 sm:-mt-20 sm:px-8 lg:-mt-24 lg:px-10 2xl:px-12">
-          <div className="mx-auto max-w-screen-2xl rounded-[36px] border border-gray-200 bg-white p-6 shadow-[0_30px_80px_rgba(15,23,42,0.08)] sm:p-8 lg:p-10">
-            <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
-              <div className="space-y-6">
-                <div className="space-y-4">
-                  <p className="text-sm font-medium text-primary">რატომ მუშაობს ეს მოდელი</p>
-                  <h2 className="max-w-2xl text-3xl font-bold leading-tight text-gray-900 sm:text-[2.7rem]">
-                    ერთი პლატფორმა, რომელიც კონფერენციის ოპერაციას და ნეთვორქინგს ერთად მართავს
+          <div className="mx-auto max-w-screen-2xl overflow-hidden rounded-[40px] border border-[#dbeafe] bg-[linear-gradient(180deg,#ffffff,#f8fbff)] shadow-[0_34px_90px_rgba(15,23,42,0.08)]">
+            <div className="grid gap-0 lg:grid-cols-[1.08fr_0.92fr]">
+              <div className="space-y-8 px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
+                <div className="max-w-3xl space-y-5">
+                  <div className="inline-flex rounded-full border border-[#dbeafe] bg-[#eff6ff] px-4 py-2 text-sm font-medium text-primary">
+                    სხვა ვერსია: უფრო გაყიდვადი ბლოკი
+                  </div>
+                  <h2 className="text-3xl font-bold leading-[1.02] tracking-[-0.05em] text-gray-900 sm:text-[2.85rem]">
+                    ერთი ეკრანიდან ხედავ landing page-ს, რეგისტრაციებს და შეხვედრების workflow-ს
                   </h2>
-                  <p className="max-w-xl text-base leading-8 text-gray-600">
-                    გაყიდვადი landing page, დამტკიცების ნაკადი და შეხვედრების შეთავაზებები ერთიან სისტემაში, რომელიც სწრაფად ეწყობა და მარტივად იმართება.
+                  <p className="max-w-2xl text-base leading-8 text-gray-600">
+                    ეს ბლოკი ახლა მუშაობს როგორც მოკლე sales story: რას იღებს ორგანიზატორი, რატომ არის ჰოსტისთვის მარტივი და
+                    როგორ იქცევა ივენთი უკეთეს ნეთვორქინგად.
                   </p>
                 </div>
 
-                <div className="grid gap-4 sm:grid-cols-3">
-                  <div className="rounded-[28px] bg-[linear-gradient(180deg,#0b1733,#12285d)] p-5 text-white">
-                    <p className="text-3xl font-bold">{conferenceCount > 0 ? `${conferenceCount}+` : "2+"}</p>
-                    <p className="mt-2 text-sm text-white/70">გაშვებული კონფერენცია</p>
-                  </div>
-                  <div className="rounded-[28px] bg-[linear-gradient(180deg,#f8fbff,#eef5ff)] p-5">
-                    <p className="text-3xl font-bold text-gray-900">{attendeeCount > 0 ? `${attendeeCount}+` : "50+"}</p>
-                    <p className="mt-2 text-sm text-gray-600">დამტკიცებული დამსწრე</p>
-                  </div>
-                  <div className="rounded-[28px] bg-[linear-gradient(180deg,#f8fbff,#eef5ff)] p-5">
-                    <p className="text-3xl font-bold text-gray-900">{approvedMeetingCount > 0 ? `${approvedMeetingCount}+` : "10+"}</p>
-                    <p className="mt-2 text-sm text-gray-600">დაგეგმილი შეხვედრა</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid gap-4">
-                {audience.map((item, index) => (
-                  <div key={item.title} className="rounded-[28px] border border-gray-200 bg-[linear-gradient(180deg,#ffffff,#f6faff)] p-5">
-                    <div className="flex items-start gap-4">
-                      <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary text-sm font-semibold text-white">
+                <div className="grid gap-4">
+                  {valuePoints.map((item, index) => (
+                    <div
+                      key={item.title}
+                      className="grid gap-4 rounded-[28px] border border-[#e4ecff] bg-white p-5 shadow-[0_12px_30px_rgba(37,99,235,0.06)] sm:grid-cols-[auto_1fr]"
+                    >
+                      <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#2563eb,#60a5fa)] text-sm font-semibold text-white shadow-[0_12px_30px_rgba(37,99,235,0.22)]">
                         0{index + 1}
                       </div>
                       <div>
@@ -232,8 +221,29 @@ export default async function HomePage() {
                         <p className="mt-2 text-sm leading-7 text-gray-600">{item.body}</p>
                       </div>
                     </div>
+                  ))}
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-3">
+                  <div className="rounded-[28px] bg-[linear-gradient(180deg,#081225,#10285d)] p-5 text-white">
+                    <p className="text-3xl font-bold">{conferenceCount > 0 ? `${conferenceCount}+` : "2+"}</p>
+                    <p className="mt-2 text-sm text-white/70">აქტიური ღონისძიება</p>
                   </div>
-                ))}
+                  <div className="rounded-[28px] border border-[#dbeafe] bg-[#f8fbff] p-5">
+                    <p className="text-3xl font-bold text-gray-900">{attendeeCount > 0 ? `${attendeeCount}+` : "50+"}</p>
+                    <p className="mt-2 text-sm text-gray-600">დამტკიცებული დამსწრე</p>
+                  </div>
+                  <div className="rounded-[28px] border border-[#dbeafe] bg-[#f8fbff] p-5">
+                    <p className="text-3xl font-bold text-gray-900">{approvedMeetingCount > 0 ? `${approvedMeetingCount}+` : "10+"}</p>
+                    <p className="mt-2 text-sm text-gray-600">დაგეგმილი შეხვედრა</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-[#dbeafe] bg-[radial-gradient(circle_at_top,rgba(96,165,250,0.18),transparent_32%),linear-gradient(180deg,#eef5ff,#ffffff)] px-6 py-8 sm:px-8 sm:py-10 lg:border-l lg:border-t-0 lg:px-10 lg:py-12">
+                <div className="mx-auto max-w-xl lg:mx-0">
+                  <LeadCaptureForm />
+                </div>
               </div>
             </div>
           </div>
