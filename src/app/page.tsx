@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { LeadCaptureForm } from "@/components/lead-capture-form";
+import { CallbackRequestModal } from "@/components/callback-request-modal";
 import { Shell } from "@/components/shell";
 import { prisma } from "@/lib/prisma";
 
@@ -345,53 +345,16 @@ export default async function HomePage() {
                 <p className="mx-auto mt-4 max-w-2xl text-lg leading-8 text-white/88 sm:text-[1.3rem]">
                   დავგეგმოთ როგორ გაუშვებ რეგისტრაციას, approval-ს და ნეთვორქინგს ერთ სისტემაში.
                 </p>
-                <a
-                  href="#contact"
-                  className="mt-8 inline-flex min-h-14 items-center justify-center rounded-2xl border border-white/40 bg-white/20 px-8 text-lg font-semibold text-white shadow-[0_12px_28px_rgba(255,255,255,0.12)] backdrop-blur transition hover:bg-white hover:text-[#111827]"
-                >
-                  დავჯავშნოთ ზარი
-                </a>
+                <CallbackRequestModal
+                  triggerLabel="დავჯავშნოთ ზარი"
+                  triggerClassName="mt-8 inline-flex min-h-14 items-center justify-center rounded-2xl border border-white/40 bg-white/20 px-8 text-lg font-semibold text-white shadow-[0_12px_28px_rgba(255,255,255,0.12)] backdrop-blur transition hover:bg-white hover:text-[#111827]"
+                />
               </div>
             </div>
           </div>
         </section>
 
-        <section id="contact" className="px-5 py-16 sm:px-8 lg:px-10 lg:py-20 2xl:px-12">
-          <div className="mx-auto max-w-screen-2xl overflow-hidden rounded-[40px] border border-[#d9e7ff] bg-[linear-gradient(180deg,#f8fbff,#eef5ff)] shadow-[0_24px_70px_rgba(15,23,42,0.08)]">
-            <div className="grid gap-0 lg:grid-cols-[1.05fr_0.95fr]">
-              <div className="space-y-6 p-8 sm:p-10 lg:p-14">
-                <div className="space-y-4">
-                  <h2 className="max-w-xl text-3xl font-bold leading-tight text-gray-900 sm:text-[2.6rem]">
-                    თუ გჭირდება სისტემა კონფერენციისთვის, ერთად დავგეგმოთ როგორ გაეშვება
-                  </h2>
-                  <p className="max-w-xl text-base leading-8 text-gray-600">გაჩვენებთ როგორ იმუშავებს შენს ღონისძიებაზე.</p>
-                </div>
-                <div className="flex flex-wrap gap-3">
-                  <a
-                    href="mailto:hello@attenda.ge"
-                    className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-primary px-6 text-sm font-semibold text-white shadow-[0_14px_34px_rgba(37,99,235,0.24)]"
-                  >
-                    hello@attenda.ge
-                  </a>
-                  <a
-                    href="tel:+995599000000"
-                    className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-primary/20 bg-white px-6 text-sm font-semibold text-primary"
-                  >
-                    +995 599 000 000
-                  </a>
-                </div>
-              </div>
-
-              <div className="border-t border-[#d9e7ff] bg-[radial-gradient(circle_at_top,rgba(96,165,250,0.14),transparent_34%),linear-gradient(180deg,#eef5ff,#ffffff)] p-6 sm:p-8 lg:border-l lg:border-t-0 lg:p-10">
-                <div className="mx-auto max-w-xl lg:mx-0">
-                  <LeadCaptureForm />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <footer className="px-5 pb-12 sm:px-8 lg:px-10 2xl:px-12">
+        <footer id="contact" className="px-5 pb-12 pt-16 sm:px-8 lg:px-10 lg:pt-20 2xl:px-12">
           <div className="mx-auto max-w-screen-2xl rounded-[40px] bg-[#07101f] px-6 py-8 text-white sm:px-8 lg:px-10 lg:py-10">
             <div className="grid gap-10 lg:grid-cols-[1.2fr_0.7fr_0.7fr]">
               <div className="space-y-5">
