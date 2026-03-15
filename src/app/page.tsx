@@ -294,65 +294,98 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section id="contact" className="px-5 sm:px-8 lg:px-10 2xl:px-12">
-          <div className="mx-auto max-w-screen-2xl overflow-hidden rounded-[36px] bg-[linear-gradient(135deg,#1d4ed8,#38bdf8)] px-5 py-10 text-white shadow-[0_20px_60px_rgba(37,99,235,0.25)] sm:px-8 lg:px-12 lg:py-12">
-            <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-              <div className="space-y-3">
-                <h2 className="text-3xl font-bold">თუ გჭირდება ბრენდირებული საკონფერენციო პლატფორმა, დავგეგმოთ დემო</h2>
-                <p className="max-w-2xl text-sm leading-7 text-white/84">თუ გჭირდება პლატფორმა კონფერენციისთვის, გაჩვენებთ სამუშაო დემოს და დაგიგეგმავთ გაშვებას.</p>
+        <section id="contact" className="px-5 py-16 sm:px-8 lg:px-10 lg:py-20 2xl:px-12">
+          <div className="mx-auto max-w-screen-2xl overflow-hidden rounded-[40px] border border-[#d9e7ff] bg-[linear-gradient(180deg,#f8fbff,#eef5ff)] shadow-[0_24px_70px_rgba(15,23,42,0.08)]">
+            <div className="grid gap-0 lg:grid-cols-[1.05fr_0.95fr]">
+              <div className="space-y-6 p-8 sm:p-10 lg:p-14">
+                <div className="inline-flex rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
+                  დაჯავშნე დემო
+                </div>
+                <div className="space-y-4">
+                  <h2 className="max-w-xl text-3xl font-bold leading-tight text-gray-900 sm:text-[2.6rem]">
+                    თუ გჭირდება სისტემა კონფერენციისთვის, ერთად დავგეგმოთ როგორ გაეშვება
+                  </h2>
+                  <p className="max-w-xl text-base leading-8 text-gray-600">
+                    გაჩვენებთ როგორ იმუშავებს შენს ბრენდზე მორგებული გვერდი, approval flow და დამსწრეთა ნეთვორქინგის მოდელი.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  <a
+                    href="mailto:hello@attenda.ge"
+                    className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-primary px-6 text-sm font-semibold text-white shadow-[0_14px_34px_rgba(37,99,235,0.24)]"
+                  >
+                    hello@attenda.ge
+                  </a>
+                  <a
+                    href="tel:+995599000000"
+                    className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-primary/20 bg-white px-6 text-sm font-semibold text-primary"
+                  >
+                    +995 599 000 000
+                  </a>
+                </div>
               </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="rounded-[24px] border border-white/20 bg-white/10 p-5 backdrop-blur">
-                  <div>
-                    <p className="font-semibold text-white/80">ელფოსტა</p>
-                    <a href="mailto:hello@attenda.ge" className="mt-1 block text-lg font-semibold text-white">hello@attenda.ge</a>
-                  </div>
+
+              <div className="grid gap-px bg-[#d9e7ff] lg:grid-cols-2">
+                <div className="bg-white p-6 sm:p-8">
+                  <p className="text-sm font-medium text-primary">ელფოსტა</p>
+                  <a href="mailto:hello@attenda.ge" className="mt-3 block text-2xl font-semibold text-gray-900">
+                    hello@attenda.ge
+                  </a>
+                  <p className="mt-3 text-sm leading-7 text-gray-600">მოგვწერე brief და დაგიბრუნდებით სამუშაო სცენარით.</p>
                 </div>
-                <div className="rounded-[24px] border border-white/20 bg-white/10 p-5 backdrop-blur">
-                  <div>
-                    <p className="font-semibold text-white/80">ტელეფონი</p>
-                    <a href="tel:+995599000000" className="mt-1 block text-lg font-semibold text-white">+995 599 000 000</a>
-                  </div>
+                <div className="bg-white p-6 sm:p-8">
+                  <p className="text-sm font-medium text-primary">ტელეფონი</p>
+                  <a href="tel:+995599000000" className="mt-3 block text-2xl font-semibold text-gray-900">
+                    +995 599 000 000
+                  </a>
+                  <p className="mt-3 text-sm leading-7 text-gray-600">სწრაფი ჩართვისთვის დაგვიკავშირდი პირდაპირ.</p>
                 </div>
-                <div className="rounded-[24px] border border-white/20 bg-white/10 p-5 backdrop-blur sm:col-span-2">
-                  <p className="text-sm font-semibold text-white/80">დემოს მიზანი</p>
-                  <p className="mt-2 text-base font-semibold text-white">როგორ მიიღებთ მეტ რეგისტრაციას, უფრო სწრაფ approval flow-ს და უკეთეს ნეთვორქინგს ერთ პლატფორმაში.</p>
+                <div className="bg-white p-6 sm:p-8 lg:col-span-2">
+                  <p className="text-sm font-medium text-primary">რას ვფარავთ დემოზე</p>
+                  <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                    <div className="rounded-2xl bg-[linear-gradient(180deg,#f8fbff,#eef5ff)] px-4 py-4 text-sm font-medium text-gray-700">ბრენდირებული კონფერენციის გვერდი</div>
+                    <div className="rounded-2xl bg-[linear-gradient(180deg,#f8fbff,#eef5ff)] px-4 py-4 text-sm font-medium text-gray-700">ჰოსტის approval flow</div>
+                    <div className="rounded-2xl bg-[linear-gradient(180deg,#f8fbff,#eef5ff)] px-4 py-4 text-sm font-medium text-gray-700">დამსწრეთა ნეთვორქინგი</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <footer className="px-5 sm:px-8 lg:px-10 2xl:px-12">
-          <div className="mx-auto grid max-w-screen-2xl gap-8 rounded-[28px] bg-[#081225] px-6 py-8 text-white sm:px-8 lg:grid-cols-[1.2fr_0.8fr_0.8fr] lg:px-10">
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 text-xl font-bold tracking-[-0.03em]">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#2563eb] text-white shadow-[0_10px_24px_rgba(37,99,235,0.34)]">
-                  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden>
-                    <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor" />
-                  </svg>
-                </span>
-                <span>Networkapp</span>
+        <footer className="px-5 pb-12 sm:px-8 lg:px-10 2xl:px-12">
+          <div className="mx-auto max-w-screen-2xl rounded-[40px] bg-[#07101f] px-6 py-8 text-white sm:px-8 lg:px-10 lg:py-10">
+            <div className="grid gap-10 lg:grid-cols-[1.2fr_0.7fr_0.7fr]">
+              <div className="space-y-5">
+                <div className="flex items-center gap-3 text-xl font-bold tracking-[-0.03em]">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white shadow-[0_10px_24px_rgba(37,99,235,0.34)]">
+                    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden>
+                      <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor" />
+                    </svg>
+                  </span>
+                  <span>Networkapp</span>
+                </div>
+                <p className="max-w-md text-sm leading-7 text-white/68">
+                  ბრენდირებული საკონფერენციო პლატფორმა, რომელიც აერთიანებს რეგისტრაციას, დამტკიცებას და ნეთვორქინგს ერთ workflow-ში.
+                </p>
               </div>
-              <p className="max-w-md text-sm leading-7 text-white/70">
-                პლატფორმა კონფერენციებისთვის, სადაც ერთ სივრცეში ერთიანდება რეგისტრაცია, დამსწრეთა დამტკიცება და ნეთვორქინგი.
-              </p>
-            </div>
 
-            <div className="space-y-4">
-              <div className="space-y-3 text-sm">
-                <a href="mailto:hello@attenda.ge" className="block text-white/80 transition hover:text-white">hello@attenda.ge</a>
-                <a href="tel:+995599000000" className="block text-white/80 transition hover:text-white">+995 599 000 000</a>
-                <span className="block text-white/60">თბილისი, საქართველო</span>
+              <div className="space-y-4">
+                <p className="text-sm font-medium text-white/50">კონტაქტი</p>
+                <div className="space-y-3 text-sm">
+                  <a href="mailto:hello@attenda.ge" className="block text-white/80 transition hover:text-white">hello@attenda.ge</a>
+                  <a href="tel:+995599000000" className="block text-white/80 transition hover:text-white">+995 599 000 000</a>
+                  <span className="block text-white/55">თბილისი, საქართველო</span>
+                </div>
               </div>
-            </div>
 
-            <div className="space-y-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/55">სოციალური არხები</p>
-              <div className="space-y-3 text-sm">
-                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="block text-white/80 transition hover:text-white">LinkedIn</a>
-                <a href="https://facebook.com" target="_blank" rel="noreferrer" className="block text-white/80 transition hover:text-white">Facebook</a>
-                <a href="https://instagram.com" target="_blank" rel="noreferrer" className="block text-white/80 transition hover:text-white">Instagram</a>
+              <div className="space-y-4">
+                <p className="text-sm font-medium text-white/50">სოციალური არხები</p>
+                <div className="space-y-3 text-sm">
+                  <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="block text-white/80 transition hover:text-white">LinkedIn</a>
+                  <a href="https://facebook.com" target="_blank" rel="noreferrer" className="block text-white/80 transition hover:text-white">Facebook</a>
+                  <a href="https://instagram.com" target="_blank" rel="noreferrer" className="block text-white/80 transition hover:text-white">Instagram</a>
+                </div>
               </div>
             </div>
           </div>

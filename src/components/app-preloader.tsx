@@ -8,6 +8,10 @@ export function AppPreloader() {
   const [visible, setVisible] = useState(false);
   const [initialShown, setInitialShown] = useState(false);
 
+  if (pathname === "/") {
+    return null;
+  }
+
   useEffect(() => {
     if (initialShown) {
       return;
