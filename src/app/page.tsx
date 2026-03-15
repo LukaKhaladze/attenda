@@ -227,7 +227,9 @@ export default async function HomePage() {
         <section id="process" className="bg-white px-5 py-20 sm:px-8 lg:px-10 lg:py-24 2xl:px-12">
           <div className="mx-auto max-w-screen-2xl space-y-16">
             <div className="space-y-4 text-center">
-              <h2 className="text-4xl font-bold tracking-[-0.04em] text-[#0f172a] sm:text-[3.2rem]">სამი მარტივი ნაბიჯი</h2>
+              <h2 className="text-4xl font-bold leading-[1.12] tracking-[-0.04em] text-[#0f172a] sm:text-[3.2rem]">
+                სამი მარტივი ნაბიჯი
+              </h2>
               <p className="mx-auto max-w-2xl text-lg leading-8 text-slate-500">მუშაობის ლოგიკა მარტივია როგორც ორგანიზატორისთვის, ისე ჰოსტისა და დამსწრისთვის.</p>
             </div>
 
@@ -256,16 +258,20 @@ export default async function HomePage() {
                     )}
                   </div>
                   <p className="mt-6 text-sm font-semibold uppercase tracking-[0.14em] text-[#2563eb]">ნაბიჯი {item.step}</p>
-                  <h3 className="mt-3 text-[1.95rem] font-semibold tracking-[-0.03em] text-[#0f172a]">{item.title}</h3>
-                  <p className="mt-3 text-lg leading-8 text-slate-500">{item.body}</p>
+                  <h3 className="mt-3 text-[1.95rem] font-semibold leading-[1.24] tracking-[-0.03em] text-[#0f172a]">
+                    {item.title}
+                  </h3>
+                  <p className="mt-4 text-lg leading-[1.8] text-slate-500">{item.body}</p>
                 </div>
               ))}
             </div>
 
             <div className="overflow-hidden rounded-[38px] bg-[linear-gradient(135deg,#1d4ed8,#2563eb,#38bdf8)] px-8 py-14 text-center text-white shadow-[0_32px_80px_rgba(37,99,235,0.2)] sm:px-12 sm:py-16">
               <div className="mx-auto max-w-3xl">
-                <h3 className="text-4xl font-bold tracking-[-0.05em] sm:text-[3.2rem]">მზად ხარ შემდეგი ივენთისთვის?</h3>
-                <p className="mx-auto mt-4 max-w-2xl text-lg leading-8 text-white/88 sm:text-[1.2rem]">
+                <h3 className="text-4xl font-bold leading-[1.12] tracking-[-0.05em] sm:text-[3.2rem]">
+                  მზად ხარ შემდეგი ივენთისთვის?
+                </h3>
+                <p className="mx-auto mt-5 max-w-2xl text-lg leading-[1.8] text-white/88 sm:text-[1.2rem]">
                   დაგეხმარებით სწრაფად ააწყო გვერდი, approval flow და ჰოსტის სამუშაო პროცესი ერთ სისტემაში.
                 </p>
                 <CallbackRequestModal
