@@ -87,7 +87,7 @@ export default async function HomePage() {
 
   return (
     <Shell hideHeader>
-      <section className="-mx-4 -mt-4 space-y-0 pb-12 sm:-mx-6 sm:-mt-4 lg:-mx-8 lg:-mt-4">
+      <section className="-mx-4 -mb-4 -mt-4 space-y-0 pb-12 sm:-mx-6 sm:-mb-6 sm:-mt-4 lg:-mx-8 lg:-mb-8 lg:-mt-4">
         <section className="px-0 pt-0">
           <div className="relative overflow-hidden border-y border-white/10 bg-[#0b1733] shadow-[0_24px_80px_rgba(11,23,51,0.26)] sm:rounded-[0]">
             <div
