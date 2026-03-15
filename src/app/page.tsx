@@ -302,22 +302,56 @@ export default async function HomePage() {
         </section>
 
         <section id="process" className="px-5 py-16 sm:px-8 lg:px-10 lg:py-20 2xl:px-12">
-          <div className="mx-auto max-w-screen-2xl space-y-8">
-            <div className="max-w-2xl space-y-4">
-              <h2 className="text-3xl font-bold text-gray-900 sm:text-[2.5rem]">სამი ნაბიჯი გაშვებიდან შეხვედრამდე</h2>
+          <div className="mx-auto max-w-screen-2xl space-y-16">
+            <div className="space-y-5 text-center">
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#f97316]">როგორ მუშაობს</p>
+              <h2 className="text-4xl font-bold tracking-[-0.04em] text-gray-900 sm:text-[3.35rem]">სამი მარტივი ნაბიჯი</h2>
             </div>
 
-            <div className="grid gap-4 lg:grid-cols-3">
+            <div className="grid gap-12 lg:grid-cols-3 lg:gap-10">
               {steps.map((item) => (
-                <div key={item.step} className="relative overflow-hidden rounded-[30px] border border-gray-200 bg-white p-6 shadow-[0_18px_48px_rgba(17,24,39,0.05)]">
-                  <span className="inline-flex h-12 min-w-12 items-center justify-center rounded-2xl bg-primary text-sm font-semibold text-white">
-                    {item.step}
-                  </span>
-                  <h3 className="mt-8 text-2xl font-semibold text-gray-900">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-gray-600">{item.body}</p>
-                  <div className="mt-8 h-1 w-16 rounded-full bg-[linear-gradient(90deg,#2563eb,#7dd3fc)]" />
+                <div key={item.step} className="mx-auto flex max-w-[340px] flex-col items-center text-center">
+                  <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-[linear-gradient(180deg,#fb923c,#f97316)] text-white shadow-[0_18px_34px_rgba(249,115,22,0.28)]">
+                    {item.step === "01" ? (
+                      <svg className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                        <circle cx="11" cy="11" r="6" />
+                        <path d="m20 20-3.5-3.5" />
+                      </svg>
+                    ) : item.step === "02" ? (
+                      <svg className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                        <rect x="3" y="4" width="18" height="17" rx="2" />
+                        <path d="M8 2v4M16 2v4M3 10h18" />
+                        <path d="m9 15 2 2 4-4" />
+                      </svg>
+                    ) : (
+                      <svg className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                        <path d="M7 12a3 3 0 0 1 3-3h4" />
+                        <path d="M17 12a3 3 0 0 1-3 3h-4" />
+                        <path d="M8.5 15.5 4 20" />
+                        <path d="M19.5 8.5 15 4" />
+                      </svg>
+                    )}
+                  </div>
+                  <p className="mt-6 text-sm font-medium text-[#f97316]">Step {item.step.replace(/^0/, "")}</p>
+                  <h3 className="mt-2 text-[2rem] font-semibold tracking-[-0.03em] text-gray-900">{item.title}</h3>
+                  <p className="mt-3 text-lg leading-8 text-gray-500">{item.body}</p>
                 </div>
               ))}
+            </div>
+
+            <div className="overflow-hidden rounded-[34px] bg-[linear-gradient(135deg,#fb7185,#f97316,#f59e0b)] px-8 py-12 text-center text-white shadow-[0_32px_80px_rgba(249,115,22,0.24)] sm:px-12 sm:py-16">
+              <div className="mx-auto max-w-3xl">
+                <h3 className="text-4xl font-bold tracking-[-0.05em] sm:text-[3.2rem]">მზად ხარ უკეთესი ივენთისთვის?</h3>
+                <p className="mx-auto mt-4 max-w-2xl text-lg leading-8 text-white/88 sm:text-[1.3rem]">
+                  დავგეგმოთ როგორ გაუშვებ რეგისტრაციას, approval-ს და ნეთვორქინგს ერთ სისტემაში.
+                </p>
+                <a
+                  href="#contact"
+                  className="mt-8 inline-flex min-h-14 items-center justify-center rounded-2xl border border-white/40 bg-white/20 px-8 text-lg font-semibold text-white shadow-[0_12px_28px_rgba(255,255,255,0.12)] backdrop-blur transition hover:bg-white hover:text-[#111827]"
+                >
+                  დავჯავშნოთ ზარი
+                </a>
+              </div>
             </div>
           </div>
         </section>
