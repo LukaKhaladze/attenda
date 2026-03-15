@@ -8,34 +8,34 @@ import { prisma } from "@/lib/prisma";
 const valuePoints = [
   {
     title: "მზად landing page-სთან ერთად",
-    body: "ღონისძიებას მაშინვე აქვს ბრენდირებული გვერდი, QR და გაზიარებადი ბმული."
+    body: "ბრენდირებული გვერდი, QR და გაზიარებადი ბმული."
   },
   {
     title: "ჰოსტის სწრაფი approval flow",
-    body: "ჰოსტი ერთ ეკრანიდან ამტკიცებს ან მალავს დამსწრეებს დამატებითი ქაოსის გარეშე."
+    body: "დამტკიცება და დამალვა ერთ ეკრანიდან."
   },
   {
     title: "ნეთვორქინგი რეალურ შეხვედრებამდე",
-    body: "დამტკიცებული დამსწრეები ერთმანეთს პოულობენ და გზავნიან შეხვედრის შეთავაზებებს."
+    body: "დამსწრეები პოულობენ ერთმანეთს და გზავნიან შეხვედრებს."
   }
 ];
 
 const featureStories = [
   {
     title: "ქასთომ კონფერენციის გვერდი და სუბდომენი",
-    body: "თითო ღონისძიება იღებს საკუთარ საჯარო გვერდს, უნიკალურ ბმულს და სურვილის შემთხვევაში ქასთომ სუბდომენს.",
+    body: "საკუთარი გვერდი, ბმული და სურვილის შემთხვევაში სუბდომენი.",
     image:
       "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1400&q=80"
   },
   {
     title: "ჰოსტის პანელი მინიჭებული კონფერენციისთვის",
-    body: "ჰოსტი ხედავს მხოლოდ თავის ღონისძიებას, ამტკიცებს რეგისტრაციებს და არედაქტირებს კონფერენციის მთავარ ინფორმაციას.",
+    body: "ჰოსტი მართავს მხოლოდ თავის ღონისძიებას და ამტკიცებს რეგისტრაციებს.",
     image:
       "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1400&q=80"
   },
   {
     title: "დამსწრეები, შეხვედრები და რეალური ნეთვორქინგი",
-    body: "დამტკიცებული პროფილები ჩნდება საჯარო სიაში, სადაც დამსწრეები პოულობენ ერთმანეთს და აგზავნიან შეხვედრის შეთავაზებებს.",
+    body: "დამტკიცებული პროფილები ჩნდება საჯაროდ და იწყება ნეთვორქინგი.",
     image:
       "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1400&q=80"
   }
@@ -45,17 +45,17 @@ const steps = [
   {
     step: "01",
     title: "ადმინი ამატებს კონფერენციას",
-    body: "იქმნება ღონისძიება, სუბდომენი, საჯარო გვერდი და ჰოსტის წვდომა."
+    body: "იქმნება გვერდი, სუბდომენი და ჰოსტის წვდომა."
   },
   {
     step: "02",
     title: "ჰოსტი მართავს რეგისტრაციებს",
-    body: "ჰოსტი თავის პანელში ამტკიცებს დამსწრეებს და ანახლებს კონფერენციის ინფორმაციას."
+    body: "ამტკიცებს დამსწრეებს და ანახლებს ინფორმაციას."
   },
   {
     step: "03",
     title: "დამსწრეები უკეთ ნეთვორქინგობენ",
-    body: "დადასტურებული დამსწრეები ჩანან საჯაროდ და აგზავნიან შეხვედრის შეთავაზებებს."
+    body: "საჯარო პროფილები და შეხვედრების შეთავაზებები."
   }
 ];
 
@@ -201,10 +201,7 @@ export default async function HomePage() {
                   <h2 className="text-3xl font-bold leading-[1.02] tracking-[-0.05em] text-gray-900 sm:text-[2.85rem]">
                     ერთი ეკრანიდან ხედავ landing page-ს, რეგისტრაციებს და შეხვედრების workflow-ს
                   </h2>
-                  <p className="max-w-2xl text-base leading-8 text-gray-600">
-                    ეს ბლოკი ახლა მუშაობს როგორც მოკლე sales story: რას იღებს ორგანიზატორი, რატომ არის ჰოსტისთვის მარტივი და
-                    როგორ იქცევა ივენთი უკეთეს ნეთვორქინგად.
-                  </p>
+                  <p className="max-w-2xl text-base leading-8 text-gray-600">სწრაფი გაშვება, მარტივი approval და უკეთესი ნეთვორქინგი.</p>
                 </div>
 
                 <div className="grid gap-4">
@@ -247,21 +244,19 @@ export default async function HomePage() {
                     <h3 className="mt-3 text-2xl font-bold tracking-[-0.04em]">
                       გაყიდვადი საჯარო გვერდი + ადმინისტრაციული კონტროლი ერთ სისტემაში
                     </h3>
-                    <p className="mt-3 text-sm leading-7 text-white/78">
-                      ეს ნაწილი ახლა აღარ არის ფორმა. აქ ვაჩვენებთ რატომ არის პლატფორმა გაყიდვადი თავად პროდუქტის მხრიდან.
-                    </p>
+                    <p className="mt-3 text-sm leading-7 text-white/78">ყველაფერი ერთ სისტემაში, ზედმეტი ინსტრუმენტების გარეშე.</p>
                   </div>
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="rounded-[28px] border border-[#dbeafe] bg-white p-5 shadow-[0_12px_30px_rgba(37,99,235,0.06)]">
                       <p className="text-sm font-medium text-primary">ბრენდინგი</p>
                       <p className="mt-3 text-lg font-semibold text-gray-900">შენი დომენი, შენი ვიზუალი, შენი flow</p>
-                      <p className="mt-2 text-sm leading-7 text-gray-600">ქასთომ სუბდომენი, cover image, agenda და სპიკერები ერთ გვერდზე.</p>
+                      <p className="mt-2 text-sm leading-7 text-gray-600">სუბდომენი და მთავარი კონტენტი ერთ გვერდზე.</p>
                     </div>
                     <div className="rounded-[28px] border border-[#dbeafe] bg-white p-5 shadow-[0_12px_30px_rgba(37,99,235,0.06)]">
                       <p className="text-sm font-medium text-primary">მოქმედება</p>
                       <p className="mt-3 text-lg font-semibold text-gray-900">რეგისტრაციიდან შეხვედრამდე</p>
-                      <p className="mt-2 text-sm leading-7 text-gray-600">approval, საჯარო დამსწრეები და შეხვედრების შეთავაზებები ერთ workflow-ში.</p>
+                      <p className="mt-2 text-sm leading-7 text-gray-600">approval და შეხვედრები ერთ flow-ში.</p>
                     </div>
                   </div>
 
@@ -269,15 +264,15 @@ export default async function HomePage() {
                     <div className="grid gap-4 sm:grid-cols-3">
                       <div>
                         <p className="text-sm font-medium text-primary">საჯარო გვერდი</p>
-                        <p className="mt-2 text-sm leading-7 text-gray-600">პირველი შთაბეჭდილება უკვე პროფესიონალურია.</p>
+                        <p className="mt-2 text-sm leading-7 text-gray-600">ძლიერი პირველი შთაბეჭდილება.</p>
                       </div>
                       <div>
                         <p className="text-sm font-medium text-primary">ჰოსტის პანელი</p>
-                        <p className="mt-2 text-sm leading-7 text-gray-600">გუნდს არ სჭირდება ცალკე ცხრილები და ხელით დამუშავება.</p>
+                        <p className="mt-2 text-sm leading-7 text-gray-600">ნაკლები ხელით დამუშავება.</p>
                       </div>
                       <div>
                         <p className="text-sm font-medium text-primary">ნეთვორქინგი</p>
-                        <p className="mt-2 text-sm leading-7 text-gray-600">ღონისძიება ტოვებს რეალურ ბიზნეს-კონტაქტებს.</p>
+                        <p className="mt-2 text-sm leading-7 text-gray-600">რეალური ბიზნეს-კონტაქტები.</p>
                       </div>
                     </div>
                   </div>
@@ -291,9 +286,7 @@ export default async function HomePage() {
           <div className="mx-auto max-w-screen-2xl space-y-8">
             <div className="max-w-2xl space-y-4 text-white">
               <p className="text-sm font-medium text-[#7dd3fc]">ძირითადი შესაძლებლობები</p>
-              <h2 className="text-3xl font-bold leading-tight sm:text-[2.5rem]">
-                არა უბრალოდ landing page, არამედ სრული working stack კონფერენციისთვის
-              </h2>
+              <h2 className="text-3xl font-bold leading-tight sm:text-[2.5rem]">სრული stack კონფერენციისთვის</h2>
             </div>
 
             <div className="space-y-8">
@@ -353,9 +346,7 @@ export default async function HomePage() {
                   <h2 className="max-w-xl text-3xl font-bold leading-tight text-gray-900 sm:text-[2.6rem]">
                     თუ გჭირდება სისტემა კონფერენციისთვის, ერთად დავგეგმოთ როგორ გაეშვება
                   </h2>
-                  <p className="max-w-xl text-base leading-8 text-gray-600">
-                    გაჩვენებთ როგორ იმუშავებს შენს ბრენდზე მორგებული გვერდი, approval flow და დამსწრეთა ნეთვორქინგის მოდელი.
-                  </p>
+                  <p className="max-w-xl text-base leading-8 text-gray-600">გაჩვენებთ როგორ იმუშავებს შენს ღონისძიებაზე.</p>
                 </div>
                 <div className="flex flex-wrap gap-3">
                   <a
@@ -395,7 +386,7 @@ export default async function HomePage() {
                   <span>Networkapp</span>
                 </div>
                 <p className="max-w-md text-sm leading-7 text-white/68">
-                  ბრენდირებული საკონფერენციო პლატფორმა, რომელიც აერთიანებს რეგისტრაციას, დამტკიცებას და ნეთვორქინგს ერთ workflow-ში.
+                  ბრენდირებული პლატფორმა რეგისტრაციისთვის, approval-ისთვის და ნეთვორქინგისთვის.
                 </p>
               </div>
 
