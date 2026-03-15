@@ -100,7 +100,7 @@ export default async function HomePage() {
 
   return (
     <Shell hideHeader>
-      <section className="-mx-4 space-y-12 pb-12 sm:-mx-6 lg:-mx-8">
+      <section className="-mx-4 -mt-4 space-y-0 pb-12 sm:-mx-6 sm:-mt-4 lg:-mx-8 lg:-mt-4">
         <section className="px-0 pt-0">
           <div className="relative overflow-hidden border-y border-white/10 bg-[#0b1733] shadow-[0_24px_80px_rgba(11,23,51,0.26)] sm:rounded-[0]">
             <div
@@ -190,55 +190,67 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section id="features" className="px-5 sm:px-8 lg:px-10 2xl:px-12">
-          <div className="mx-auto grid max-w-screen-2xl gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-stretch">
-            <div className="rounded-[32px] bg-[linear-gradient(145deg,#0b1733,#163b86)] p-7 text-white shadow-[0_24px_60px_rgba(17,24,39,0.16)] sm:p-8 lg:p-10">
-              <p className="text-sm font-medium text-white/68">რატომ ირჩევენ ორგანიზატორები ამ მოდელს</p>
-              <h2 className="mt-4 max-w-xl text-3xl font-bold leading-tight sm:text-4xl">
-                ერთი სისტემა, რომელიც გაყიდვად რეგისტრაციას და მართვად ოპერაციას აერთიანებს
-              </h2>
-              <p className="mt-4 max-w-xl text-base leading-8 text-white/76">
-                ორგანიზატორი ამზადებს ინფრასტრუქტურას, ჰოსტი მართავს პროცესს, დამსწრე კი იღებს სწრაფ და გამჭვირვალე გამოცდილებას.
-              </p>
+        <section id="features" className="relative z-10 -mt-16 px-5 sm:-mt-20 sm:px-8 lg:-mt-24 lg:px-10 2xl:px-12">
+          <div className="mx-auto max-w-screen-2xl rounded-[36px] border border-gray-200 bg-white p-6 shadow-[0_30px_80px_rgba(15,23,42,0.08)] sm:p-8 lg:p-10">
+            <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
+              <div className="space-y-6">
+                <div className="space-y-4">
+                  <p className="text-sm font-medium text-primary">რატომ მუშაობს ეს მოდელი</p>
+                  <h2 className="max-w-2xl text-3xl font-bold leading-tight text-gray-900 sm:text-[2.7rem]">
+                    ერთი პლატფორმა, რომელიც კონფერენციის ოპერაციას და ნეთვორქინგს ერთად მართავს
+                  </h2>
+                  <p className="max-w-xl text-base leading-8 text-gray-600">
+                    გაყიდვადი landing page, დამტკიცების ნაკადი და შეხვედრების შეთავაზებები ერთიან სისტემაში, რომელიც სწრაფად ეწყობა და მარტივად იმართება.
+                  </p>
+                </div>
 
-              <div className="mt-8 grid gap-4 sm:grid-cols-3">
-                <div className="rounded-2xl border border-white/12 bg-white/8 p-4">
-                  <p className="text-2xl font-bold">{conferenceCount > 0 ? `${conferenceCount}+` : "2+"}</p>
-                  <p className="mt-1 text-sm text-white/68">გაშვებული კონფერენცია</p>
-                </div>
-                <div className="rounded-2xl border border-white/12 bg-white/8 p-4">
-                  <p className="text-2xl font-bold">{attendeeCount > 0 ? `${attendeeCount}+` : "50+"}</p>
-                  <p className="mt-1 text-sm text-white/68">დამტკიცებული დამსწრე</p>
-                </div>
-                <div className="rounded-2xl border border-white/12 bg-white/8 p-4">
-                  <p className="text-2xl font-bold">{approvedMeetingCount > 0 ? `${approvedMeetingCount}+` : "10+"}</p>
-                  <p className="mt-1 text-sm text-white/68">დაგეგმილი შეხვედრა</p>
+                <div className="grid gap-4 sm:grid-cols-3">
+                  <div className="rounded-[28px] bg-[linear-gradient(180deg,#0b1733,#12285d)] p-5 text-white">
+                    <p className="text-3xl font-bold">{conferenceCount > 0 ? `${conferenceCount}+` : "2+"}</p>
+                    <p className="mt-2 text-sm text-white/70">გაშვებული კონფერენცია</p>
+                  </div>
+                  <div className="rounded-[28px] bg-[linear-gradient(180deg,#f8fbff,#eef5ff)] p-5">
+                    <p className="text-3xl font-bold text-gray-900">{attendeeCount > 0 ? `${attendeeCount}+` : "50+"}</p>
+                    <p className="mt-2 text-sm text-gray-600">დამტკიცებული დამსწრე</p>
+                  </div>
+                  <div className="rounded-[28px] bg-[linear-gradient(180deg,#f8fbff,#eef5ff)] p-5">
+                    <p className="text-3xl font-bold text-gray-900">{approvedMeetingCount > 0 ? `${approvedMeetingCount}+` : "10+"}</p>
+                    <p className="mt-2 text-sm text-gray-600">დაგეგმილი შეხვედრა</p>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="grid gap-4">
-              {audience.map((item, index) => (
-                <UICard key={item.title} className="min-h-[180px] border border-gray-100 bg-[linear-gradient(180deg,#ffffff,#f8fbff)] p-6 shadow-[0_18px_40px_rgba(15,23,42,0.06)]">
-                  <div className="flex items-start gap-4">
-                    <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                      <span className="text-sm font-semibold">0{index + 1}</span>
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-gray-900">{item.title}</h3>
-                      <p className="mt-3 text-sm leading-7 text-gray-600">{item.body}</p>
+              <div className="grid gap-4">
+                {audience.map((item, index) => (
+                  <div key={item.title} className="rounded-[28px] border border-gray-200 bg-[linear-gradient(180deg,#ffffff,#f6faff)] p-5">
+                    <div className="flex items-start gap-4">
+                      <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary text-sm font-semibold text-white">
+                        0{index + 1}
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900">{item.title}</h3>
+                        <p className="mt-2 text-sm leading-7 text-gray-600">{item.body}</p>
+                      </div>
                     </div>
                   </div>
-                </UICard>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </section>
 
-        <section className="px-5 sm:px-8 lg:px-10 2xl:px-12">
+        <section className="bg-[#081225] px-5 py-16 sm:px-8 lg:px-10 lg:py-20 2xl:px-12">
           <div className="mx-auto max-w-screen-2xl space-y-8">
+            <div className="max-w-2xl space-y-4 text-white">
+              <p className="text-sm font-medium text-[#7dd3fc]">ძირითადი შესაძლებლობები</p>
+              <h2 className="text-3xl font-bold leading-tight sm:text-[2.5rem]">
+                არა უბრალოდ landing page, არამედ სრული working stack კონფერენციისთვის
+              </h2>
+            </div>
+
+            <div className="space-y-8">
             {featureStories.map((feature, index) => (
-              <article key={feature.title} className={`grid gap-6 overflow-hidden rounded-[32px] border border-gray-200 bg-[linear-gradient(180deg,#ffffff,#f4f9ff)] p-5 shadow-[0_18px_48px_rgba(17,24,39,0.06)] lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-10 lg:p-8 ${index % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""}`}>
+              <article key={feature.title} className={`grid gap-6 overflow-hidden rounded-[32px] border border-white/10 bg-white/5 p-5 backdrop-blur-sm lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-10 lg:p-8 ${index % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""}`}>
                 <div
                   className="min-h-[320px] rounded-[24px] bg-cover bg-center"
                   style={{
@@ -250,56 +262,61 @@ export default async function HomePage() {
                     0{index + 1}
                   </div>
                   <div className="space-y-3">
-                    <h3 className="text-3xl font-bold text-gray-900">{feature.title}</h3>
-                    <p className="max-w-xl text-base leading-8 text-gray-600">{feature.body}</p>
+                    <h3 className="text-3xl font-bold text-white">{feature.title}</h3>
+                    <p className="max-w-xl text-base leading-8 text-white/72">{feature.body}</p>
                   </div>
                 </div>
               </article>
             ))}
+            </div>
           </div>
         </section>
 
-        <section id="process" className="px-5 sm:px-8 lg:px-10 2xl:px-12">
-          <div className="mx-auto max-w-screen-2xl space-y-5 rounded-[28px] border border-gray-200 bg-white px-5 py-6 shadow-[0_18px_48px_rgba(17,24,39,0.06)] sm:px-6 lg:px-8 lg:py-8">
-            <div className="space-y-2 text-center">
-              <h2 className="text-3xl font-bold text-gray-900">სამი ნაბიჯი გაშვებიდან შეხვედრამდე</h2>
+        <section id="process" className="px-5 py-16 sm:px-8 lg:px-10 lg:py-20 2xl:px-12">
+          <div className="mx-auto max-w-screen-2xl space-y-8">
+            <div className="max-w-2xl space-y-4">
+              <p className="text-sm font-medium text-primary">ოპერაციული ნაკადი</p>
+              <h2 className="text-3xl font-bold text-gray-900 sm:text-[2.5rem]">სამი ნაბიჯი გაშვებიდან შეხვედრამდე</h2>
             </div>
 
             <div className="grid gap-4 lg:grid-cols-3">
               {steps.map((item) => (
-                <UICard key={item.step} className="min-h-[180px] border-gray-100 bg-[linear-gradient(180deg,#ffffff,#fbfcff)]">
-                  <span className="inline-flex h-10 min-w-10 items-center justify-center rounded-2xl bg-primary text-sm font-semibold text-white">
+                <div key={item.step} className="relative overflow-hidden rounded-[30px] border border-gray-200 bg-white p-6 shadow-[0_18px_48px_rgba(17,24,39,0.05)]">
+                  <span className="inline-flex h-12 min-w-12 items-center justify-center rounded-2xl bg-primary text-sm font-semibold text-white">
                     {item.step}
                   </span>
-                  <h3 className="mt-5 text-xl font-semibold text-gray-900">{item.title}</h3>
+                  <h3 className="mt-8 text-2xl font-semibold text-gray-900">{item.title}</h3>
                   <p className="mt-3 text-sm leading-7 text-gray-600">{item.body}</p>
-                </UICard>
+                  <div className="mt-8 h-1 w-16 rounded-full bg-[linear-gradient(90deg,#2563eb,#7dd3fc)]" />
+                </div>
               ))}
             </div>
           </div>
         </section>
 
         <section id="contact" className="px-5 sm:px-8 lg:px-10 2xl:px-12">
-          <div className="mx-auto max-w-screen-2xl overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#1d4ed8,#38bdf8)] px-5 py-8 text-white shadow-[0_20px_60px_rgba(37,99,235,0.25)] sm:px-8 lg:px-10 lg:py-10">
-            <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+          <div className="mx-auto max-w-screen-2xl overflow-hidden rounded-[36px] bg-[linear-gradient(135deg,#1d4ed8,#38bdf8)] px-5 py-10 text-white shadow-[0_20px_60px_rgba(37,99,235,0.25)] sm:px-8 lg:px-12 lg:py-12">
+            <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
               <div className="space-y-3">
                 <h2 className="text-3xl font-bold">თუ გჭირდება ბრენდირებული საკონფერენციო პლატფორმა, დავგეგმოთ დემო</h2>
                 <p className="max-w-2xl text-sm leading-7 text-white/84">თუ გჭირდება პლატფორმა კონფერენციისთვის, გაჩვენებთ სამუშაო დემოს და დაგიგეგმავთ გაშვებას.</p>
               </div>
-              <div className="rounded-[24px] border border-white/20 bg-white/10 p-5 backdrop-blur">
-                <div className="space-y-4 text-sm">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="rounded-[24px] border border-white/20 bg-white/10 p-5 backdrop-blur">
                   <div>
                     <p className="font-semibold text-white/80">ელფოსტა</p>
                     <a href="mailto:hello@attenda.ge" className="mt-1 block text-lg font-semibold text-white">hello@attenda.ge</a>
                   </div>
+                </div>
+                <div className="rounded-[24px] border border-white/20 bg-white/10 p-5 backdrop-blur">
                   <div>
                     <p className="font-semibold text-white/80">ტელეფონი</p>
                     <a href="tel:+995599000000" className="mt-1 block text-lg font-semibold text-white">+995 599 000 000</a>
                   </div>
-                  <div className="rounded-2xl border border-white/20 bg-white/10 px-4 py-4">
-                    <p className="text-sm font-semibold text-white/80">დემოს მიზანი</p>
-                    <p className="mt-2 text-base font-semibold text-white">როგორ მიიღებთ მეტ რეგისტრაციას და უკეთეს ნეთვორქინგს ერთ პლატფორმაში.</p>
-                  </div>
+                </div>
+                <div className="rounded-[24px] border border-white/20 bg-white/10 p-5 backdrop-blur sm:col-span-2">
+                  <p className="text-sm font-semibold text-white/80">დემოს მიზანი</p>
+                  <p className="mt-2 text-base font-semibold text-white">როგორ მიიღებთ მეტ რეგისტრაციას, უფრო სწრაფ approval flow-ს და უკეთეს ნეთვორქინგს ერთ პლატფორმაში.</p>
                 </div>
               </div>
             </div>
