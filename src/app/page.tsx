@@ -20,24 +20,26 @@ const valuePoints = [
   }
 ];
 
-const featureStories = [
+const platformCards = [
   {
-    title: "ქასთომ კონფერენციის გვერდი და სუბდომენი",
-    body: "საკუთარი გვერდი და სუბდომენი.",
-    image:
-      "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1400&q=80"
+    title: "საჯარო გვერდი",
+    body: "ბრენდირებული გვერდი, agenda და სპიკერები ერთ სივრცეში.",
+    icon: "page"
   },
   {
-    title: "ჰოსტის პანელი მინიჭებული კონფერენციისთვის",
-    body: "ჰოსტი მართავს რეგისტრაციებს.",
-    image:
-      "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1400&q=80"
+    title: "ჰოსტის პანელი",
+    body: "დამტკიცება, დამალვა და ძირითადი მართვა ერთ ეკრანიდან.",
+    icon: "panel"
   },
   {
-    title: "დამსწრეები, შეხვედრები და რეალური ნეთვორქინგი",
-    body: "საჯარო პროფილები და შეხვედრები.",
-    image:
-      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1400&q=80"
+    title: "ნეთვორქინგი",
+    body: "საჯარო პროფილები და შეხვედრების შეთავაზებები.",
+    icon: "network"
+  },
+  {
+    title: "QR და გაზიარება",
+    body: "მარტივი გავრცელება სტუმრებისთვის და სპიკერებისთვის.",
+    icon: "share"
   }
 ];
 
@@ -271,32 +273,49 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section className="bg-[#081225] px-5 py-16 sm:px-8 lg:px-10 lg:py-20 2xl:px-12">
-          <div className="mx-auto max-w-screen-2xl space-y-8">
-            <div className="max-w-2xl space-y-4 text-white">
-              <h2 className="text-3xl font-bold leading-tight sm:text-[2.5rem]">სრული stack კონფერენციისთვის</h2>
+        <section className="bg-[#6f9eac] px-5 py-16 sm:px-8 lg:px-10 lg:py-20 2xl:px-12">
+          <div className="mx-auto max-w-screen-2xl space-y-12">
+            <div className="mx-auto max-w-3xl space-y-4 text-center">
+              <h2 className="text-4xl font-bold tracking-[-0.04em] text-white sm:text-[3.15rem]">პლატფორმის მთავარი შესაძლებლობები</h2>
+              <p className="text-lg leading-8 text-white/80">ყველაფერი, რაც კონფერენციის გვერდს, ჰოსტის მართვას და ნეთვორქინგს სჭირდება.</p>
             </div>
 
-            <div className="space-y-8">
-            {featureStories.map((feature, index) => (
-              <article key={feature.title} className={`grid gap-6 overflow-hidden rounded-[32px] border border-white/10 bg-white/5 p-5 backdrop-blur-sm lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-10 lg:p-8 ${index % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""}`}>
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+              {platformCards.map((feature) => (
                 <div
-                  className="min-h-[320px] rounded-[24px] bg-cover bg-center"
-                  style={{
-                    backgroundImage: `linear-gradient(180deg, rgba(15,23,42,.12), rgba(15,23,42,.4)), url(${feature.image})`
-                  }}
-                />
-                <div className="space-y-5">
-                  <div className="inline-flex h-12 min-w-12 items-center justify-center rounded-2xl bg-[#2563eb] text-sm font-semibold text-white shadow-[0_12px_30px_rgba(37,99,235,0.28)]">
-                    0{index + 1}
+                  key={feature.title}
+                  className="rounded-[28px] border border-white/35 bg-[linear-gradient(180deg,#ffffff,#f6fbff)] p-6 text-center shadow-[0_18px_40px_rgba(15,23,42,0.08)]"
+                >
+                  <div className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#86b7c5] text-white">
+                    {feature.icon === "page" ? (
+                      <svg className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                        <path d="M8 3h7l4 4v14H8z" />
+                        <path d="M15 3v5h5" />
+                      </svg>
+                    ) : feature.icon === "panel" ? (
+                      <svg className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                        <rect x="3" y="4" width="18" height="16" rx="2" />
+                        <path d="M7 8h10M7 12h6M7 16h8" />
+                      </svg>
+                    ) : feature.icon === "network" ? (
+                      <svg className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                        <circle cx="8" cy="8" r="3" />
+                        <circle cx="16" cy="8" r="3" />
+                        <circle cx="12" cy="16" r="3" />
+                        <path d="M10.5 10.5 11 13M13.5 10.5 13 13" />
+                      </svg>
+                    ) : (
+                      <svg className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                        <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7" />
+                        <path d="M12 16V4" />
+                        <path d="m7 9 5-5 5 5" />
+                      </svg>
+                    )}
                   </div>
-                  <div className="space-y-3">
-                    <h3 className="text-3xl font-bold text-white">{feature.title}</h3>
-                    <p className="max-w-xl text-base leading-8 text-white/72">{feature.body}</p>
-                  </div>
+                  <h3 className="mt-5 text-xl font-bold tracking-[0.14em] text-[#6f9eac] uppercase">{feature.title}</h3>
+                  <p className="mt-4 text-base leading-8 text-gray-600">{feature.body}</p>
                 </div>
-              </article>
-            ))}
+              ))}
             </div>
           </div>
         </section>
