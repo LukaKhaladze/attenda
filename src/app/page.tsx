@@ -5,21 +5,6 @@ import { CallbackRequestModal } from "@/components/callback-request-modal";
 import { Shell } from "@/components/shell";
 import { prisma } from "@/lib/prisma";
 
-const valuePoints = [
-  {
-    title: "მზად landing page-სთან ერთად",
-    body: "ბრენდირებული გვერდი, QR და გაზიარებადი ბმული."
-  },
-  {
-    title: "ჰოსტის სწრაფი approval flow",
-    body: "დამტკიცება და დამალვა ერთ ეკრანიდან."
-  },
-  {
-    title: "ნეთვორქინგი რეალურ შეხვედრებამდე",
-    body: "დამსწრეები პოულობენ ერთმანეთს და გზავნიან შეხვედრებს."
-  }
-];
-
 const platformCards = [
   {
     title: "საჯარო გვერდი",
@@ -192,88 +177,7 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section id="features" className="relative z-10 -mt-16 px-5 sm:-mt-20 sm:px-8 lg:-mt-24 lg:px-10 2xl:px-12">
-          <div className="mx-auto max-w-screen-2xl overflow-hidden rounded-[40px] border border-[#dbeafe] bg-[linear-gradient(180deg,#ffffff,#f8fbff)] shadow-[0_34px_90px_rgba(15,23,42,0.08)]">
-            <div className="grid gap-0 lg:grid-cols-[1.08fr_0.92fr]">
-              <div className="space-y-8 px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
-                <div className="max-w-3xl space-y-5">
-                  <h2 className="text-3xl font-bold leading-[1.02] tracking-[-0.05em] text-gray-900 sm:text-[2.85rem]">
-                    პლატფორმა, სადაც კონფერენციის მთავარი პროცესები ერთდება
-                  </h2>
-                </div>
-
-                <div className="grid gap-4">
-                  {valuePoints.map((item, index) => (
-                    <div
-                      key={item.title}
-                      className="grid gap-4 rounded-[28px] border border-[#e4ecff] bg-white p-5 shadow-[0_12px_30px_rgba(37,99,235,0.06)] sm:grid-cols-[auto_1fr]"
-                    >
-                      <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#2563eb,#60a5fa)] text-sm font-semibold text-white shadow-[0_12px_30px_rgba(37,99,235,0.22)]">
-                        0{index + 1}
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900">{item.title}</h3>
-                        <p className="mt-2 text-sm leading-7 text-gray-600">{item.body}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-3">
-                  <div className="rounded-[28px] bg-[linear-gradient(180deg,#081225,#10285d)] p-5 text-white">
-                    <p className="text-3xl font-bold">{conferenceCount > 0 ? `${conferenceCount}+` : "2+"}</p>
-                    <p className="mt-2 text-sm text-white/70">ღონისძიება</p>
-                  </div>
-                  <div className="rounded-[28px] border border-[#dbeafe] bg-[#f8fbff] p-5">
-                    <p className="text-3xl font-bold text-gray-900">{attendeeCount > 0 ? `${attendeeCount}+` : "50+"}</p>
-                    <p className="mt-2 text-sm text-gray-600">დამსწრე</p>
-                  </div>
-                  <div className="rounded-[28px] border border-[#dbeafe] bg-[#f8fbff] p-5">
-                    <p className="text-3xl font-bold text-gray-900">{approvedMeetingCount > 0 ? `${approvedMeetingCount}+` : "10+"}</p>
-                    <p className="mt-2 text-sm text-gray-600">შეხვედრა</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="border-t border-[#dbeafe] bg-[radial-gradient(circle_at_top,rgba(96,165,250,0.18),transparent_32%),linear-gradient(180deg,#eef5ff,#ffffff)] px-6 py-8 sm:px-8 sm:py-10 lg:border-l lg:border-t-0 lg:px-10 lg:py-12">
-                <div className="space-y-5">
-                  <div className="rounded-[32px] bg-[linear-gradient(135deg,#081225,#153371)] p-6 text-white shadow-[0_24px_60px_rgba(8,18,37,0.28)] sm:p-7">
-                    <h3 className="mt-3 text-2xl font-bold tracking-[-0.04em]">
-                      საჯარო გვერდი, approval და ნეთვორქინგი
-                    </h3>
-                  </div>
-
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div className="rounded-[28px] border border-[#dbeafe] bg-white p-5 shadow-[0_12px_30px_rgba(37,99,235,0.06)]">
-                      <p className="text-lg font-semibold text-gray-900">ბრენდირებული გვერდი</p>
-                      <p className="mt-2 text-sm leading-7 text-gray-600">სუბდომენი და მთავარი კონტენტი.</p>
-                    </div>
-                    <div className="rounded-[28px] border border-[#dbeafe] bg-white p-5 shadow-[0_12px_30px_rgba(37,99,235,0.06)]">
-                      <p className="text-lg font-semibold text-gray-900">ერთი workflow</p>
-                      <p className="mt-2 text-sm leading-7 text-gray-600">რეგისტრაცია, approval და შეხვედრები.</p>
-                    </div>
-                  </div>
-
-                  <div className="rounded-[28px] border border-[#dbeafe] bg-white p-5 shadow-[0_12px_30px_rgba(37,99,235,0.06)]">
-                    <div className="grid gap-4 sm:grid-cols-3">
-                      <div>
-                        <p className="text-sm font-medium text-primary">საჯარო გვერდი</p>
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-primary">ჰოსტის პანელი</p>
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-primary">ნეთვორქინგი</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-[#6f9eac] px-5 py-16 sm:px-8 lg:px-10 lg:py-20 2xl:px-12">
+        <section id="features" className="bg-[#6f9eac] px-5 py-16 sm:px-8 lg:px-10 lg:py-20 2xl:px-12">
           <div className="mx-auto max-w-screen-2xl space-y-12">
             <div className="mx-auto max-w-3xl space-y-4 text-center">
               <h2 className="text-4xl font-bold tracking-[-0.04em] text-white sm:text-[3.15rem]">პლატფორმის მთავარი შესაძლებლობები</h2>
