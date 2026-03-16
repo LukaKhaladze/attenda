@@ -285,8 +285,8 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <footer id="contact" className="-mx-4 bg-[#141c27] px-5 pb-12 pt-16 text-white sm:-mx-6 sm:px-8 lg:-mx-8 lg:px-10 lg:pt-20 2xl:px-12">
-          <div className="mx-auto max-w-screen-2xl px-1 sm:px-2 lg:px-4">
+        <footer id="contact" className="bg-[#141c27] px-5 pb-12 pt-16 text-white sm:px-8 lg:px-10 lg:pt-20 2xl:px-12">
+          <div className="mx-auto max-w-screen-2xl">
             <div className="grid gap-12 lg:grid-cols-[1.35fr_0.65fr_0.65fr]">
               <div className="space-y-6">
                 <div className="flex items-center gap-3 text-xl font-bold tracking-[-0.03em]">

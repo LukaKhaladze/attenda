@@ -21,7 +21,7 @@ export function createIcsFile(params: {
   return [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Attenda.ge//Conference Networking//KA",
+    "PRODID:-//Networkapp//Conference Networking//KA",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",

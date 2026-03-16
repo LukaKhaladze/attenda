@@ -33,7 +33,7 @@ export async function sendResetEmail(params: { email: string; resetUrl: string }
     body: JSON.stringify({
       from,
       to: params.email,
-      subject: "პაროლის აღდგენა - Attenda.ge",
+      subject: "პაროლის აღდგენა - Networkapp",
       html: `
         <div style="font-family: Inter, Arial, sans-serif; line-height: 1.6; color: #111827;">
           <h2>პაროლის აღდგენა</h2>

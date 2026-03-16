@@ -4,8 +4,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Attenda.ge - კონფერენციის ქსელი",
-  description: "კონფერენციის დამსწრეთა რეგისტრაცია და პროფესიული ქსელის მართვა"
+  title: "Networkapp - კონფერენციების მართვა და ნეთვორქინგი",
+  description: "კონფერენციის გვერდები, ჰოსტის მართვა, დამსწრეთა approval და ნეთვორქინგი ერთ პლატფორმაში"
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

@@ -24,7 +24,7 @@ export async function GET(request: NextRequest, { params }: { params: { attendee
   }
 
   const ics = createIcsFile({
-    uid: `${attendee.id}@attenda.ge`,
+    uid: `${attendee.id}@networkapp.ge`,
     title,
     description: `შეხვედრა დამსწრესთან: ${attendee.fullName}\nLinkedIn: ${attendee.linkedinUrl}\n${notes}`,
     startsAt,

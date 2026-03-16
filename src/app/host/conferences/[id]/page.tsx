@@ -149,8 +149,8 @@ export default async function HostConferencePage({ params }: { params: { id: str
             </label>
             <label className="space-y-1">
               <span className="block text-sm font-medium text-brand-800">ქასთომ სუბდომენი</span>
-              <span className="block text-xs text-brand-600">არასავალდებულოა. გამოიყენე თუ ღონისძიებას საკუთარი მისამართი უნდა ჰქონდეს.</span>
-              <input name="customSubdomain" defaultValue={conference.customSubdomain ?? ""} placeholder="მაგ: itmeet" />
+              <span className="block text-xs text-brand-600">არასავალდებულოა. მაგალითი: `event` გახდება `event.networkapp.ge`.</span>
+              <input name="customSubdomain" defaultValue={conference.customSubdomain ?? ""} placeholder="მაგ: event" />
             </label>
             <label className="space-y-1">
               <span className="block text-sm font-medium text-brand-800">სათაური</span>

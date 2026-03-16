@@ -219,7 +219,11 @@ export default async function AdminConferencePage({ params }: { params: { id: st
             <input type="hidden" name="existingCoverImageUrl" value={conference.coverImageUrl ?? ""} />
           <div className="grid gap-3 sm:grid-cols-2">
             <input name="slug" defaultValue={conference.slug} placeholder="სლაგი (ლათინური ასოებით)" required />
-            <input name="customSubdomain" defaultValue={conference.customSubdomain ?? ""} placeholder="ქასთომ სუბდომენი (მაგ: itmeet)" />
+            <label className="space-y-1">
+              <span className="block text-sm font-medium text-brand-800">ქასთომ სუბდომენი</span>
+              <span className="block text-xs text-brand-600">მაგალითი: `event` გახდება `event.networkapp.ge`.</span>
+              <input name="customSubdomain" defaultValue={conference.customSubdomain ?? ""} placeholder="მაგ: event" />
+            </label>
             <input name="title_ka" defaultValue={conference.title_ka} placeholder="სათაური" required />
             <input type="datetime-local" name="date" defaultValue={conference.date.toISOString().slice(0, 16)} required />
             <input name="location_ka" defaultValue={conference.location_ka} placeholder="ლოკაცია" required />
@@ -296,7 +300,7 @@ export default async function AdminConferencePage({ params }: { params: { id: st
                 <div key={assignment.id} className="rounded-xl border border-brand-100 p-4">
                   <p className="text-sm font-semibold text-brand-900">{assignment.user.name || assignment.user.email}</p>
                   <p className="text-sm text-brand-700">{assignment.user.email}</p>
-                  <p className="text-xs text-brand-600">შესასვლელი პანელი: /host/signin</p>
+                  <p className="text-xs text-brand-600">ჰოსტის პანელი: /host/signin</p>
                 </div>
               ))
             )}

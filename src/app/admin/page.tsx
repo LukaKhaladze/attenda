@@ -84,6 +84,18 @@ async function deleteConference(formData: FormData) {
   redirect("/admin");
 }
 
+async function deleteAllConferences() {
+  "use server";
+
+  const session = await getServerSession(authOptions);
+  if (!hasAdminAccess(session?.user)) {
+    return;
+  }
+
+  await prisma.conference.deleteMany({});
+  redirect("/admin");
+}
+
 export default async function AdminPage() {
   const session = await getServerSession(authOptions);
 
@@ -143,12 +155,28 @@ export default async function AdminPage() {
         </div>
 
         <div className="rounded-2xl border border-brand-100 bg-white p-5 shadow-soft">
-          <h2 className="mb-4 text-xl font-semibold text-brand-900">ახალი კონფერენცია</h2>
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <h2 className="text-xl font-semibold text-brand-900">ახალი კონფერენცია</h2>
+            {conferences.length > 0 ? (
+              <form action={deleteAllConferences}>
+                <button
+                  type="submit"
+                  className="rounded-xl bg-red-100 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-200"
+                >
+                  ყველა კონფერენციის წაშლა
+                </button>
+              </form>
+            ) : null}
+          </div>
           <form action={createConference} className="grid gap-3 sm:grid-cols-3">
             <input name="title_ka" placeholder="სათაური" required />
             <input name="location_ka" placeholder="ლოკაცია" required />
             <input type="datetime-local" name="date" required />
-            <input name="customSubdomain" placeholder="ქასთომ სუბდომენი (მაგ: itmeet)" className="sm:col-span-3" />
+            <label className="space-y-1 sm:col-span-3">
+              <span className="block text-sm font-medium text-brand-800">ქასთომ სუბდომენი</span>
+              <span className="block text-xs text-brand-600">მაგალითი: `event` მიუთითებს მისამართს `event.networkapp.ge`.</span>
+              <input name="customSubdomain" placeholder="მაგ: event" />
+            </label>
             <label className="sm:col-span-3">
               <span className="mb-1 block text-sm font-medium text-brand-800">ქავერის სურათი</span>
               <input type="file" name="coverImageFile" accept="image/*" className="w-full border-dashed" />
@@ -175,7 +203,7 @@ export default async function AdminPage() {
                     <p className="mt-1 text-sm text-brand-700">{conference.location_ka}</p>
                     <p className="text-sm text-brand-700">{conference.date.toISOString().slice(0, 16).replace("T", " ")}</p>
                     <p className="mt-2 text-xs text-brand-800">დამსწრეები: {conference._count.attendees}</p>
-                    {conference.customSubdomain ? <p className="mt-1 text-xs text-brand-700">სუბდომენი: {conference.customSubdomain}</p> : null}
+                    {conference.customSubdomain ? <p className="mt-1 text-xs text-brand-700">სუბდომენი: {conference.customSubdomain}.networkapp.ge</p> : null}
                   </Link>
 
                   <div className="mt-4 flex justify-end">
