@@ -58,52 +58,76 @@ export function ConferencePage({ conference, shareUrl }: Props) {
         </div>
       </UICard>
 
-      <div className="space-y-3">
+      <div className="grid gap-4">
         <Link href={`/attendees?conferenceId=${conference.id}`}>
-          <UICard className="flex h-[72px] items-center gap-3 transition-all hover:-translate-y-0.5 active:scale-[0.99]">
-            <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <UICard className="group flex min-h-[96px] items-center gap-4 rounded-[26px] border border-[#dbe7ff] bg-[linear-gradient(180deg,#ffffff,#f7fbff)] px-5 py-5 shadow-[0_16px_42px_rgba(37,99,235,0.08)] transition-all hover:-translate-y-1 hover:shadow-[0_22px_52px_rgba(37,99,235,0.12)] active:scale-[0.99]">
+            <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[linear-gradient(180deg,#e8f0ff,#dbe7ff)] text-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] transition group-hover:bg-[linear-gradient(180deg,#dbe7ff,#c9dcff)]">
               <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden>
                 <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="2" />
                 <circle cx="16" cy="9" r="2.5" stroke="currentColor" strokeWidth="2" />
                 <path d="M3 20c1.2-3.1 3.5-5 5-5s3.8 1.9 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
               </svg>
             </span>
-            <span className="text-sm font-semibold text-gray-900">დამსწრეები 500+</span>
+            <div className="flex min-w-0 flex-1 items-center justify-between gap-3">
+              <div className="space-y-1">
+                <span className="block text-xl font-bold tracking-[-0.03em] text-[#0f172a]">დამსწრეები</span>
+                <span className="block text-sm leading-6 text-slate-500">ყველა დადასტურებული პროფილი ერთ სიაში</span>
+              </div>
+              <span className="rounded-full bg-[#2563eb] px-3 py-1 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(37,99,235,0.22)]">500+</span>
+            </div>
           </UICard>
         </Link>
 
         <a href="#agenda">
-          <UICard className="flex h-[72px] items-center gap-3 transition-all hover:-translate-y-0.5 active:scale-[0.99]">
-            <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <UICard className="group flex min-h-[96px] items-center gap-4 rounded-[26px] border border-[#dbe7ff] bg-[linear-gradient(180deg,#ffffff,#f7fbff)] px-5 py-5 shadow-[0_16px_42px_rgba(37,99,235,0.08)] transition-all hover:-translate-y-1 hover:shadow-[0_22px_52px_rgba(37,99,235,0.12)] active:scale-[0.99]">
+            <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[linear-gradient(180deg,#e8f0ff,#dbe7ff)] text-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] transition group-hover:bg-[linear-gradient(180deg,#dbe7ff,#c9dcff)]">
               <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden>
                 <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="2" />
                 <path d="M8 3v4M16 3v4M3 10h18" stroke="currentColor" strokeWidth="2" />
               </svg>
             </span>
-            <span className="text-sm font-semibold text-gray-900">დღის წესრიგი {agendaCount > 0 ? `(${agendaCount})` : ""}</span>
+            <div className="flex min-w-0 flex-1 items-center justify-between gap-3">
+              <div className="space-y-1">
+                <span className="block text-xl font-bold tracking-[-0.03em] text-[#0f172a]">დღის წესრიგი</span>
+                <span className="block text-sm leading-6 text-slate-500">სესიის სტრუქტურა და დღის მთავარი ბლოკები</span>
+              </div>
+              <span className="rounded-full border border-[#dbe7ff] bg-white px-3 py-1 text-sm font-semibold text-primary">{agendaCount > 0 ? agendaCount : "0"}</span>
+            </div>
           </UICard>
         </a>
 
         <a href="#speakers">
-          <UICard className="flex h-[72px] items-center gap-3 transition-all hover:-translate-y-0.5 active:scale-[0.99]">
-            <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <UICard className="group flex min-h-[96px] items-center gap-4 rounded-[26px] border border-[#dbe7ff] bg-[linear-gradient(180deg,#ffffff,#f7fbff)] px-5 py-5 shadow-[0_16px_42px_rgba(37,99,235,0.08)] transition-all hover:-translate-y-1 hover:shadow-[0_22px_52px_rgba(37,99,235,0.12)] active:scale-[0.99]">
+            <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[linear-gradient(180deg,#e8f0ff,#dbe7ff)] text-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] transition group-hover:bg-[linear-gradient(180deg,#dbe7ff,#c9dcff)]">
               <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden>
                 <circle cx="12" cy="8" r="3.2" stroke="currentColor" strokeWidth="2" />
                 <path d="M5 19c1.5-3.1 4.3-5 7-5s5.5 1.9 7 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
               </svg>
             </span>
-            <span className="text-sm font-semibold text-gray-900">სპიკერები {speakerCount > 0 ? `(${speakerCount})` : ""}</span>
+            <div className="flex min-w-0 flex-1 items-center justify-between gap-3">
+              <div className="space-y-1">
+                <span className="block text-xl font-bold tracking-[-0.03em] text-[#0f172a]">სპიკერები</span>
+                <span className="block text-sm leading-6 text-slate-500">მოწვეული სპიკერები და პროგრამის მთავარი სახეები</span>
+              </div>
+              <span className="rounded-full border border-[#dbe7ff] bg-white px-3 py-1 text-sm font-semibold text-primary">{speakerCount > 0 ? speakerCount : "0"}</span>
+            </div>
           </UICard>
         </a>
 
         <Link href={`/attendees?conferenceId=${conference.id}`}>
-          <UICard className="flex h-[72px] items-center gap-3 transition-all hover:-translate-y-0.5 active:scale-[0.99]">
-            <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <UICard className="group flex min-h-[96px] items-center gap-4 rounded-[26px] border border-[#dbe7ff] bg-[linear-gradient(180deg,#ffffff,#f7fbff)] px-5 py-5 shadow-[0_16px_42px_rgba(37,99,235,0.08)] transition-all hover:-translate-y-1 hover:shadow-[0_22px_52px_rgba(37,99,235,0.12)] active:scale-[0.99]">
+            <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[linear-gradient(180deg,#e8f0ff,#dbe7ff)] text-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] transition group-hover:bg-[linear-gradient(180deg,#dbe7ff,#c9dcff)]">
               <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden>
                 <path d="M12 2l2.4 4.8L20 8l-4 3.8L17 17l-5-2.6L7 17l1-5.2L4 8l5.6-1.2L12 2z" stroke="currentColor" strokeWidth="2" />
               </svg>
             </span>
-            <span className="text-sm font-semibold text-gray-900">სტუმრები</span>
+            <div className="flex min-w-0 flex-1 items-center justify-between gap-3">
+              <div className="space-y-1">
+                <span className="block text-xl font-bold tracking-[-0.03em] text-[#0f172a]">სტუმრები</span>
+                <span className="block text-sm leading-6 text-slate-500">ღონისძიების საერთო community და networking გარემო</span>
+              </div>
+              <span className="rounded-full border border-[#dbe7ff] bg-white px-3 py-1 text-sm font-semibold text-primary">იხილე</span>
+            </div>
           </UICard>
         </Link>
       </div>
