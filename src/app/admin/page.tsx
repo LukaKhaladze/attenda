@@ -64,6 +64,26 @@ async function createConference(formData: FormData) {
   redirect(`/admin/conferences/${conference.id}`);
 }
 
+async function deleteConference(formData: FormData) {
+  "use server";
+
+  const session = await getServerSession(authOptions);
+  if (!hasAdminAccess(session?.user)) {
+    return;
+  }
+
+  const id = String(formData.get("id") || "");
+  if (!id) {
+    return;
+  }
+
+  await prisma.conference.delete({
+    where: { id }
+  });
+
+  redirect("/admin");
+}
+
 export default async function AdminPage() {
   const session = await getServerSession(authOptions);
 
@@ -146,17 +166,30 @@ export default async function AdminPage() {
           ) : (
             <div className="grid gap-3">
               {conferences.map((conference) => (
-                <Link
+                <article
                   key={conference.id}
-                  href={`/admin/conferences/${conference.id}`}
                   className="rounded-xl border border-brand-100 bg-brand-50/40 p-4 transition hover:border-brand-300"
                 >
-                  <p className="text-lg font-semibold text-brand-900">{conference.title_ka}</p>
-                  <p className="mt-1 text-sm text-brand-700">{conference.location_ka}</p>
-                  <p className="text-sm text-brand-700">{conference.date.toISOString().slice(0, 16).replace("T", " ")}</p>
-                  <p className="mt-2 text-xs text-brand-800">დამსწრეები: {conference._count.attendees}</p>
-                  {conference.customSubdomain ? <p className="mt-1 text-xs text-brand-700">სუბდომენი: {conference.customSubdomain}</p> : null}
-                </Link>
+                  <Link href={`/admin/conferences/${conference.id}`} className="block">
+                    <p className="text-lg font-semibold text-brand-900">{conference.title_ka}</p>
+                    <p className="mt-1 text-sm text-brand-700">{conference.location_ka}</p>
+                    <p className="text-sm text-brand-700">{conference.date.toISOString().slice(0, 16).replace("T", " ")}</p>
+                    <p className="mt-2 text-xs text-brand-800">დამსწრეები: {conference._count.attendees}</p>
+                    {conference.customSubdomain ? <p className="mt-1 text-xs text-brand-700">სუბდომენი: {conference.customSubdomain}</p> : null}
+                  </Link>
+
+                  <div className="mt-4 flex justify-end">
+                    <form action={deleteConference}>
+                      <input type="hidden" name="id" value={conference.id} />
+                      <button
+                        type="submit"
+                        className="rounded-xl bg-red-100 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-200"
+                      >
+                        წაშლა
+                      </button>
+                    </form>
+                  </div>
+                </article>
               ))}
             </div>
           )}
