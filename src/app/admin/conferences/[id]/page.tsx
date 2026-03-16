@@ -191,10 +191,10 @@ export default async function AdminConferencePage({ params }: { params: { id: st
     host
       ? `${forwardedProto || "https"}://${host}`
       : process.env.NEXTAUTH_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
-  const shareUrl = `${origin}/conference/${conference.slug}`;
   const subdomainUrl = conference.customSubdomain && process.env.NEXT_PUBLIC_ROOT_DOMAIN
     ? `https://${conference.customSubdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`
     : null;
+  const shareUrl = subdomainUrl || `${origin}/conference/${conference.slug}`;
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(subdomainUrl || shareUrl)}`;
 
   return (
@@ -244,7 +244,7 @@ export default async function AdminConferencePage({ params }: { params: { id: st
           ) : null}
           {subdomainUrl ? <p className="text-xs text-brand-700">სუბდომენის მისამართი: {subdomainUrl}</p> : null}
           <div className="flex items-center gap-3">
-            <button className="rounded-xl bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700">შენახვა</button>
+            <button className="inline-flex min-h-11 items-center justify-center rounded-xl bg-[#2563eb] px-4 py-2 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(37,99,235,0.22)] transition hover:bg-[#1d4ed8]">შენახვა</button>
             <button formAction={deleteConference} className="rounded-xl bg-red-100 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-200">
               წაშლა
             </button>
@@ -262,6 +262,8 @@ export default async function AdminConferencePage({ params }: { params: { id: st
               <p className="break-all rounded-md bg-brand-50 px-3 py-2 text-sm text-brand-900">{shareUrl}</p>
               {subdomainUrl ? (
                 <>
+                  <p className="mb-1 mt-3 text-xs text-brand-700">სარეზერვო slug ბმული</p>
+                  <p className="break-all rounded-md bg-brand-50 px-3 py-2 text-sm text-brand-900">{origin}/conference/{conference.slug}</p>
                   <p className="mb-1 mt-3 text-xs text-brand-700">ქასთომ სუბდომენი</p>
                   <p className="break-all rounded-md bg-brand-50 px-3 py-2 text-sm text-brand-900">{subdomainUrl}</p>
                 </>
@@ -285,7 +287,7 @@ export default async function AdminConferencePage({ params }: { params: { id: st
             <input name="name" placeholder="ჰოსტის სახელი" />
             <input name="email" type="email" placeholder="ჰოსტის ელფოსტა" required />
             <input name="password" placeholder="საწყისი პაროლი" required />
-            <button className="rounded-xl bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700">
+            <button className="inline-flex min-h-11 items-center justify-center rounded-xl bg-[#2563eb] px-4 py-2 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(37,99,235,0.22)] transition hover:bg-[#1d4ed8]">
               ჰოსტის მინიჭება
             </button>
           </form>
@@ -346,7 +348,7 @@ export default async function AdminConferencePage({ params }: { params: { id: st
                               </option>
                             ))}
                           </select>
-                          <button className="rounded-lg bg-brand-600 px-2 py-1 text-xs text-white">განახლება</button>
+                          <button className="inline-flex min-h-9 items-center justify-center rounded-lg bg-[#2563eb] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#1d4ed8]">განახლება</button>
                         </form>
                       </td>
                     </tr>

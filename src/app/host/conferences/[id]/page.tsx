@@ -200,7 +200,7 @@ export default async function HostConferencePage({ params }: { params: { id: str
           </div>
           <div className="flex items-center justify-between gap-3">
             <p className="text-xs text-brand-700 break-all">{shareUrl}</p>
-            <button className="rounded-xl bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700">შენახვა</button>
+            <button className="inline-flex min-h-11 items-center justify-center rounded-xl bg-[#2563eb] px-4 py-2 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(37,99,235,0.22)] transition hover:bg-[#1d4ed8]">შენახვა</button>
           </div>
         </form>
 
