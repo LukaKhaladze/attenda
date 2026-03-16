@@ -115,32 +115,58 @@ export default async function HomePage() {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(96,165,250,0.24),transparent_34%),radial-gradient(circle_at_right_bottom,rgba(34,211,238,0.14),transparent_18%)]" />
 
             <header className="relative px-5 py-5 sm:px-8 lg:px-10 2xl:px-12">
-              <div className="mx-auto flex max-w-screen-2xl items-center justify-between rounded-[22px] border border-white/20 bg-white/10 px-5 py-4 shadow-[0_18px_40px_rgba(14,17,23,0.22)] backdrop-blur-md">
-                <Link href="/" className="flex items-center gap-3 text-[1.35rem] font-bold tracking-[-0.03em] text-white">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#2563eb] text-white shadow-[0_10px_24px_rgba(37,99,235,0.34)]">
-                    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden>
-                      <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor" />
-                    </svg>
-                  </span>
-                  <span>Networkapp</span>
-                </Link>
+              <div className="mx-auto max-w-screen-2xl rounded-[22px] border border-white/20 bg-white/10 px-4 py-4 shadow-[0_18px_40px_rgba(14,17,23,0.22)] backdrop-blur-md sm:px-5">
+                <div className="flex items-center justify-between gap-4">
+                  <Link href="/" className="flex items-center gap-3 text-[1.2rem] font-bold tracking-[-0.03em] text-white sm:text-[1.35rem]">
+                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#3173f1] text-white shadow-[0_10px_24px_rgba(37,99,235,0.34)]">
+                      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden>
+                        <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor" />
+                      </svg>
+                    </span>
+                    <span>Networkapp</span>
+                  </Link>
 
-                <nav className="hidden items-center gap-10 text-sm font-medium text-white md:flex">
-                  <a href="#features" className="transition hover:text-white">ფუნქციები</a>
-                  <a href="#process" className="transition hover:text-white">პროცესი</a>
-                  <a href="#contact" className="transition hover:text-white">კონტაქტი</a>
-                </nav>
+                  <nav className="hidden items-center gap-10 text-sm font-medium text-white md:flex">
+                    <a href="#features" className="transition hover:text-white">ფუნქციები</a>
+                    <a href="#process" className="transition hover:text-white">პროცესი</a>
+                    <a href="#contact" className="transition hover:text-white">კონტაქტი</a>
+                  </nav>
 
-                <a
-                  href="#contact"
-                  className="inline-flex min-h-11 items-center justify-center rounded-2xl bg-white px-5 text-sm font-semibold text-[#0b1733] shadow-[0_10px_24px_rgba(255,255,255,0.18)] transition hover:bg-white/90"
-                >
-                  კონტაქტი
-                </a>
+                  <a
+                    href="#contact"
+                    className="hidden min-h-11 items-center justify-center rounded-2xl bg-white px-5 text-sm font-semibold text-[#0b1733] shadow-[0_10px_24px_rgba(255,255,255,0.18)] transition hover:bg-white/90 md:inline-flex"
+                  >
+                    კონტაქტი
+                  </a>
+
+                  <details className="group relative md:hidden">
+                    <summary className="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-2xl border border-white/20 bg-white/10 text-white shadow-[0_10px_24px_rgba(14,17,23,0.16)] transition hover:bg-white/16 [&::-webkit-details-marker]:hidden">
+                      <svg className="h-5 w-5 group-open:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                        <path d="M4 7h16M4 12h16M4 17h16" />
+                      </svg>
+                      <svg className="hidden h-5 w-5 group-open:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                        <path d="M6 6l12 12M18 6 6 18" />
+                      </svg>
+                    </summary>
+                    <div className="absolute right-0 top-[calc(100%+12px)] z-20 w-56 overflow-hidden rounded-3xl border border-white/15 bg-[#0f172a]/95 p-3 shadow-[0_24px_60px_rgba(2,6,23,0.42)] backdrop-blur-xl">
+                      <div className="flex flex-col gap-1.5">
+                        <a href="#features" className="rounded-2xl px-4 py-3 text-sm font-semibold text-white/90 transition hover:bg-white/10 hover:text-white">
+                          ფუნქციები
+                        </a>
+                        <a href="#process" className="rounded-2xl px-4 py-3 text-sm font-semibold text-white/90 transition hover:bg-white/10 hover:text-white">
+                          პროცესი
+                        </a>
+                        <a href="#contact" className="rounded-2xl px-4 py-3 text-sm font-semibold text-white/90 transition hover:bg-white/10 hover:text-white">
+                          კონტაქტი
+                        </a>
+                      </div>
+                    </div>
+                  </details>
+                </div>
               </div>
             </header>
 
-            <div className="relative mx-auto flex min-h-[760px] max-w-screen-2xl items-end px-5 py-10 sm:px-8 sm:py-12 lg:min-h-[860px] lg:px-10 lg:py-14 2xl:px-12">
+            <div className="relative mx-auto flex min-h-[100svh] max-w-screen-2xl items-end px-5 py-10 sm:px-8 sm:py-12 lg:min-h-screen lg:px-10 lg:py-14 2xl:px-12">
               <div className="max-w-[720px] space-y-7 text-white xl:max-w-[80%]">
                 <span className="inline-flex min-h-10 items-center rounded-full border border-white/30 bg-white/10 px-4 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(0,0,0,0.14)] backdrop-blur">
                   კონფერენციების მართვა და ნეთვორქინგი ერთ სივრცეში
@@ -160,7 +186,7 @@ export default async function HomePage() {
                 <div className="flex flex-col gap-4 pt-1 sm:flex-row">
                   <a
                     href="#features"
-                    className="inline-flex min-h-14 items-center justify-center rounded-[18px] bg-[#2563eb] px-9 py-4 text-lg font-semibold text-white shadow-[0_16px_40px_rgba(37,99,235,0.34)] transition hover:bg-[#1d4ed8]"
+                    className="inline-flex min-h-14 items-center justify-center rounded-[18px] bg-[#3173f1] px-9 py-4 text-lg font-semibold text-white shadow-[0_16px_40px_rgba(37,99,235,0.34)] transition hover:bg-[#255fce]"
                   >
                     ნახე ფუნქციები
                   </a>
@@ -206,7 +232,7 @@ export default async function HomePage() {
                   key={feature.title}
                   className="rounded-[30px] border border-white/80 bg-white p-7 text-center shadow-[0_18px_44px_rgba(15,23,42,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_54px_rgba(15,23,42,0.12)]"
                 >
-                  <div className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-[linear-gradient(180deg,#60a5fa,#2563eb)] text-white shadow-[0_14px_32px_rgba(37,99,235,0.2)]">
+                  <div className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-[linear-gradient(180deg,#60a5fa,#3173f1)] text-white shadow-[0_14px_32px_rgba(37,99,235,0.2)]">
                     {feature.icon === "page" ? (
                       <svg className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
                         <path d="M8 3h7l4 4v14H8z" />
@@ -252,7 +278,7 @@ export default async function HomePage() {
             <div className="grid gap-10 lg:grid-cols-3 lg:gap-8">
               {steps.map((item) => (
                 <div key={item.step} className="mx-auto flex max-w-[360px] flex-col items-center text-center">
-                  <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-[linear-gradient(180deg,#3b82f6,#2563eb)] text-white shadow-[0_18px_34px_rgba(37,99,235,0.22)]">
+                  <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-[linear-gradient(180deg,#3b82f6,#3173f1)] text-white shadow-[0_18px_34px_rgba(37,99,235,0.22)]">
                     {item.step === "01" ? (
                       <svg className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
                         <circle cx="11" cy="11" r="6" />
@@ -273,7 +299,7 @@ export default async function HomePage() {
                       </svg>
                     )}
                   </div>
-                  <p className="mt-6 text-sm font-semibold uppercase tracking-[0.14em] text-[#2563eb]">ნაბიჯი {item.step}</p>
+                  <p className="mt-6 text-sm font-semibold uppercase tracking-[0.14em] text-[#3173f1]">ნაბიჯი {item.step}</p>
                   <h3 className="mt-3 text-[1.95rem] font-semibold leading-[1.32] tracking-[-0.03em] text-[#0f172a]">
                     {item.title}
                   </h3>
@@ -282,7 +308,7 @@ export default async function HomePage() {
               ))}
             </div>
 
-            <div className="overflow-hidden rounded-[38px] bg-[linear-gradient(135deg,#1d4ed8,#2563eb,#38bdf8)] px-8 py-14 text-center text-white shadow-[0_32px_80px_rgba(37,99,235,0.2)] sm:px-12 sm:py-16">
+            <div className="overflow-hidden rounded-[38px] bg-[linear-gradient(135deg,#255fce,#3173f1,#38bdf8)] px-8 py-14 text-center text-white shadow-[0_32px_80px_rgba(37,99,235,0.2)] sm:px-12 sm:py-16">
               <div className="mx-auto max-w-3xl">
                 <h3 className="text-4xl font-bold leading-[1.18] tracking-[-0.05em] sm:text-[3.2rem]">
                   მზად ხარ შემდეგი ივენთისთვის?
@@ -304,7 +330,7 @@ export default async function HomePage() {
             <div className="grid gap-12 lg:grid-cols-[1.35fr_0.65fr_0.65fr]">
               <div className="space-y-6">
                 <div className="flex items-center gap-3 text-xl font-bold tracking-[-0.03em]">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#2563eb] text-white shadow-[0_10px_24px_rgba(37,99,235,0.28)]">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#3173f1] text-white shadow-[0_10px_24px_rgba(37,99,235,0.28)]">
                     <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden>
                       <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor" />
                     </svg>

@@ -11,7 +11,7 @@ type Props = {
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const variantClasses: Record<ButtonVariant, string> = {
-  primary: "bg-primary text-white hover:bg-[#1e40af]",
+  primary: "bg-primary text-white hover:bg-[#255fce]",
   secondary: "border-2 border-primary bg-white text-primary hover:bg-[#eff6ff]",
   outline: "border border-gray-300 bg-transparent text-gray-700 hover:bg-gray-50"
 };
