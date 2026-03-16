@@ -173,7 +173,7 @@ export default async function HomePage() {
                 </span>
 
                 <div className="space-y-5">
-                  <h1 className="max-w-[1100px] text-5xl font-bold leading-[1.08] tracking-[-0.045em] sm:text-6xl lg:text-[5.35rem]">
+                  <h1 className="max-w-[960px] text-[3.5rem] font-bold leading-[1.16] tracking-[-0.045em] sm:text-[4.3rem] lg:text-[4.65rem]">
                     შექმენი ივენთი,
                     <br />
                     რომელიც <span className="text-[#60a5fa]">მუშაობს</span>
@@ -196,21 +196,6 @@ export default async function HomePage() {
                   >
                     კონტაქტი
                   </a>
-                </div>
-
-                <div className="grid max-w-[460px] grid-cols-3 gap-7 pt-6">
-                  <div>
-                    <p className="text-[2.15rem] font-bold tracking-[-0.05em] text-white">{attendeeCount > 0 ? `${attendeeCount}+` : "2.4K+"}</p>
-                    <p className="mt-1 text-sm text-white/70">დადასტურებული დამსწრე</p>
-                  </div>
-                  <div>
-                    <p className="text-[2.15rem] font-bold tracking-[-0.05em] text-white">{conferenceCount > 0 ? `${conferenceCount}+` : "150+"}</p>
-                    <p className="mt-1 text-sm text-white/70">აქტიური გვერდი</p>
-                  </div>
-                  <div>
-                    <p className="text-[2.15rem] font-bold tracking-[-0.05em] text-white">{approvedMeetingCount > 0 ? `${approvedMeetingCount}+` : "8K+"}</p>
-                    <p className="mt-1 text-sm text-white/70">შეხვედრის შეთავაზება</p>
-                  </div>
                 </div>
               </div>
             </div>
