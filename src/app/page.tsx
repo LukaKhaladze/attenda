@@ -5,6 +5,8 @@ import { CallbackRequestModal } from "@/components/callback-request-modal";
 import { Shell } from "@/components/shell";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 const platformCards = [
   {
     title: "საჯარო გვერდი",
@@ -46,11 +48,23 @@ const steps = [
   }
 ];
 
+function normalizeDomain(value: string | undefined | null) {
+  if (!value) return "";
+
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/^https?:\/\//, "")
+    .replace(/\/.*$/, "")
+    .replace(/:\d+$/, "")
+    .replace(/^www\./, "");
+}
+
 export default async function HomePage() {
   const requestHeaders = headers();
   const forwardedHost = requestHeaders.get("x-forwarded-host");
-  const host = (forwardedHost || requestHeaders.get("host") || "").split(":")[0].toLowerCase();
-  const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN?.toLowerCase();
+  const host = normalizeDomain(forwardedHost || requestHeaders.get("host") || "");
+  const rootDomain = normalizeDomain(process.env.NEXT_PUBLIC_ROOT_DOMAIN);
 
   if (process.env.DATABASE_URL && rootDomain && host.endsWith(`.${rootDomain}`)) {
     const subdomain = host.replace(`.${rootDomain}`, "");
