@@ -69,13 +69,13 @@ export function CallbackRequestModal({ triggerLabel, triggerClassName = "" }: Pr
 
       {open ? (
         <div className="fixed inset-0 z-[120] flex items-center justify-center bg-[#020617]/60 px-4 backdrop-blur-sm">
-          <div className="w-full max-w-xl overflow-hidden rounded-[32px] border border-white/20 bg-[linear-gradient(180deg,#f8fbff,#eef5fb)] shadow-[0_36px_90px_rgba(15,23,42,0.28)]">
-            <div className="border-b border-white/15 bg-[linear-gradient(135deg,#0f172a,#1d4ed8,#38bdf8)] px-6 py-7 text-white sm:px-8">
+          <div className="w-full max-w-md overflow-hidden rounded-[28px] border border-white/20 bg-[linear-gradient(180deg,#f8fbff,#eef5fb)] shadow-[0_28px_70px_rgba(15,23,42,0.24)]">
+            <div className="border-b border-white/15 bg-[linear-gradient(135deg,#0f172a,#1d4ed8,#38bdf8)] px-5 py-5 text-white sm:px-6">
               <div className="flex items-start justify-between gap-4">
                 <div className="text-left">
                   <p className="text-sm font-medium text-white/72">დაგვიტოვე მოთხოვნა</p>
-                  <h3 className="mt-2 text-[2rem] font-bold tracking-[-0.04em]">დავგეგმოთ ზარი</h3>
-                  <p className="mt-3 max-w-md text-sm leading-7 text-white/82">
+                  <h3 className="mt-2 text-[1.7rem] font-bold tracking-[-0.04em] leading-[1.12]">დავგეგმოთ ზარი</h3>
+                  <p className="mt-2 max-w-sm text-sm leading-6 text-white/82">
                     შეავსე ფორმა და მალე დაგიკავშირდებით, რათა შევაფასოთ თქვენი ივენთის საჭიროებები.
                   </p>
                 </div>
@@ -87,29 +87,29 @@ export function CallbackRequestModal({ triggerLabel, triggerClassName = "" }: Pr
                     setError(null);
                     setSuccess(false);
                   }}
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-xl text-white transition hover:bg-white/10"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/25 text-xl text-white transition hover:bg-white/10"
                 >
                   ×
                 </button>
               </div>
             </div>
 
-            <div className="px-6 py-7 sm:px-8">
+            <div className="px-5 py-5 sm:px-6">
               {success ? (
-                <div className="space-y-5 text-left">
-                  <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-3xl text-emerald-600">
+                <div className="space-y-4 text-left">
+                  <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-2xl text-emerald-600">
                     ✓
                   </div>
                   <div className="space-y-2">
-                    <h4 className="text-2xl font-bold tracking-[-0.04em] text-gray-900">მიღებულია</h4>
-                    <p className="max-w-md text-base leading-7 text-gray-600">მადლობა. მალე დაგიკავშირდებით.</p>
+                    <h4 className="text-xl font-bold tracking-[-0.04em] text-gray-900">მიღებულია</h4>
+                    <p className="max-w-sm text-sm leading-6 text-gray-600">მადლობა. მალე დაგიკავშირდებით.</p>
                   </div>
                   <UIButton fullWidth size="lg" onClick={() => setOpen(false)}>
                     დახურვა
                   </UIButton>
                 </div>
               ) : (
-                <form onSubmit={onSubmit} className="space-y-5 text-left">
+                <form onSubmit={onSubmit} className="space-y-4 text-left">
                   <UIInput label="სახელი" name="name" required />
                   <UIInput label="ელფოსტა" name="email" type="email" required />
                   <UIInput label="ტელეფონი" name="phone" required />
