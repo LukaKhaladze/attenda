@@ -181,7 +181,7 @@ export default async function AdminPage() {
               <span className="mb-1 block text-sm font-medium text-brand-800">ქავერის სურათი</span>
               <input type="file" name="coverImageFile" accept="image/*" className="w-full border-dashed" />
             </label>
-            <button className="rounded-xl bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700 sm:col-span-3 sm:justify-self-start">
+            <button className="inline-flex min-h-11 items-center justify-center rounded-xl bg-[#2563eb] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(37,99,235,0.22)] transition hover:bg-[#1d4ed8] sm:col-span-3 sm:justify-self-start">
               დამატება
             </button>
           </form>
