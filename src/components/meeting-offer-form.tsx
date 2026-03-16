@@ -70,7 +70,7 @@ export function MeetingOfferForm({ recipientAttendeeId }: Props) {
           onChange={(event) => setProposedAt(event.target.value)}
         />
         <label className="block space-y-1.5">
-          <span className="text-sm font-medium text-gray-700">შენიშვნა</span>
+          <span className="text-sm font-medium text-gray-700">შეხვედრის მიზანი</span>
           <textarea
             name="note"
             rows={3}
@@ -79,7 +79,7 @@ export function MeetingOfferForm({ recipientAttendeeId }: Props) {
             className="w-full resize-none"
           />
         </label>
-        <UIButton type="submit" disabled={loading} fullWidth>
+        <UIButton type="submit" disabled={loading} fullWidth className="w-full max-w-full overflow-hidden text-ellipsis">
           {loading ? "იგზავნება..." : "შეთავაზების გაგზავნა"}
         </UIButton>
       </form>

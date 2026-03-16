@@ -60,7 +60,7 @@ export default async function AttendeeDetailPage({ params }: { params: { id: str
         <UICard className="space-y-3">
           <a
             href="#meeting-form"
-            className="flex min-h-11 items-center justify-center rounded-xl border border-primary px-4 py-3 text-center text-sm font-medium text-primary"
+            className="flex min-h-11 w-full max-w-full items-center justify-center rounded-xl border border-primary px-4 py-3 text-center text-sm font-medium text-primary"
           >
             შეხვედრის დაჯავშნა
           </a>

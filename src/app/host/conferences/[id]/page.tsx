@@ -43,7 +43,6 @@ async function updateHostConference(formData: FormData) {
   const dateRaw = String(formData.get("date") || "");
   const date = new Date(dateRaw);
   const slug = String(formData.get("slug") || "").trim();
-  const customSubdomain = String(formData.get("customSubdomain") || "").trim().toLowerCase() || null;
 
   if (!title || !description || !location || !slug || Number.isNaN(date.valueOf())) {
     return;
@@ -70,7 +69,6 @@ async function updateHostConference(formData: FormData) {
     where: { id },
     data: {
       slug,
-      customSubdomain,
       title_ka: title,
       description_ka: description,
       location_ka: location,
@@ -149,8 +147,12 @@ export default async function HostConferencePage({ params }: { params: { id: str
             </label>
             <label className="space-y-1">
               <span className="block text-sm font-medium text-brand-800">ქასთომ სუბდომენი</span>
-              <span className="block text-xs text-brand-600">არასავალდებულოა. მაგალითი: `event` გახდება `event.networkapp.ge`.</span>
-              <input name="customSubdomain" defaultValue={conference.customSubdomain ?? ""} placeholder="მაგ: event" />
+              <span className="block text-xs text-brand-600">ჰოსტს შეუძლია ნახოს მინიჭებული სუბდომენი, მაგრამ მისი ცვლილება მხოლოდ ადმინიდან არის შესაძლებელი.</span>
+              <div className="rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm font-medium text-brand-900">
+                {conference.customSubdomain && process.env.NEXT_PUBLIC_ROOT_DOMAIN
+                  ? `${conference.customSubdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`
+                  : "სუბდომენი ჯერ არ არის მინიჭებული"}
+              </div>
             </label>
             <label className="space-y-1">
               <span className="block text-sm font-medium text-brand-800">სათაური</span>
@@ -198,9 +200,11 @@ export default async function HostConferencePage({ params }: { params: { id: str
               <textarea className="sm:col-span-2" name="description_ka" defaultValue={conference.description_ka} rows={4} placeholder="მოკლე აღწერა კონფერენციის თემის, სპიკერების და ღირებულების შესახებ" required />
             </label>
           </div>
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-xs text-brand-700 break-all">{shareUrl}</p>
-            <button className="inline-flex min-h-11 items-center justify-center rounded-xl bg-[#2563eb] px-4 py-2 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(37,99,235,0.22)] transition hover:bg-[#1d4ed8]">შენახვა</button>
+            <button className="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-[#3173f1] px-4 py-2 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(37,99,235,0.22)] transition hover:bg-[#255fce] sm:w-auto">
+              შენახვა
+            </button>
           </div>
         </form>
 

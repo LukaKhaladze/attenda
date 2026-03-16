@@ -243,9 +243,11 @@ export default async function AdminConferencePage({ params }: { params: { id: st
             </p>
           ) : null}
           {subdomainUrl ? <p className="text-xs text-brand-700">სუბდომენის მისამართი: {subdomainUrl}</p> : null}
-          <div className="flex items-center gap-3">
-            <button className="inline-flex min-h-11 items-center justify-center rounded-xl bg-[#2563eb] px-4 py-2 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(37,99,235,0.22)] transition hover:bg-[#1d4ed8]">შენახვა</button>
-            <button formAction={deleteConference} className="rounded-xl bg-red-100 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-200">
+          <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+            <button className="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-[#3173f1] px-4 py-2 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(37,99,235,0.22)] transition hover:bg-[#255fce] sm:w-auto">
+              შენახვა
+            </button>
+            <button formAction={deleteConference} className="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-red-100 px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-200 sm:w-auto">
               წაშლა
             </button>
           </div>
@@ -282,12 +284,12 @@ export default async function AdminConferencePage({ params }: { params: { id: st
 
         <div className="rounded-2xl border border-brand-100 bg-white p-5 shadow-soft">
           <h2 className="mb-4 text-xl font-semibold text-brand-900">ჰოსტის წვდომა</h2>
-          <form action={assignHost} className="grid gap-3 sm:grid-cols-4">
+          <form action={assignHost} className="grid gap-3 lg:grid-cols-4">
             <input type="hidden" name="conferenceId" value={conference.id} />
             <input name="name" placeholder="ჰოსტის სახელი" />
             <input name="email" type="email" placeholder="ჰოსტის ელფოსტა" required />
             <input name="password" placeholder="საწყისი პაროლი" required />
-            <button className="inline-flex min-h-11 items-center justify-center rounded-xl bg-[#2563eb] px-4 py-2 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(37,99,235,0.22)] transition hover:bg-[#1d4ed8]">
+            <button className="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-[#3173f1] px-4 py-2 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(37,99,235,0.22)] transition hover:bg-[#255fce] lg:w-auto">
               ჰოსტის მინიჭება
             </button>
           </form>
@@ -348,7 +350,7 @@ export default async function AdminConferencePage({ params }: { params: { id: st
                               </option>
                             ))}
                           </select>
-                          <button className="inline-flex min-h-9 items-center justify-center rounded-lg bg-[#2563eb] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#1d4ed8]">განახლება</button>
+                          <button className="inline-flex min-h-9 items-center justify-center rounded-lg bg-[#3173f1] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#255fce]">განახლება</button>
                         </form>
                       </td>
                     </tr>
