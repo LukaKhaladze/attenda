@@ -133,7 +133,7 @@ export default async function HomePage() {
                 </span>
 
                 <div className="space-y-5">
-                  <h1 className="max-w-[1100px] text-5xl font-bold leading-[1.02] tracking-[-0.045em] sm:text-6xl lg:text-[5.35rem]">
+                  <h1 className="max-w-[1100px] text-5xl font-bold leading-[1.08] tracking-[-0.045em] sm:text-6xl lg:text-[5.35rem]">
                     შექმენი ივენთი,
                     <br />
                     რომელიც <span className="text-[#60a5fa]">მუშაობს</span>
@@ -180,7 +180,7 @@ export default async function HomePage() {
         <section id="features" className="bg-[linear-gradient(180deg,#eef6fb_0%,#dcecf5_100%)] px-5 py-20 sm:px-8 lg:px-10 lg:py-24 2xl:px-12">
           <div className="mx-auto max-w-screen-2xl space-y-12">
             <div className="mx-auto max-w-3xl space-y-4 text-center">
-              <h2 className="text-4xl font-bold leading-[1.12] tracking-[-0.04em] text-[#0f172a] sm:text-[3.1rem]">
+              <h2 className="text-4xl font-bold leading-[1.18] tracking-[-0.04em] text-[#0f172a] sm:text-[3.1rem]">
                 ერთი პლატფორმა მთელი ივენთისთვის
               </h2>
               <p className="text-lg leading-[1.85] text-slate-600">რეგისტრაცია, დამტკიცება, ჰოსტის მართვა და ნეთვორქინგი ერთ მოქნილ სისტემაში.</p>
@@ -218,8 +218,8 @@ export default async function HomePage() {
                       </svg>
                     )}
                   </div>
-                  <h3 className="mt-5 text-xl font-bold leading-[1.28] tracking-[-0.02em] text-[#0f172a]">{feature.title}</h3>
-                  <p className="mt-3 text-base leading-[1.8] text-slate-600">{feature.body}</p>
+                  <h3 className="mt-5 text-xl font-bold leading-[1.34] tracking-[-0.02em] text-[#0f172a]">{feature.title}</h3>
+                  <p className="mt-3 text-base leading-[1.9] text-slate-600">{feature.body}</p>
                 </div>
               ))}
             </div>
@@ -229,7 +229,7 @@ export default async function HomePage() {
         <section id="process" className="bg-white px-5 py-20 sm:px-8 lg:px-10 lg:py-24 2xl:px-12">
           <div className="mx-auto max-w-screen-2xl space-y-16">
             <div className="space-y-4 text-center">
-              <h2 className="text-4xl font-bold leading-[1.12] tracking-[-0.04em] text-[#0f172a] sm:text-[3.2rem]">
+              <h2 className="text-4xl font-bold leading-[1.18] tracking-[-0.04em] text-[#0f172a] sm:text-[3.2rem]">
                 სამი მარტივი ნაბიჯი
               </h2>
               <p className="mx-auto max-w-2xl text-lg leading-[1.85] text-slate-500">მუშაობის ლოგიკა მარტივია როგორც ორგანიზატორისთვის, ისე ჰოსტისა და დამსწრისთვის.</p>
@@ -260,20 +260,20 @@ export default async function HomePage() {
                     )}
                   </div>
                   <p className="mt-6 text-sm font-semibold uppercase tracking-[0.14em] text-[#2563eb]">ნაბიჯი {item.step}</p>
-                  <h3 className="mt-3 text-[1.95rem] font-semibold leading-[1.24] tracking-[-0.03em] text-[#0f172a]">
+                  <h3 className="mt-3 text-[1.95rem] font-semibold leading-[1.32] tracking-[-0.03em] text-[#0f172a]">
                     {item.title}
                   </h3>
-                  <p className="mt-4 text-lg leading-[1.8] text-slate-500">{item.body}</p>
+                  <p className="mt-4 text-lg leading-[1.9] text-slate-500">{item.body}</p>
                 </div>
               ))}
             </div>
 
             <div className="overflow-hidden rounded-[38px] bg-[linear-gradient(135deg,#1d4ed8,#2563eb,#38bdf8)] px-8 py-14 text-center text-white shadow-[0_32px_80px_rgba(37,99,235,0.2)] sm:px-12 sm:py-16">
               <div className="mx-auto max-w-3xl">
-                <h3 className="text-4xl font-bold leading-[1.12] tracking-[-0.05em] sm:text-[3.2rem]">
+                <h3 className="text-4xl font-bold leading-[1.18] tracking-[-0.05em] sm:text-[3.2rem]">
                   მზად ხარ შემდეგი ივენთისთვის?
                 </h3>
-                <p className="mx-auto mt-5 max-w-2xl text-lg leading-[1.8] text-white/88 sm:text-[1.2rem]">
+                <p className="mx-auto mt-5 max-w-2xl text-lg leading-[1.9] text-white/88 sm:text-[1.2rem]">
                   დაგეხმარებით სწრაფად ააწყო გვერდი, approval flow და ჰოსტის სამუშაო პროცესი ერთ სისტემაში.
                 </p>
                 <CallbackRequestModal
@@ -297,7 +297,7 @@ export default async function HomePage() {
                   </span>
                   <span>Networkapp</span>
                 </div>
-                <p className="max-w-md text-base leading-[1.85] text-white/62">
+                <p className="max-w-md text-base leading-[1.92] text-white/62">
                   პლატფორმა კონფერენციებისთვის, სადაც გვერდი, approval და ნეთვორქინგი ერთდება ერთ სივრცეში.
                 </p>
               </div>
