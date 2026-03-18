@@ -202,20 +202,20 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section id="features" className="bg-[linear-gradient(180deg,#eef6fb_0%,#dcecf5_100%)] px-5 py-20 sm:px-8 lg:px-10 lg:py-24 2xl:px-12">
-          <div className="mx-auto max-w-screen-2xl space-y-12">
+        <section id="features" className="bg-[linear-gradient(180deg,#eef6fb_0%,#dcecf5_100%)] px-4 py-16 sm:px-6 sm:py-18 lg:px-10 lg:py-24 2xl:px-12">
+          <div className="mx-auto max-w-screen-2xl space-y-10 sm:space-y-12">
             <div className="mx-auto max-w-3xl space-y-4 text-center">
-              <h2 className="text-4xl font-bold leading-[1.18] tracking-[-0.04em] text-[#0f172a] sm:text-[3.1rem]">
+              <h2 className="text-[2.35rem] font-bold leading-[1.16] tracking-[-0.04em] text-[#0f172a] sm:text-[2.9rem] lg:text-[3.1rem]">
                 ერთი პლატფორმა მთელი ივენთისთვის
               </h2>
-              <p className="text-lg leading-[1.85] text-slate-600">რეგისტრაცია, დამტკიცება, ჰოსტის მართვა და ნეთვორქინგი ერთ მოქნილ სისტემაში.</p>
+              <p className="text-base leading-8 text-slate-600 sm:text-lg sm:leading-[1.85]">რეგისტრაცია, დამტკიცება, ჰოსტის მართვა და ნეთვორქინგი ერთ მოქნილ სისტემაში.</p>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            <div className="grid gap-5 sm:gap-6 md:grid-cols-2 xl:grid-cols-4">
               {platformCards.map((feature) => (
                 <div
                   key={feature.title}
-                  className="rounded-[30px] border border-white/80 bg-white p-7 text-center shadow-[0_18px_44px_rgba(15,23,42,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_54px_rgba(15,23,42,0.12)]"
+                  className="rounded-[24px] border border-white/80 bg-white p-6 text-center shadow-[0_18px_44px_rgba(15,23,42,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_54px_rgba(15,23,42,0.12)] sm:rounded-[30px] sm:p-7"
                 >
                   <div className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-[linear-gradient(180deg,#60a5fa,#3173f1)] text-white shadow-[0_14px_32px_rgba(37,99,235,0.2)]">
                     {feature.icon === "page" ? (
@@ -243,26 +243,28 @@ export default async function HomePage() {
                       </svg>
                     )}
                   </div>
-                  <h3 className="mt-5 text-xl font-bold leading-[1.34] tracking-[-0.02em] text-[#0f172a]">{feature.title}</h3>
-                  <p className="mt-3 text-base leading-[1.9] text-slate-600">{feature.body}</p>
+                  <h3 className="mt-5 text-[1.55rem] font-bold leading-[1.16] tracking-[-0.04em] text-[#0f172a] sm:text-[1.7rem]">
+                    {feature.title}
+                  </h3>
+                  <p className="mt-3 text-[0.98rem] leading-8 text-slate-600 sm:text-base sm:leading-[1.9]">{feature.body}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        <section id="process" className="bg-white px-5 py-20 sm:px-8 lg:px-10 lg:py-24 2xl:px-12">
-          <div className="mx-auto max-w-screen-2xl space-y-16">
+        <section id="process" className="bg-white px-4 py-16 sm:px-6 sm:py-18 lg:px-10 lg:py-24 2xl:px-12">
+          <div className="mx-auto max-w-screen-2xl space-y-12 sm:space-y-16">
             <div className="space-y-4 text-center">
-              <h2 className="text-4xl font-bold leading-[1.18] tracking-[-0.04em] text-[#0f172a] sm:text-[3.2rem]">
+              <h2 className="text-[2.35rem] font-bold leading-[1.16] tracking-[-0.04em] text-[#0f172a] sm:text-[3rem] lg:text-[3.2rem]">
                 სამი მარტივი ნაბიჯი
               </h2>
-              <p className="mx-auto max-w-2xl text-lg leading-[1.85] text-slate-500">მუშაობის ლოგიკა მარტივია როგორც ორგანიზატორისთვის, ისე ჰოსტისა და დამსწრისთვის.</p>
+              <p className="mx-auto max-w-2xl text-base leading-8 text-slate-500 sm:text-lg sm:leading-[1.85]">მუშაობის ლოგიკა მარტივია როგორც ორგანიზატორისთვის, ისე ჰოსტისა და დამსწრისთვის.</p>
             </div>
 
-            <div className="grid gap-10 lg:grid-cols-3 lg:gap-8">
+            <div className="grid gap-10 md:grid-cols-2 xl:grid-cols-3 xl:gap-8">
               {steps.map((item) => (
-                <div key={item.step} className="mx-auto flex max-w-[360px] flex-col items-center text-center">
+                <div key={item.step} className="mx-auto flex w-full max-w-[360px] flex-col items-center text-center">
                   <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-[linear-gradient(180deg,#3b82f6,#3173f1)] text-white shadow-[0_18px_34px_rgba(37,99,235,0.22)]">
                     {item.step === "01" ? (
                       <svg className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
@@ -285,25 +287,25 @@ export default async function HomePage() {
                     )}
                   </div>
                   <p className="mt-6 text-sm font-semibold uppercase tracking-[0.14em] text-[#3173f1]">ნაბიჯი {item.step}</p>
-                  <h3 className="mt-3 text-[1.95rem] font-semibold leading-[1.32] tracking-[-0.03em] text-[#0f172a]">
+                  <h3 className="mt-3 text-[1.95rem] font-bold leading-[1.14] tracking-[-0.04em] text-[#0f172a] sm:text-[2.05rem]">
                     {item.title}
                   </h3>
-                  <p className="mt-4 text-lg leading-[1.9] text-slate-500">{item.body}</p>
+                  <p className="mt-4 max-w-[20rem] text-base leading-8 text-slate-500 sm:text-lg sm:leading-[1.9]">{item.body}</p>
                 </div>
               ))}
             </div>
 
-            <div className="overflow-hidden rounded-[38px] bg-[linear-gradient(135deg,#255fce,#3173f1,#38bdf8)] px-8 py-14 text-center text-white shadow-[0_32px_80px_rgba(37,99,235,0.2)] sm:px-12 sm:py-16">
+            <div className="overflow-hidden rounded-[30px] bg-[linear-gradient(135deg,#255fce,#3173f1,#38bdf8)] px-6 py-12 text-center text-white shadow-[0_32px_80px_rgba(37,99,235,0.2)] sm:rounded-[38px] sm:px-10 sm:py-14 lg:px-12 lg:py-16">
               <div className="mx-auto max-w-3xl">
-                <h3 className="text-4xl font-bold leading-[1.18] tracking-[-0.05em] sm:text-[3.2rem]">
+                <h3 className="text-[2.35rem] font-bold leading-[1.14] tracking-[-0.05em] sm:text-[2.8rem] lg:text-[3.2rem]">
                   მზად ხარ შემდეგი ივენთისთვის?
                 </h3>
-                <p className="mx-auto mt-5 max-w-2xl text-lg leading-[1.9] text-white/88 sm:text-[1.2rem]">
+                <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-white/88 sm:text-[1.1rem] sm:leading-[1.85] lg:text-[1.2rem]">
                   დაგეხმარებით სწრაფად ააწყო გვერდი, approval flow და ჰოსტის სამუშაო პროცესი ერთ სისტემაში.
                 </p>
                 <CallbackRequestModal
                   triggerLabel="დავჯავშნოთ ზარი"
-                  triggerClassName="mt-8 inline-flex min-h-14 items-center justify-center rounded-2xl border border-white/35 bg-white/18 px-8 text-lg font-semibold text-white shadow-[0_12px_28px_rgba(255,255,255,0.12)] backdrop-blur transition hover:bg-white hover:text-[#111827]"
+                  triggerClassName="mt-8 inline-flex min-h-12 items-center justify-center rounded-2xl border border-white/35 bg-white/18 px-6 text-base font-semibold text-white shadow-[0_12px_28px_rgba(255,255,255,0.12)] backdrop-blur transition hover:bg-white hover:text-[#111827] sm:min-h-14 sm:px-8 sm:text-lg"
                 />
               </div>
             </div>
