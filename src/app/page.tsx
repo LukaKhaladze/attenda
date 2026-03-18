@@ -1,6 +1,8 @@
+import Image from "next/image";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import lightLogo from "../../light.png";
 import { CallbackRequestModal } from "@/components/callback-request-modal";
 import { Shell } from "@/components/shell";
 import { prisma } from "@/lib/prisma";
@@ -117,13 +119,13 @@ export default async function HomePage() {
             <header className="relative px-5 py-5 sm:px-8 lg:px-10 2xl:px-12">
               <div className="mx-auto max-w-screen-2xl rounded-[22px] border border-white/20 bg-white/10 px-4 py-4 shadow-[0_18px_40px_rgba(14,17,23,0.22)] backdrop-blur-md sm:px-5">
                 <div className="flex items-center justify-between gap-4">
-                  <Link href="/" className="flex items-center gap-3 text-[1.2rem] font-bold tracking-[-0.03em] text-white sm:text-[1.35rem]">
-                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#3173f1] text-white shadow-[0_10px_24px_rgba(37,99,235,0.34)]">
-                      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden>
-                        <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor" />
-                      </svg>
-                    </span>
-                    <span>Networkapp</span>
+                  <Link href="/" className="flex items-center">
+                    <Image
+                      src={lightLogo}
+                      alt="Networkapp"
+                      priority
+                      className="h-auto w-[164px] sm:w-[186px]"
+                    />
                   </Link>
 
                   <nav className="hidden items-center gap-10 text-sm font-medium text-white md:flex">
@@ -316,14 +318,11 @@ export default async function HomePage() {
           <div className="mx-auto max-w-screen-2xl">
             <div className="grid gap-12 lg:grid-cols-[1.35fr_0.65fr_0.65fr]">
               <div className="space-y-6">
-                <div className="flex items-center gap-3 text-xl font-bold tracking-[-0.03em]">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#3173f1] text-white shadow-[0_10px_24px_rgba(37,99,235,0.28)]">
-                    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden>
-                      <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor" />
-                    </svg>
-                  </span>
-                  <span>Networkapp</span>
-                </div>
+                <Image
+                  src={lightLogo}
+                  alt="Networkapp"
+                  className="h-auto w-[170px]"
+                />
                 <p className="max-w-md text-base leading-[1.92] text-white/62">
                   პლატფორმა კონფერენციებისთვის, სადაც გვერდი, approval და ნეთვორქინგი ერთდება ერთ სივრცეში.
                 </p>
