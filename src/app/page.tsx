@@ -116,7 +116,7 @@ export default async function HomePage() {
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(37,27,18,0.2),rgba(25,19,18,0.34)_16%,rgba(11,16,28,0.66)_54%,rgba(8,12,24,0.92)_82%,rgba(7,11,22,0.96)_100%)]" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(96,165,250,0.24),transparent_34%),radial-gradient(circle_at_right_bottom,rgba(34,211,238,0.14),transparent_18%)]" />
 
-            <header className="relative px-5 py-5 sm:px-8 lg:px-10 2xl:px-12">
+            <header className="relative z-40 px-5 py-5 sm:px-8 lg:px-10 2xl:px-12">
               <div className="mx-auto max-w-screen-2xl rounded-[22px] border border-white/20 bg-white/10 px-4 py-4 shadow-[0_18px_40px_rgba(14,17,23,0.22)] backdrop-blur-md sm:px-5">
                 <div className="flex items-center justify-between gap-4">
                   <Link href="/" className="flex items-center">
@@ -141,7 +141,7 @@ export default async function HomePage() {
                     კონტაქტი
                   </a>
 
-                  <details className="group relative md:hidden">
+                  <details className="group relative z-[70] md:hidden">
                     <summary className="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-2xl border border-white/20 bg-white/10 text-white shadow-[0_10px_24px_rgba(14,17,23,0.16)] transition hover:bg-white/16 [&::-webkit-details-marker]:hidden">
                       <svg className="h-5 w-5 group-open:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
                         <path d="M4 7h16M4 12h16M4 17h16" />
@@ -168,12 +168,8 @@ export default async function HomePage() {
               </div>
             </header>
 
-            <div className="relative mx-auto flex min-h-[100svh] max-w-screen-2xl items-end px-5 py-10 sm:px-8 sm:py-12 lg:min-h-screen lg:px-10 lg:py-14 2xl:px-12">
+            <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-screen-2xl items-end px-5 py-10 sm:px-8 sm:py-12 lg:min-h-screen lg:px-10 lg:py-14 2xl:px-12">
               <div className="max-w-[720px] space-y-7 text-white xl:max-w-[80%]">
-                <span className="inline-flex min-h-10 items-center rounded-full border border-white/30 bg-white/10 px-4 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(0,0,0,0.14)] backdrop-blur">
-                  კონფერენციების მართვა და ნეთვორქინგი ერთ სივრცეში
-                </span>
-
                 <div className="space-y-5">
                   <h1 className="max-w-[960px] text-[3.5rem] font-bold leading-[1.16] tracking-[-0.045em] sm:text-[4.3rem] lg:text-[4.65rem]">
                     შექმენი ივენთი,
