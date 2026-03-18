@@ -10,19 +10,26 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
   const router = useRouter();
   const pathname = usePathname();
   const [hasAttendeeCookie, setHasAttendeeCookie] = useState(false);
+  const [hasConferenceAccess, setHasConferenceAccess] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const isPublicConferencePage = pathname.startsWith("/conference/");
+  const conferenceSlug = isPublicConferencePage ? pathname.split("/")[2] ?? "" : "";
 
   useEffect(() => {
     const controller = new AbortController();
-    const cacheKey = "attenda_header_state_v1";
+    const cacheKey = `attenda_header_state_v3:${isPublicConferencePage ? conferenceSlug : "global"}`;
 
     function readCachedState() {
       try {
         const raw = sessionStorage.getItem(cacheKey);
         if (!raw) return null;
-        const parsed = JSON.parse(raw) as { at: number; isAttendee: boolean; unreadCount: number };
+        const parsed = JSON.parse(raw) as {
+          at: number;
+          isAttendee: boolean;
+          hasConferenceAccess: boolean;
+          unreadCount: number;
+        };
         if (Date.now() - parsed.at > 15_000) {
           return null;
         }
@@ -32,9 +39,12 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
       }
     }
 
-    function saveCachedState(isAttendee: boolean, unread: number) {
+    function saveCachedState(isAttendee: boolean, access: boolean, unread: number) {
       try {
-        sessionStorage.setItem(cacheKey, JSON.stringify({ at: Date.now(), isAttendee, unreadCount: unread }));
+        sessionStorage.setItem(
+          cacheKey,
+          JSON.stringify({ at: Date.now(), isAttendee, hasConferenceAccess: access, unreadCount: unread })
+        );
       } catch {
         // Ignore storage errors in private mode.
       }
@@ -45,27 +55,35 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
         const cached = readCachedState();
         if (cached) {
           setHasAttendeeCookie(cached.isAttendee);
+          setHasConferenceAccess(cached.hasConferenceAccess);
           setUnreadCount(pathname.startsWith("/notifications") ? 0 : cached.unreadCount);
           return;
         }
 
-        const sessionResponse = await fetch("/api/attendee/session", {
+        const sessionUrl = new URL("/api/attendee/session", window.location.origin);
+        if (isPublicConferencePage && conferenceSlug) {
+          sessionUrl.searchParams.set("conferenceSlug", conferenceSlug);
+        }
+
+        const sessionResponse = await fetch(sessionUrl.toString(), {
           cache: "no-store",
           signal: controller.signal
         });
         const sessionData = await sessionResponse.json().catch(() => ({}));
         const isAttendee = Boolean(sessionResponse.ok && sessionData?.isAttendee);
+        const access = Boolean(sessionResponse.ok && sessionData?.hasConferenceAccess);
         setHasAttendeeCookie(isAttendee);
+        setHasConferenceAccess(access);
 
         if (!isAttendee) {
           setUnreadCount(0);
-          saveCachedState(false, 0);
+          saveCachedState(false, false, 0);
           return;
         }
 
         if (pathname.startsWith("/notifications")) {
           setUnreadCount(0);
-          saveCachedState(true, 0);
+          saveCachedState(true, access, 0);
           return;
         }
 
@@ -81,10 +99,11 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
         const data = await countResponse.json().catch(() => ({}));
         const unread = Number(data?.unread || 0);
         setUnreadCount(unread);
-        saveCachedState(true, unread);
+        saveCachedState(true, access, unread);
       } catch {
         if (!controller.signal.aborted) {
           setHasAttendeeCookie(false);
+          setHasConferenceAccess(false);
           setUnreadCount(0);
         }
       }
@@ -106,15 +125,22 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
   async function handleLogout() {
     await fetch("/api/attendee/logout", { method: "POST" }).catch(() => null);
     try {
-      sessionStorage.removeItem("attenda_header_state_v1");
+      Object.keys(sessionStorage)
+        .filter((key) => key.startsWith("attenda_header_state_v3:"))
+        .forEach((key) => sessionStorage.removeItem(key));
     } catch {
       // Ignore storage errors.
     }
     setHasAttendeeCookie(false);
+    setHasConferenceAccess(false);
     setUnreadCount(0);
     setMenuOpen(false);
     router.refresh();
   }
+
+  const showAttendeeActions = hasAttendeeCookie && (!isPublicConferencePage || hasConferenceAccess);
+  const registerHref = isPublicConferencePage && conferenceSlug ? `/register?conferenceSlug=${conferenceSlug}` : "/register";
+  const attendeeSignInHref = isPublicConferencePage && conferenceSlug ? `/attendee/signin?conferenceSlug=${conferenceSlug}` : "/attendee/signin";
 
   return (
     <div className="space-y-4">
@@ -126,7 +152,7 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
           </Link>
 
           <div className="flex items-center gap-2">
-            {hasAttendeeCookie ? (
+            {showAttendeeActions ? (
               <Link
                 href="/notifications"
                 className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#d7e7fb] text-[#3173f1]"
@@ -180,13 +206,22 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
               <span>დამსწრეები</span>
             </Link>
 
-            {!hasAttendeeCookie ? (
+            {!showAttendeeActions ? (
               <>
-                <Link href="/register" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                <Link href={registerHref} className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
                   <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
                     <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                   </svg>
                   <span>რეგისტრაცია</span>
+                </Link>
+
+                <Link href={isPublicConferencePage ? attendeeSignInHref : "/auth/signin"} className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                  <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
+                    <path d="M10 17l-5-5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    <path d="M5 12h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    <path d="M14 4h4a2 2 0 012 2v12a2 2 0 01-2 2h-4" stroke="currentColor" strokeWidth="2" />
+                  </svg>
+                  <span>შესვლა</span>
                 </Link>
 
                 {!isPublicConferencePage ? (
@@ -196,10 +231,9 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
                       <path d="M5 12h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                       <path d="M14 4h4a2 2 0 012 2v12a2 2 0 01-2 2h-4" stroke="currentColor" strokeWidth="2" />
                     </svg>
-                    <span>შესვლა</span>
+                    <span>ადმინი</span>
                   </Link>
                 ) : null}
-
               </>
             ) : (
               <>

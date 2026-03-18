@@ -1,10 +1,11 @@
-import { RegistrationForm } from "@/components/registration-form";
+import { notFound } from "next/navigation";
+import { AttendeeSignInForm } from "@/components/attendee-signin-form";
 import { Shell } from "@/components/shell";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-export default async function RegisterPage({
+export default async function AttendeeSignInPage({
   searchParams
 }: {
   searchParams: { conferenceId?: string; conferenceSlug?: string };
@@ -13,15 +14,15 @@ export default async function RegisterPage({
     ? await prisma.conference.findUnique({ where: { id: searchParams.conferenceId } })
     : searchParams.conferenceSlug
       ? await prisma.conference.findUnique({ where: { slug: searchParams.conferenceSlug } })
-      : await prisma.conference.findFirst({ orderBy: { date: "asc" } });
+      : null;
+
+  if (!conference) {
+    notFound();
+  }
 
   return (
     <Shell>
-      {conference ? (
-        <RegistrationForm conferenceId={conference.id} />
-      ) : (
-        <p className="rounded-md bg-amber-50 px-4 py-3 text-sm text-amber-700">აქტიური კონფერენცია ვერ მოიძებნა.</p>
-      )}
+      <AttendeeSignInForm conferenceId={conference.id} conferenceTitle={conference.title_ka} />
     </Shell>
   );
 }

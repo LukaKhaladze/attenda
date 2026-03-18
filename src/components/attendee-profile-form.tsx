@@ -157,19 +157,19 @@ export function AttendeeProfileForm() {
         </label>
         <UIInput label="ტელეფონი" value={form.phone} onChange={(event) => setForm((prev) => ({ ...prev, phone: event.target.value }))} />
         <UIInput label="LinkedIn ბმული" type="url" value={form.linkedinUrl} onChange={(event) => setForm((prev) => ({ ...prev, linkedinUrl: event.target.value }))} />
-        <label className="block space-y-1.5">
+        <label className="block min-w-0 space-y-1.5">
           <span className="text-sm font-medium text-gray-700">ახალი პროფილის ფოტო</span>
-          <input name="photo" type="file" accept="image/*" className="w-full" />
+          <input name="photo" type="file" accept="image/*" className="w-full min-w-0" />
         </label>
 
-        <label className="flex items-start gap-2 text-sm text-gray-700">
-          <input type="checkbox" checked={form.sharePhonePublic} onChange={(event) => setForm((prev) => ({ ...prev, sharePhonePublic: event.target.checked }))} className="mt-1" />
-          <span>ტელეფონი საჯაროდ გამოჩნდეს</span>
+        <label className="grid min-w-0 grid-cols-[18px,minmax(0,1fr)] items-start gap-x-3 gap-y-1 text-sm text-gray-700">
+          <input type="checkbox" checked={form.sharePhonePublic} onChange={(event) => setForm((prev) => ({ ...prev, sharePhonePublic: event.target.checked }))} />
+          <span className="min-w-0 leading-6">ტელეფონი საჯაროდ გამოჩნდეს</span>
         </label>
 
-        <label className="flex items-start gap-2 text-sm text-gray-700">
-          <input type="checkbox" checked={form.consentPublicList} onChange={(event) => setForm((prev) => ({ ...prev, consentPublicList: event.target.checked }))} className="mt-1" />
-          <span>ჩემი პროფილი დარჩეს საჯარო დამსწრეთა სიაში</span>
+        <label className="grid min-w-0 grid-cols-[18px,minmax(0,1fr)] items-start gap-x-3 gap-y-1 text-sm text-gray-700">
+          <input type="checkbox" checked={form.consentPublicList} onChange={(event) => setForm((prev) => ({ ...prev, consentPublicList: event.target.checked }))} />
+          <span className="min-w-0 leading-6">ჩემი პროფილი დარჩეს საჯარო დამსწრეთა სიაში</span>
         </label>
 
         <UIButton type="submit" disabled={saving} fullWidth>

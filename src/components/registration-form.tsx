@@ -152,16 +152,16 @@ export function RegistrationForm({ conferenceId }: Props) {
 
         <label className="block min-w-0 space-y-1.5">
           <span className="text-sm font-medium text-gray-700">პროფილის ფოტო</span>
-          <input name="photo" type="file" accept="image/*" className="w-full border-dashed" />
+          <input name="photo" type="file" accept="image/*" className="w-full min-w-0" />
         </label>
 
-        <label className="flex min-w-0 items-start gap-2 text-sm text-gray-700">
-          <input type="checkbox" name="sharePhonePublic" className="mt-1" />
+        <label className="grid min-w-0 grid-cols-[18px,minmax(0,1fr)] items-start gap-x-3 gap-y-1 text-sm text-gray-700">
+          <input type="checkbox" name="sharePhonePublic" />
           <span className="min-w-0 leading-6">ვადასტურებ, რომ ტელეფონი საჯაროდ ჩანდეს</span>
         </label>
 
-        <label className="flex min-w-0 items-start gap-2 text-sm text-gray-700">
-          <input type="checkbox" name="consentPublicList" className="mt-1" defaultChecked />
+        <label className="grid min-w-0 grid-cols-[18px,minmax(0,1fr)] items-start gap-x-3 gap-y-1 text-sm text-gray-700">
+          <input type="checkbox" name="consentPublicList" defaultChecked />
           <span className="min-w-0 leading-6">ვეთანხმები, რომ ჩემი ინფორმაცია გამოჩნდეს სიაში</span>
         </label>
 

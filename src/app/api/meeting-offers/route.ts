@@ -43,6 +43,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "დამსწრე ვერ მოიძებნა" }, { status: 404 });
     }
 
+    if (senderAttendee.conferenceId !== attendee.conferenceId) {
+      return NextResponse.json({ error: "შეხვედრის შეთავაზება შესაძლებელია მხოლოდ იმავე ღონისძიების დამსწრეებს შორის." }, { status: 403 });
+    }
+
     await prisma.meetingOffer.create({
       data: {
         recipientAttendeeId: data.recipientAttendeeId,
