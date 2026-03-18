@@ -67,7 +67,7 @@ export default async function AttendeeDetailPage({ params }: { params: { id: str
         </UICard>
 
         <div id="meeting-form">
-          <MeetingOfferForm recipientAttendeeId={attendee.id} />
+          <MeetingOfferForm recipientAttendeeId={attendee.id} conferenceId={attendee.conferenceId} />
         </div>
 
         <UICard>

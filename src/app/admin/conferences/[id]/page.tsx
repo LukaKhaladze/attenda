@@ -218,24 +218,52 @@ export default async function AdminConferencePage({ params }: { params: { id: st
             <input type="hidden" name="id" value={conference.id} />
             <input type="hidden" name="existingCoverImageUrl" value={conference.coverImageUrl ?? ""} />
           <div className="grid gap-3 sm:grid-cols-2">
-            <input name="slug" defaultValue={conference.slug} placeholder="სლაგი (ლათინური ასოებით)" required />
-            <label className="space-y-1">
+            <label className="space-y-1 sm:col-span-2">
+              <span className="block text-sm font-medium text-brand-800">სლაგი</span>
+              <span className="block text-xs text-brand-600">ეს მისამართი გამოიყენება სარეზერვო საჯარო ბმულისთვის.</span>
+              <input name="slug" defaultValue={conference.slug} placeholder="სლაგი (ლათინური ასოებით)" required />
+            </label>
+            <label className="space-y-1 sm:col-span-2">
               <span className="block text-sm font-medium text-brand-800">ქასთომ სუბდომენი</span>
               <span className="block text-xs text-brand-600">მაგალითი: `event` გახდება `event.networkapp.ge`.</span>
               <input name="customSubdomain" defaultValue={conference.customSubdomain ?? ""} placeholder="მაგ: event" />
             </label>
-            <input name="title_ka" defaultValue={conference.title_ka} placeholder="სათაური" required />
-            <input type="datetime-local" name="date" defaultValue={conference.date.toISOString().slice(0, 16)} required />
-            <input name="location_ka" defaultValue={conference.location_ka} placeholder="ლოკაცია" required />
+            <label className="space-y-1 sm:col-span-2">
+              <span className="block text-sm font-medium text-brand-800">სათაური</span>
+              <input name="title_ka" defaultValue={conference.title_ka} placeholder="სათაური" required />
+            </label>
+            <label className="space-y-1">
+              <span className="block text-sm font-medium text-brand-800">თარიღი და დრო</span>
+              <input type="datetime-local" name="date" defaultValue={conference.date.toISOString().slice(0, 16)} required />
+            </label>
+            <label className="space-y-1">
+              <span className="block text-sm font-medium text-brand-800">ლოკაცია</span>
+              <input name="location_ka" defaultValue={conference.location_ka} placeholder="ლოკაცია" required />
+            </label>
             <label className="sm:col-span-2">
               <span className="mb-1 block text-sm font-medium text-brand-800">ქავერის სურათი</span>
               <input type="file" name="coverImageFile" accept="image/*" className="w-full border-dashed" />
             </label>
-            <input name="websiteUrl" defaultValue={conference.websiteUrl ?? ""} placeholder="ვებსაიტის ბმული (არასავალდებულო)" />
-            <input name="mapUrl" defaultValue={conference.mapUrl ?? ""} placeholder="რუკის ბმული (არასავალდებულო)" />
-            <textarea name="agenda" defaultValue={agenda} rows={5} placeholder="დღის წესრიგი — თითო ჩანაწერი ახალ ხაზზე" />
-            <textarea name="speakers" defaultValue={speakers} rows={5} placeholder="სპიკერები — თითო ჩანაწერი ახალ ხაზზე" />
-            <textarea className="sm:col-span-2" name="description_ka" defaultValue={conference.description_ka} rows={4} placeholder="აღწერა" required />
+            <label className="space-y-1">
+              <span className="block text-sm font-medium text-brand-800">ვებსაიტის ბმული</span>
+              <input name="websiteUrl" defaultValue={conference.websiteUrl ?? ""} placeholder="ვებსაიტის ბმული (არასავალდებულო)" />
+            </label>
+            <label className="space-y-1">
+              <span className="block text-sm font-medium text-brand-800">რუკის ბმული</span>
+              <input name="mapUrl" defaultValue={conference.mapUrl ?? ""} placeholder="რუკის ბმული (არასავალდებულო)" />
+            </label>
+            <label className="space-y-1 sm:col-span-2">
+              <span className="block text-sm font-medium text-brand-800">დღის წესრიგი</span>
+              <textarea name="agenda" defaultValue={agenda} rows={5} placeholder="დღის წესრიგი — თითო ჩანაწერი ახალ ხაზზე" />
+            </label>
+            <label className="space-y-1 sm:col-span-2">
+              <span className="block text-sm font-medium text-brand-800">სპიკერები</span>
+              <textarea name="speakers" defaultValue={speakers} rows={5} placeholder="სპიკერები — თითო ჩანაწერი ახალ ხაზზე" />
+            </label>
+            <label className="space-y-1 sm:col-span-2">
+              <span className="block text-sm font-medium text-brand-800">აღწერა</span>
+              <textarea className="sm:col-span-2" name="description_ka" defaultValue={conference.description_ka} rows={4} placeholder="აღწერა" required />
+            </label>
           </div>
           {conference.coverImageUrl ? (
             <p className="text-xs text-brand-700">
@@ -341,17 +369,25 @@ export default async function AdminConferencePage({ params }: { params: { id: st
                       <td className="px-2 py-2">{attendee.position || "-"}</td>
                       <td className="px-2 py-2">{statusLabels[attendee.status]}</td>
                       <td className="px-2 py-2">
-                        <form action={`/api/admin/attendees/${attendee.id}`} method="post" className="flex gap-2">
-                          <input type="hidden" name="redirectTo" value={`/admin/conferences/${conference.id}`} />
-                          <select name="status" defaultValue={attendee.status}>
-                            {Object.values(AttendeeStatus).map((status) => (
-                              <option key={status} value={status}>
-                                {statusLabels[status]}
-                              </option>
-                            ))}
-                          </select>
-                          <button className="inline-flex min-h-9 items-center justify-center rounded-lg bg-[#3173f1] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#255fce]">განახლება</button>
-                        </form>
+                        <div className="flex flex-col gap-2 sm:flex-row">
+                          <form action={`/api/admin/attendees/${attendee.id}`} method="post" className="flex gap-2">
+                            <input type="hidden" name="redirectTo" value={`/admin/conferences/${conference.id}`} />
+                            <select name="status" defaultValue={attendee.status}>
+                              {Object.values(AttendeeStatus).map((status) => (
+                                <option key={status} value={status}>
+                                  {statusLabels[status]}
+                                </option>
+                              ))}
+                            </select>
+                            <button className="inline-flex min-h-9 items-center justify-center rounded-lg bg-[#3173f1] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#255fce]">განახლება</button>
+                          </form>
+                          <Link
+                            href={`/admin/attendees/${attendee.id}?conferenceId=${conference.id}`}
+                            className="inline-flex min-h-9 items-center justify-center rounded-lg border border-brand-200 px-3 py-1.5 text-xs font-semibold text-brand-800 hover:bg-brand-50"
+                          >
+                            რედაქტირება
+                          </Link>
+                        </div>
                       </td>
                     </tr>
                   ))}

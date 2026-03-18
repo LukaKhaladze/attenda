@@ -1,13 +1,14 @@
 "use client";
 
+import Link from "next/link";
 import { FormEvent, useMemo, useState } from "react";
 import { UIButton } from "@/components/ui-button";
 import { UICard } from "@/components/ui-card";
 import { UIInput } from "@/components/ui-input";
 
-type Props = { recipientAttendeeId: string };
+type Props = { recipientAttendeeId: string; conferenceId: string };
 
-export function MeetingOfferForm({ recipientAttendeeId }: Props) {
+export function MeetingOfferForm({ recipientAttendeeId, conferenceId }: Props) {
   const initialProposedAt = useMemo(() => {
     const now = new Date();
     now.setHours(now.getHours() + 24);
@@ -22,6 +23,7 @@ export function MeetingOfferForm({ recipientAttendeeId }: Props) {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [proposedAt, setProposedAt] = useState(initialProposedAt);
+  const [needsRegistration, setNeedsRegistration] = useState(false);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -44,6 +46,9 @@ export function MeetingOfferForm({ recipientAttendeeId }: Props) {
 
       const data = await response.json().catch(() => ({}));
       if (!response.ok) {
+        if (response.status === 401) {
+          setNeedsRegistration(true);
+        }
         setError(data?.error ?? "შეთავაზება ვერ გაიგზავნა");
         return;
       }
@@ -83,6 +88,19 @@ export function MeetingOfferForm({ recipientAttendeeId }: Props) {
           {loading ? "იგზავნება..." : "შეთავაზების გაგზავნა"}
         </UIButton>
       </form>
+      {needsRegistration ? (
+        <div className="space-y-3 rounded-xl border border-[#dbe7ff] bg-[#f7fbff] p-4">
+          <p className="text-sm leading-6 text-gray-700">
+            შეხვედრის შეთავაზების გასაგზავნად ჯერ უნდა დარეგისტრირდე ამ ღონისძიებაზე.
+          </p>
+          <Link
+            href={`/register?conferenceId=${conferenceId}`}
+            className="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-white"
+          >
+            რეგისტრაცია
+          </Link>
+        </div>
+      ) : null}
       {error ? <p className="text-sm text-error">{error}</p> : null}
       {message ? <p className="text-sm text-success">{message}</p> : null}
     </UICard>

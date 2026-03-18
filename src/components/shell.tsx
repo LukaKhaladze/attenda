@@ -1,8 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { ReactNode, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import darkLogo from "../../dark.png";
 
 export function Shell({ children, hideHeader = false }: { children: ReactNode; hideHeader?: boolean }) {
   const router = useRouter();
@@ -10,6 +12,7 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
   const [hasAttendeeCookie, setHasAttendeeCookie] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const isPublicConferencePage = pathname.startsWith("/conference/");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -118,20 +121,15 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
       {!hideHeader ? (
         <header className="sticky top-0 z-40 rounded-[22px] border border-[#d7e7fb] bg-white/92 px-3 py-3 shadow-[0_18px_42px_rgba(37,99,235,0.08)] backdrop-blur sm:px-4">
         <div className="flex items-center justify-between gap-2">
-          <Link href="/" className="flex items-center gap-3 text-lg font-bold text-[#0f172a]">
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[linear-gradient(180deg,#3b82f6,#2563eb)] text-white shadow-[0_12px_26px_rgba(37,99,235,0.28)]">
-              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden>
-                <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="currentColor" />
-              </svg>
-            </span>
-            <span>Networkapp</span>
+          <Link href="/" className="flex items-center">
+            <Image src={darkLogo} alt="Networkapp" className="h-auto w-[148px] sm:w-[168px]" priority={false} />
           </Link>
 
           <div className="flex items-center gap-2">
             {hasAttendeeCookie ? (
               <Link
                 href="/notifications"
-                className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#d7e7fb] text-[#2563eb]"
+                className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#d7e7fb] text-[#3173f1]"
                 aria-label="შეტყობინებები"
                 title="შეტყობინებები"
               >
@@ -140,7 +138,7 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
                   <path d="M10 20a2 2 0 004 0" stroke="currentColor" strokeWidth="2" />
                 </svg>
                 {unreadCount > 0 ? (
-                  <span className="absolute -right-1 -top-1 inline-flex min-h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#2563eb] px-1 text-[10px] font-semibold leading-none text-white">
+                  <span className="absolute -right-1 -top-1 inline-flex min-h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#3173f1] px-1 text-[10px] font-semibold leading-none text-white">
                     {unreadCount > 99 ? "99+" : unreadCount}
                   </span>
                 ) : null}
@@ -154,7 +152,7 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
               aria-expanded={menuOpen}
               aria-label="მენიუ"
             >
-              <svg className="h-4 w-4 text-[#2563eb]" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <svg className="h-4 w-4 text-[#3173f1]" viewBox="0 0 24 24" fill="none" aria-hidden>
                 <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
               </svg>
               <span>მენიუ</span>
@@ -191,14 +189,16 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
                   <span>რეგისტრაცია</span>
                 </Link>
 
-                <Link href="/auth/signin" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                  <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
-                    <path d="M10 17l-5-5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                    <path d="M5 12h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                    <path d="M14 4h4a2 2 0 012 2v12a2 2 0 01-2 2h-4" stroke="currentColor" strokeWidth="2" />
-                  </svg>
-                  <span>შესვლა</span>
-                </Link>
+                {!isPublicConferencePage ? (
+                  <Link href="/auth/signin" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                    <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
+                      <path d="M10 17l-5-5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      <path d="M5 12h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      <path d="M14 4h4a2 2 0 012 2v12a2 2 0 01-2 2h-4" stroke="currentColor" strokeWidth="2" />
+                    </svg>
+                    <span>შესვლა</span>
+                  </Link>
+                ) : null}
 
               </>
             ) : (

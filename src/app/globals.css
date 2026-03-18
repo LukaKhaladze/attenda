@@ -32,6 +32,7 @@ textarea,
 select {
   width: 100%;
   max-width: 100%;
+  min-width: 0;
   border-radius: 12px;
   border: 1px solid var(--gray-300);
   background: white;
@@ -51,5 +52,11 @@ select:focus {
 }
 
 button {
+  max-width: 100%;
+  box-sizing: border-box;
   transition: all 200ms ease-in-out;
+}
+
+textarea {
+  resize: vertical;
 }

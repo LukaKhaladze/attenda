@@ -184,12 +184,12 @@ export default async function HostConferencePage({ params }: { params: { id: str
               <span className="mb-2 block text-xs text-brand-600">ეს სურათი გამოჩნდება კონფერენციის მთავარ header-ში და share preview-ში.</span>
               <input type="file" name="coverImageFile" accept="image/*" className="w-full border-dashed" />
             </label>
-            <label className="space-y-1">
+            <label className="space-y-1 sm:col-span-2">
               <span className="block text-sm font-medium text-brand-800">დღის წესრიგი</span>
               <span className="block text-xs text-brand-600">თითო ჩანაწერი ახალ ხაზზე. მაგალითად: გახსნა, პანელი, networking.</span>
               <textarea name="agenda" defaultValue={agenda} rows={5} placeholder="მაგ: გახსნა\nპანელური დისკუსია\nNetworking" />
             </label>
-            <label className="space-y-1">
+            <label className="space-y-1 sm:col-span-2">
               <span className="block text-sm font-medium text-brand-800">სპიკერები</span>
               <span className="block text-xs text-brand-600">ჩაწერე თითო სპიკერი ახალ ხაზზე.</span>
               <textarea name="speakers" defaultValue={speakers} rows={5} placeholder="მაგ: გიორგი მელაძე\nანა კაპანაძე" />

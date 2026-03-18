@@ -73,7 +73,7 @@ export function ConferencePage({ conference, shareUrl }: Props) {
                 <span className="block text-xl font-bold tracking-[-0.03em] text-[#0f172a]">დამსწრეები</span>
                 <span className="block text-sm leading-6 text-slate-500">ყველა დადასტურებული პროფილი ერთ სიაში</span>
               </div>
-              <span className="rounded-full bg-[#2563eb] px-3 py-1 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(37,99,235,0.22)]">500+</span>
+              <span className="rounded-full bg-[#3173f1] px-3 py-1 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(37,99,235,0.22)]">500+</span>
             </div>
           </UICard>
         </Link>
@@ -169,7 +169,7 @@ export function ConferencePage({ conference, shareUrl }: Props) {
             დარეგისტრირდი
           </Link>
           <Link href={`/attendees?conferenceId=${conference.id}`} className="w-full rounded-xl border-2 border-primary px-4 py-3 text-center text-base font-medium text-primary">
-            დამსწრეთა ნახვა
+            დამსწრეები
           </Link>
         </div>
       </div>

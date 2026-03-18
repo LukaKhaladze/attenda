@@ -109,7 +109,7 @@ export function RegistrationForm({ conferenceId }: Props) {
   return (
     <form onSubmit={onSubmit} className="space-y-4 pb-24">
       <UIHeader title="რეგისტრაცია" backHref="/" />
-      <UICard className="space-y-3">
+      <UICard className="space-y-3 overflow-hidden">
         <div className="hidden">
           <label htmlFor="website">ვებსაიტი</label>
           <input id="website" name="website" autoComplete="off" tabIndex={-1} />
@@ -117,7 +117,7 @@ export function RegistrationForm({ conferenceId }: Props) {
 
         <UIInput label="სახელი" name="fullName" required requiredMark maxLength={120} />
         <UIInput label="კომპანია" name="company" maxLength={120} placeholder="მაგ: TechCorp Georgia" />
-        <label className="block space-y-1.5">
+        <label className="block min-w-0 space-y-1.5">
           <span className="text-sm font-medium text-gray-700">
             პოზიცია <span className="text-error">*</span>
           </span>
@@ -132,7 +132,7 @@ export function RegistrationForm({ conferenceId }: Props) {
             ))}
           </select>
         </label>
-        <label className="block space-y-1.5">
+        <label className="block min-w-0 space-y-1.5">
           <span className="text-sm font-medium text-gray-700">ღონისძიებაზე დასწრების მოტივაცია</span>
           <textarea
             name="motivation"
@@ -150,19 +150,19 @@ export function RegistrationForm({ conferenceId }: Props) {
           placeholder="https://linkedin.com/in/..."
         />
 
-        <label className="block space-y-1.5">
+        <label className="block min-w-0 space-y-1.5">
           <span className="text-sm font-medium text-gray-700">პროფილის ფოტო</span>
           <input name="photo" type="file" accept="image/*" className="w-full border-dashed" />
         </label>
 
-        <label className="flex items-start gap-2 text-sm text-gray-700">
+        <label className="flex min-w-0 items-start gap-2 text-sm text-gray-700">
           <input type="checkbox" name="sharePhonePublic" className="mt-1" />
-          <span>ვადასტურებ, რომ ტელეფონი საჯაროდ ჩანდეს</span>
+          <span className="min-w-0 leading-6">ვადასტურებ, რომ ტელეფონი საჯაროდ ჩანდეს</span>
         </label>
 
-        <label className="flex items-start gap-2 text-sm text-gray-700">
+        <label className="flex min-w-0 items-start gap-2 text-sm text-gray-700">
           <input type="checkbox" name="consentPublicList" className="mt-1" defaultChecked />
-          <span>ვეთანხმები, რომ ჩემი ინფორმაცია გამოჩნდეს სიაში</span>
+          <span className="min-w-0 leading-6">ვეთანხმები, რომ ჩემი ინფორმაცია გამოჩნდეს სიაში</span>
         </label>
 
         {error ? <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-error">{error}</p> : null}
