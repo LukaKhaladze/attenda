@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { headers } from "next/headers";
 import Link from "next/link";
@@ -9,25 +10,57 @@ import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
+export const metadata: Metadata = {
+  title: "Networkapp - პლატფორმა კონფერენციების ორგანიზატორებისთვის",
+  description:
+    "Networkapp ეხმარება კონფერენციების ორგანიზატორებს მართონ რეგისტრაცია, დაამტკიცონ დამსწრეები, გააზიარონ ღონისძიების გვერდი და შეუწყონ ხელი ნეთვორქინგს ერთ სისტემაში.",
+  alternates: {
+    canonical: "https://networkapp.ge"
+  },
+  openGraph: {
+    title: "Networkapp - პლატფორმა კონფერენციების ორგანიზატორებისთვის",
+    description:
+      "ერთ სივრცეში მართე კონფერენციის გვერდი, რეგისტრაციები, approval flow და დამსწრეებს შორის შეხვედრები.",
+    url: "https://networkapp.ge",
+    siteName: "Networkapp",
+    locale: "ka_GE",
+    type: "website"
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Networkapp - პლატფორმა კონფერენციების ორგანიზატორებისთვის",
+    description:
+      "კონფერენციის გვერდი, რეგისტრაციები, დამსწრეების დამტკიცება და ნეთვორქინგი ერთ სისტემაში."
+  },
+  keywords: [
+    "კონფერენციის მართვა",
+    "კონფერენციის პლატფორმა",
+    "event management georgia",
+    "conference website",
+    "დამსწრეების რეგისტრაცია",
+    "ნეთვორქინგ პლატფორმა"
+  ]
+};
+
 const platformCards = [
   {
-    title: "საჯარო გვერდი",
-    body: "ბრენდირებული გვერდი, agenda და სპიკერები ერთ სივრცეში.",
+    title: "ღონისძიების გვერდი",
+    body: "ერთი გვერდი კონფერენციის აღწერით, დღის წესრიგით და სპიკერებით.",
     icon: "page"
   },
   {
     title: "ჰოსტის პანელი",
-    body: "დამტკიცება, დამალვა და ძირითადი მართვა ერთ ეკრანიდან.",
+    body: "კონფერენციის წარმომადგენელი ერთ სივრცეში მართავს რეგისტრაციებს.",
     icon: "panel"
   },
   {
     title: "ნეთვორქინგი",
-    body: "საჯარო პროფილები და შეხვედრების შეთავაზებები.",
+    body: "დამსწრეები ხედავენ ერთმანეთს და აგზავნიან შეხვედრის მოთხოვნებს.",
     icon: "network"
   },
   {
     title: "QR და გაზიარება",
-    body: "მარტივი გავრცელება სტუმრებისთვის და სპიკერებისთვის.",
+    body: "ბმული, QR და subdomain მარტივად გასაზიარებლად.",
     icon: "share"
   }
 ];
@@ -36,17 +69,17 @@ const steps = [
   {
     step: "01",
     title: "ადმინი ამატებს კონფერენციას",
-    body: "იქმნება გვერდი, სუბდომენი და ჰოსტის წვდომა."
+    body: "იქმნება ღონისძიების გვერდი და ჰოსტის წვდომა."
   },
   {
     step: "02",
     title: "ჰოსტი მართავს რეგისტრაციებს",
-    body: "ამტკიცებს დამსწრეებს და ანახლებს ინფორმაციას."
+    body: "ამტკიცებს დამსწრეებს და აკონტროლებს ინფორმაციას."
   },
   {
     step: "03",
     title: "დამსწრეები უკეთ ნეთვორქინგობენ",
-    body: "საჯარო პროფილები და შეხვედრების შეთავაზებები."
+    body: "ხედავენ სხვა დამსწრეებს და ნიშნავენ შეხვედრებს."
   }
 ];
 
@@ -177,7 +210,7 @@ export default async function HomePage() {
                     რომელიც <span className="text-[#60a5fa]">მუშაობს</span>
                   </h1>
                   <p className="max-w-[880px] text-lg leading-8 text-white/84 sm:text-[1.35rem] sm:leading-9">
-                    ბრენდირებული გვერდი, დამსწრეთა მართვა, ჰოსტის პანელი და შეხვედრების შეთავაზებები ერთ პლატფორმაში.
+                    Networkapp აძლევს კონფერენციის ორგანიზატორებს საშუალებას ერთი პლატფორმიდან მართონ გვერდი, რეგისტრაციები და დამსწრეებს შორის შეხვედრები.
                   </p>
                 </div>
 
@@ -206,7 +239,9 @@ export default async function HomePage() {
               <h2 className="text-[2.35rem] font-bold leading-[1.16] tracking-[-0.04em] text-[#0f172a] sm:text-[2.9rem] lg:text-[3.1rem]">
                 ერთი პლატფორმა მთელი ივენთისთვის
               </h2>
-              <p className="text-base leading-8 text-slate-600 sm:text-lg sm:leading-[1.85]">რეგისტრაცია, დამტკიცება, ჰოსტის მართვა და ნეთვორქინგი ერთ მოქნილ სისტემაში.</p>
+              <p className="text-base leading-8 text-slate-600 sm:text-lg sm:leading-[1.85]">
+                პლატფორმის დახმარებით ორგანიზატორებს შეუძლიათ მართონ კონფერენცია მარტივად, ხოლო დამსწრეებს შორის ნეთვორქინგი ბუნებრივად წარიმართოს.
+              </p>
             </div>
 
             <div className="grid gap-5 sm:gap-6 md:grid-cols-2 xl:grid-cols-4">
@@ -257,7 +292,9 @@ export default async function HomePage() {
               <h2 className="text-[2.35rem] font-bold leading-[1.16] tracking-[-0.04em] text-[#0f172a] sm:text-[3rem] lg:text-[3.2rem]">
                 სამი მარტივი ნაბიჯი
               </h2>
-              <p className="mx-auto max-w-2xl text-base leading-8 text-slate-500 sm:text-lg sm:leading-[1.85]">მუშაობის ლოგიკა მარტივია როგორც ორგანიზატორისთვის, ისე ჰოსტისა და დამსწრისთვის.</p>
+              <p className="mx-auto max-w-2xl text-base leading-8 text-slate-500 sm:text-lg sm:leading-[1.85]">
+                პროცესი მარტივია როგორც ორგანიზატორისთვის, ისე კონფერენციის წარმომადგენლისა და დამსწრეებისთვის.
+              </p>
             </div>
 
             <div className="grid gap-10 md:grid-cols-2 xl:grid-cols-3 xl:gap-8">
@@ -299,7 +336,7 @@ export default async function HomePage() {
                   მზად ხარ შემდეგი ივენთისთვის?
                 </h3>
                 <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-white/88 sm:text-[1.1rem] sm:leading-[1.85] lg:text-[1.2rem]">
-                  დაგეხმარებით სწრაფად ააწყო გვერდი, approval flow და ჰოსტის სამუშაო პროცესი ერთ სისტემაში.
+                  დაგეხმარებით ავაწყოთ პროცესი, სადაც კონფერენციის წარმომადგენელი აკონტროლებს ყველაფერს ერთი გვერდიდან.
                 </p>
                 <CallbackRequestModal
                   triggerLabel="დავჯავშნოთ ზარი"
@@ -320,7 +357,7 @@ export default async function HomePage() {
                   className="h-auto w-[170px]"
                 />
                 <p className="max-w-md text-base leading-[1.92] text-white/62">
-                  პლატფორმა კონფერენციებისთვის, სადაც გვერდი, approval და ნეთვორქინგი ერთდება ერთ სივრცეში.
+                  პლატფორმა, რომელიც ეხმარება კონფერენციის ორგანიზატორებს მართონ გვერდი, დამსწრეები და შეხვედრები ერთ სივრცეში.
                 </p>
               </div>
 
