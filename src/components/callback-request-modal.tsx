@@ -121,7 +121,7 @@ export function CallbackRequestModal({ triggerLabel, triggerClassName = "" }: Pr
                     fullWidth
                     size="lg"
                     disabled={loading}
-                    className="bg-[#5ae2e8] text-[#0b1733] shadow-[0_18px_44px_rgba(90,226,232,0.22)] hover:bg-[#45d3da]"
+                    className="!bg-[#5ae2e8] !text-[#0b1733] shadow-[0_18px_44px_rgba(90,226,232,0.22)] hover:!bg-[#45d3da]"
                   >
                     {loading ? "იგზავნება..." : "გაგზავნა"}
                   </UIButton>
