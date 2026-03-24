@@ -69,7 +69,7 @@ export function CallbackRequestModal({ triggerLabel, triggerClassName = "" }: Pr
 
       {open ? (
         <div className="fixed inset-0 z-[120] flex items-center justify-center bg-[#020617]/60 px-4 backdrop-blur-sm">
-          <div className="w-full max-w-md overflow-hidden rounded-[28px] border border-white/20 bg-[linear-gradient(180deg,#f8fbff,#eef5fb)] shadow-[0_28px_70px_rgba(15,23,42,0.24)]">
+          <div className="w-full max-w-md overflow-hidden rounded-[28px] bg-[linear-gradient(180deg,#f8fbff,#eef5fb)] shadow-[0_28px_70px_rgba(15,23,42,0.24)]">
             <div className="border-b border-white/15 bg-[linear-gradient(135deg,#0f172a,#149aa4,#5ae2e8)] px-5 py-5 text-white sm:px-6">
               <div className="flex items-start justify-between gap-4">
                 <div className="text-left">
@@ -116,7 +116,13 @@ export function CallbackRequestModal({ triggerLabel, triggerClassName = "" }: Pr
 
                   {error ? <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-error">{error}</p> : null}
 
-                  <UIButton type="submit" fullWidth size="lg" disabled={loading} className="shadow-[0_18px_44px_rgba(37,99,235,0.22)]">
+                  <UIButton
+                    type="submit"
+                    fullWidth
+                    size="lg"
+                    disabled={loading}
+                    className="bg-[#5ae2e8] text-[#0b1733] shadow-[0_18px_44px_rgba(90,226,232,0.22)] hover:bg-[#45d3da]"
+                  >
                     {loading ? "იგზავნება..." : "გაგზავნა"}
                   </UIButton>
                 </form>
