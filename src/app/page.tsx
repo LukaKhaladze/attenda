@@ -147,7 +147,7 @@ export default async function HomePage() {
               }}
             />
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(37,27,18,0.2),rgba(25,19,18,0.34)_16%,rgba(11,16,28,0.66)_54%,rgba(8,12,24,0.92)_82%,rgba(7,11,22,0.96)_100%)]" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(96,165,250,0.24),transparent_34%),radial-gradient(circle_at_right_bottom,rgba(34,211,238,0.14),transparent_18%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(90,226,232,0.24),transparent_34%),radial-gradient(circle_at_right_bottom,rgba(90,226,232,0.16),transparent_18%)]" />
 
             <header className="relative z-40 px-5 py-5 sm:px-8 lg:px-10 2xl:px-12">
               <div className="mx-auto max-w-screen-2xl rounded-[22px] border border-white/20 bg-white/10 px-4 py-4 shadow-[0_18px_40px_rgba(14,17,23,0.22)] backdrop-blur-md sm:px-5">
@@ -207,7 +207,7 @@ export default async function HomePage() {
                   <h1 className="max-w-[960px] text-[3.5rem] font-bold leading-[1.16] tracking-[-0.045em] sm:text-[4.3rem] lg:text-[4.65rem]">
                     შექმენი ივენთი,
                     <br />
-                    რომელიც <span className="text-[#60a5fa]">მუშაობს</span>
+                    რომელიც <span className="text-[#5ae2e8]">მუშაობს</span>
                   </h1>
                   <p className="max-w-[880px] text-lg leading-8 text-white/84 sm:text-[1.35rem] sm:leading-9">
                     Networkapp აძლევს კონფერენციის ორგანიზატორებს საშუალებას ერთი პლატფორმიდან მართონ გვერდი, რეგისტრაციები და დამსწრეებს შორის შეხვედრები.
@@ -217,7 +217,7 @@ export default async function HomePage() {
                 <div className="flex flex-col gap-4 pt-1 sm:flex-row">
                   <a
                     href="#features"
-                    className="inline-flex min-h-14 items-center justify-center rounded-[18px] bg-[#3173f1] px-9 py-4 text-lg font-semibold text-white shadow-[0_16px_40px_rgba(37,99,235,0.34)] transition hover:bg-[#255fce]"
+                    className="inline-flex min-h-14 items-center justify-center rounded-[18px] bg-[#5ae2e8] px-9 py-4 text-lg font-semibold text-[#0b1733] shadow-[0_16px_40px_rgba(90,226,232,0.34)] transition hover:bg-[#45d3da]"
                   >
                     ნახე ფუნქციები
                   </a>
@@ -250,7 +250,7 @@ export default async function HomePage() {
                   key={feature.title}
                   className="rounded-[24px] border border-white/80 bg-white p-6 text-center shadow-[0_18px_44px_rgba(15,23,42,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_54px_rgba(15,23,42,0.12)] sm:rounded-[30px] sm:p-7"
                 >
-                  <div className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-[linear-gradient(180deg,#60a5fa,#3173f1)] text-white shadow-[0_14px_32px_rgba(37,99,235,0.2)]">
+                  <div className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-[linear-gradient(180deg,#93f5f8,#5ae2e8)] text-[#0b1733] shadow-[0_14px_32px_rgba(90,226,232,0.2)]">
                     {feature.icon === "page" ? (
                       <svg className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
                         <path d="M8 3h7l4 4v14H8z" />
@@ -300,7 +300,7 @@ export default async function HomePage() {
             <div className="grid gap-10 md:grid-cols-2 xl:grid-cols-3 xl:gap-8">
               {steps.map((item) => (
                 <div key={item.step} className="mx-auto flex w-full max-w-[360px] flex-col items-center text-center">
-                  <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-[linear-gradient(180deg,#3b82f6,#3173f1)] text-white shadow-[0_18px_34px_rgba(37,99,235,0.22)]">
+                  <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-[linear-gradient(180deg,#93f5f8,#5ae2e8)] text-[#0b1733] shadow-[0_18px_34px_rgba(90,226,232,0.22)]">
                     {item.step === "01" ? (
                       <svg className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
                         <circle cx="11" cy="11" r="6" />
@@ -321,7 +321,7 @@ export default async function HomePage() {
                       </svg>
                     )}
                   </div>
-                  <p className="mt-6 text-sm font-semibold uppercase tracking-[0.14em] text-[#3173f1]">ნაბიჯი {item.step}</p>
+                  <p className="mt-6 text-sm font-semibold uppercase tracking-[0.14em] text-[#28c8d0]">ნაბიჯი {item.step}</p>
                   <h3 className="mt-3 text-[1.95rem] font-bold leading-[1.14] tracking-[-0.04em] text-[#0f172a] sm:text-[2.05rem]">
                     {item.title}
                   </h3>
@@ -330,7 +330,7 @@ export default async function HomePage() {
               ))}
             </div>
 
-            <div className="overflow-hidden rounded-[30px] bg-[linear-gradient(135deg,#255fce,#3173f1,#38bdf8)] px-6 py-12 text-center text-white shadow-[0_32px_80px_rgba(37,99,235,0.2)] sm:rounded-[38px] sm:px-10 sm:py-14 lg:px-12 lg:py-16">
+            <div className="overflow-hidden rounded-[30px] bg-[linear-gradient(135deg,#0f172a,#149aa4,#5ae2e8)] px-6 py-12 text-center text-white shadow-[0_32px_80px_rgba(90,226,232,0.2)] sm:rounded-[38px] sm:px-10 sm:py-14 lg:px-12 lg:py-16">
               <div className="mx-auto max-w-3xl">
                 <h3 className="text-[2.35rem] font-bold leading-[1.14] tracking-[-0.05em] sm:text-[2.8rem] lg:text-[3.2rem]">
                   მზად ხარ შემდეგი ივენთისთვის?

@@ -70,7 +70,7 @@ export function CallbackRequestModal({ triggerLabel, triggerClassName = "" }: Pr
       {open ? (
         <div className="fixed inset-0 z-[120] flex items-center justify-center bg-[#020617]/60 px-4 backdrop-blur-sm">
           <div className="w-full max-w-md overflow-hidden rounded-[28px] border border-white/20 bg-[linear-gradient(180deg,#f8fbff,#eef5fb)] shadow-[0_28px_70px_rgba(15,23,42,0.24)]">
-            <div className="border-b border-white/15 bg-[linear-gradient(135deg,#0f172a,#255fce,#38bdf8)] px-5 py-5 text-white sm:px-6">
+            <div className="border-b border-white/15 bg-[linear-gradient(135deg,#0f172a,#149aa4,#5ae2e8)] px-5 py-5 text-white sm:px-6">
               <div className="flex items-start justify-between gap-4">
                 <div className="text-left">
                   <p className="text-sm font-medium text-white/72">დაგვიტოვე მოთხოვნა</p>
