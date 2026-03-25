@@ -4,8 +4,6 @@ import { FormEvent, useState } from "react";
 import { UIButton } from "@/components/ui-button";
 import { UIInput } from "@/components/ui-input";
 
-const SALES_EMAILS = ["khaladze27@gmail.com"];
-
 type Props = {
   triggerLabel: string;
   triggerClassName?: string;
@@ -16,21 +14,6 @@ export function CallbackRequestModal({ triggerLabel, triggerClassName = "" }: Pr
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-
-  function openMailClient(payload: { name: string; email: string; phone: string }) {
-    const subject = encodeURIComponent(`დარეკვის მოთხოვნა — ${payload.name}`);
-    const body = encodeURIComponent(
-      [
-        "ახალი მოთხოვნა საიტიდან:",
-        "",
-        `სახელი: ${payload.name}`,
-        `ელფოსტა: ${payload.email}`,
-        `ტელეფონი: ${payload.phone}`
-      ].join("\n")
-    );
-
-    window.location.href = `mailto:${SALES_EMAILS.join(",")}?subject=${subject}&body=${body}`;
-  }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -51,7 +34,21 @@ export function CallbackRequestModal({ triggerLabel, triggerClassName = "" }: Pr
         return;
       }
 
-      openMailClient(payload);
+      const response = await fetch("/api/contact-lead", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        setError(data?.error || "ფორმის გაგზავნა ვერ მოხერხდა. სცადე თავიდან.");
+        return;
+      }
+
       setSuccess(true);
       form.reset();
     } catch {
