@@ -320,7 +320,7 @@ export default async function HomePage() {
                         <path d="M19.5 8.5 15 4" />
                       </svg>
                     )}
-                  </div>28c8d0]">ნაბიჯი {item.step}</p>#28c8d0]">ნაბიჯი {item.step}</p>
+                  </div>
                   <h3 className="mt-3 text-[1.95rem] font-bold leading-[1.14] tracking-[-0.04em] text-[#0f172a] sm:text-[2.05rem]">
                     {item.title}
                   </h3>
