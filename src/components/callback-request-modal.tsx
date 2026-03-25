@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react";
 import { UIButton } from "@/components/ui-button";
 import { UIInput } from "@/components/ui-input";
 
-const SALES_EMAILS = ["luka@webfeatures.co", "kandelakil@gmail.com"];
+const SALES_EMAILS = ["khaladze27@gmail.com"];
 
 type Props = {
   triggerLabel: string;
