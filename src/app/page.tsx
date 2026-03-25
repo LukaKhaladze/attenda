@@ -373,8 +373,8 @@ export default async function HomePage() {
               <div className="space-y-4">
                 <p className="text-base font-semibold text-white">კონტაქტი</p>
                 <div className="space-y-3 text-base text-white/62">
-                  <a href="mailto:hello@attenda.ge" className="block transition hover:text-white">hello@attenda.ge</a>
-                  <a href="tel:+995599000000" className="block transition hover:text-white">+995 599 000 000</a>
+                  <a href="mailto:info@networkapp.ge" className="block transition hover:text-white">info@networkapp.ge</a>
+                  <a href="tel:+995599992030" className="block transition hover:text-white">+995 599 99 20 30</a>
                   <span className="block text-white/50">თბილისი, საქართველო</span>
                 </div>
               </div>
