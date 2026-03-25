@@ -104,7 +104,12 @@ export function CallbackRequestModal({ triggerLabel, triggerClassName = "" }: Pr
                     <h4 className="text-xl font-bold tracking-[-0.04em] text-gray-900">მიღებულია</h4>
                     <p className="max-w-sm text-sm leading-6 text-gray-600">მადლობა. მალე დაგიკავშირდებით.</p>
                   </div>
-                  <UIButton fullWidth size="lg" onClick={() => setOpen(false)}>
+                  <UIButton
+                    fullWidth
+                    size="lg"
+                    onClick={() => setOpen(false)}
+                    className="!bg-[#5ae2e8] !text-[#0b1733] shadow-[0_18px_44px_rgba(90,226,232,0.22)] hover:!bg-[#45d3da]"
+                  >
                     დახურვა
                   </UIButton>
                 </div>
