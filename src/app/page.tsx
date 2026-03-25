@@ -4,7 +4,6 @@ import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import lightLogo from "../../light.png";
-import { CallbackRequestModal } from "@/components/callback-request-modal";
 import { Shell } from "@/components/shell";
 import { prisma } from "@/lib/prisma";
 
@@ -337,10 +336,12 @@ export default async function HomePage() {
                 <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-white/88 sm:text-[1.1rem] sm:leading-[1.85] lg:text-[1.2rem]">
                   დაგეხმარებით ავაწყოთ პროცესი, სადაც კონფერენციის წარმომადგენელი აკონტროლებს ყველაფერს ერთი გვერდიდან.
                 </p>
-                <CallbackRequestModal
-                  triggerLabel="დავჯავშნოთ ზარი"
-                  triggerClassName="mt-8 inline-flex min-h-12 items-center justify-center rounded-2xl border border-white/35 bg-white/18 px-6 text-base font-semibold text-white shadow-[0_12px_28px_rgba(255,255,255,0.12)] backdrop-blur transition hover:bg-white hover:text-[#111827] sm:min-h-14 sm:px-8 sm:text-lg"
-                />
+                <a
+                  href="#contact"
+                  className="mt-8 inline-flex min-h-12 items-center justify-center rounded-2xl border border-white/35 bg-white/18 px-6 text-base font-semibold text-white shadow-[0_12px_28px_rgba(255,255,255,0.12)] backdrop-blur transition hover:bg-white hover:text-[#111827] sm:min-h-14 sm:px-8 sm:text-lg"
+                >
+                  დავჯავშნოთ ზარი
+                </a>
               </div>
             </div>
           </div>
