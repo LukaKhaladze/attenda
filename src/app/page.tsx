@@ -44,22 +44,22 @@ export const metadata: Metadata = {
 const platformCards = [
   {
     title: "ღონისძიების გვერდი",
-    body: "ერთი გვერდი კონფერენციის აღწერით, დღის წესრიგით და სპიკერებით.",
+    body: "ვებ-გვერდი კონფერენციის აღწერით, დღის წესრიგით, სპიკერებით და სტუმრებით",
     icon: "page"
   },
   {
-    title: "ჰოსტის პანელი",
-    body: "კონფერენციის წარმომადგენელი ერთ სივრცეში მართავს რეგისტრაციებს.",
+    title: "ორგანიზატორის პანელი",
+    body: "ღონისძიების ორგანიზატორი ერთ სივრცეში მართავს ყველა რეგისტრაციას",
     icon: "panel"
   },
   {
     title: "ნეთვორქინგი",
-    body: "დამსწრეები ხედავენ ერთმანეთს და აგზავნიან შეხვედრის მოთხოვნებს.",
+    body: "ღონისძიების სტუმრები ხედავენ ერთმანეთს და აგზავნიან შეხვედრის მოთხოვნებს.",
     icon: "network"
   },
   {
     title: "QR და გაზიარება",
-    body: "ბმული, QR და subdomain მარტივად გასაზიარებლად.",
+    body: "ბმული, QR და subdomain მარტივად გასაზიარებლად",
     icon: "share"
   }
 ];
@@ -67,18 +67,18 @@ const platformCards = [
 const steps = [
   {
     step: "01",
-    title: "ადმინი ამატებს კონფერენციას",
-    body: "იქმნება ღონისძიების გვერდი და ჰოსტის წვდომა."
+    title: "ადმინი ამატებს ღონისძიებას",
+    body: "იქმნება ღონისძიების გვერდი და ჰოსტის წვდომა"
   },
   {
     step: "02",
     title: "ჰოსტი მართავს რეგისტრაციებს",
-    body: "ამტკიცებს დამსწრეებს და აკონტროლებს ინფორმაციას."
+    body: "ადასტურებს დამსწრეების სიას და აკონტროლებს ინფორმაციას."
   },
   {
     step: "03",
-    title: "დამსწრეები უკეთ ნეთვორქინგობენ",
-    body: "ხედავენ სხვა დამსწრეებს და ნიშნავენ შეხვედრებს."
+    title: "სტუმრებისთვის საუკეთესო ნეთვორქინგი",
+    body: "სტუმრები ხედავენ ერთმანეთს და ნიშნავენ შეხვედრებს."
   }
 ];
 
@@ -204,12 +204,14 @@ export default async function HomePage() {
               <div className="max-w-[720px] space-y-7 text-white xl:max-w-[80%]">
                 <div className="space-y-5">
                   <h1 className="max-w-[960px] text-[3.5rem] font-bold leading-[1.16] tracking-[-0.045em] sm:text-[4.3rem] lg:text-[4.65rem]">
-                    შექმენი ივენთი,
+                    ივენთზე მარტივად შეხვდით ადამიანებს,
                     <br />
-                    რომელიც <span className="text-[#5ae2e8]">მუშაობს</span>
+                    ვინც თქვენთვის <span className="text-[#5ae2e8]">მნიშვნელოვანია...</span>
                   </h1>
                   <p className="max-w-[880px] text-lg leading-8 text-white/84 sm:text-[1.35rem] sm:leading-9">
-                    Networkapp აძლევს კონფერენციის ორგანიზატორებს საშუალებას ერთი პლატფორმიდან მართონ გვერდი, რეგისტრაციები და დამსწრეებს შორის შეხვედრები.
+                    Networkapp - გეხმარება ღონისძიებებზე ადვილად გაიცნო ადამიანები ვინც შენ გჭირდება.
+                    <br />
+                    დაჯავშნეთ პირისპირ შეხვედრა — ნებისმიერი ივენთი უნდა იყოს წარმატების მომტანი...
                   </p>
                 </div>
 
@@ -218,13 +220,13 @@ export default async function HomePage() {
                     href="#features"
                     className="inline-flex min-h-14 items-center justify-center rounded-[18px] bg-[#5ae2e8] px-9 py-4 text-lg font-semibold text-[#0b1733] shadow-[0_16px_40px_rgba(90,226,232,0.34)] transition hover:bg-[#45d3da]"
                   >
-                    ნახე ფუნქციები
+                    დეტალურად
                   </a>
                   <a
                     href="#contact"
                     className="inline-flex min-h-14 items-center justify-center rounded-[18px] border border-white/28 bg-white/8 px-9 py-4 text-lg font-semibold text-white shadow-[0_16px_40px_rgba(0,0,0,0.16)] backdrop-blur transition hover:bg-white hover:text-black"
                   >
-                    კონტაქტი
+                    დაგვიკავშირდი
                   </a>
                 </div>
               </div>
@@ -236,10 +238,10 @@ export default async function HomePage() {
           <div className="mx-auto max-w-screen-2xl space-y-10 sm:space-y-12">
             <div className="mx-auto max-w-3xl space-y-4 text-center">
               <h2 className="text-[2.35rem] font-bold leading-[1.16] tracking-[-0.04em] text-[#0f172a] sm:text-[2.9rem] lg:text-[3.1rem]">
-                ერთი პლატფორმა მთელი ივენთისთვის
+                ღონისძიებებისთვის ნეთვორქინგის ეფექტური პლატფორმა
               </h2>
               <p className="text-base leading-8 text-slate-600 sm:text-lg sm:leading-[1.85]">
-                პლატფორმის დახმარებით ორგანიზატორებს შეუძლიათ მართონ კონფერენცია მარტივად, ხოლო დამსწრეებს შორის ნეთვორქინგი ბუნებრივად წარიმართოს.
+                Networkapp პლატფორმის დახმარებით ღონისძიების ორგანიზატორებს შეუძლიათ სტუმრებს ნეთვორქინგის ეფექტური შესაძლებლობა მისცენ
               </p>
             </div>
 
@@ -331,10 +333,10 @@ export default async function HomePage() {
             <div className="overflow-hidden rounded-[30px] bg-[linear-gradient(135deg,#0f172a,#149aa4,#5ae2e8)] px-6 py-12 text-center text-white shadow-[0_32px_80px_rgba(90,226,232,0.2)] sm:rounded-[38px] sm:px-10 sm:py-14 lg:px-12 lg:py-16">
               <div className="mx-auto max-w-3xl">
                 <h3 className="text-[2.35rem] font-bold leading-[1.14] tracking-[-0.05em] sm:text-[2.8rem] lg:text-[3.2rem]">
-                  მზად ხარ შემდეგი ივენთისთვის?
+                  გინდა შენს ღონისძიებაზე ეფექტური ნეთვორქინგი იყოს?
                 </h3>
                 <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-white/88 sm:text-[1.1rem] sm:leading-[1.85] lg:text-[1.2rem]">
-                  დაგეხმარებით ავაწყოთ პროცესი, სადაც კონფერენციის წარმომადგენელი აკონტროლებს ყველაფერს ერთი გვერდიდან.
+                  ჩვენი პროგრამული გადაწყვეტა მოგცემთ ამის შესაძლებლობას რომ თქვენი ღონისძიება სტუმრებისთვის ეფექტური გამოვიდეს
                 </p>
                 <a
                   href="#contact"
@@ -357,7 +359,7 @@ export default async function HomePage() {
                   className="h-auto w-[170px]"
                 />
                 <p className="max-w-md text-base leading-[1.92] text-white/62">
-                  პლატფორმა, რომელიც ეხმარება კონფერენციის ორგანიზატორებს მართონ გვერდი, დამსწრეები და შეხვედრები ერთ სივრცეში.
+                  პლატფორმა, რომელიც ეხმარება ღონისძიების ორგანიზატორს ივენთი გაცილებით ეფექტური გახადოს და სტუმრებს მისცეს ნეთვორქინგის საუკეთესო გამოცდილება.
                 </p>
               </div>
 
