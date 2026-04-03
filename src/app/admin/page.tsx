@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AdminLogoutButton } from "@/components/admin-logout-button";
+import { AdminSignInForm } from "@/components/admin-signin-form";
 import { Shell } from "@/components/shell";
 import { hasAdminAccess } from "@/lib/admin";
 import { authOptions } from "@/lib/auth";
@@ -100,11 +101,22 @@ export default async function AdminPage() {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.email) {
-    redirect("/auth/signin");
+    return (
+      <Shell>
+        <AdminSignInForm />
+      </Shell>
+    );
   }
 
   if (!hasAdminAccess(session.user)) {
-    redirect("/");
+    if (session.user.role === "HOST") {
+      redirect("/host");
+    }
+    return (
+      <Shell>
+        <AdminSignInForm />
+      </Shell>
+    );
   }
 
   const [conferences, total, last24h, hostCount] = await Promise.all([
@@ -181,7 +193,7 @@ export default async function AdminPage() {
               <span className="mb-1 block text-sm font-medium text-brand-800">ქავერის სურათი</span>
               <input type="file" name="coverImageFile" accept="image/*" className="w-full border-dashed" />
             </label>
-            <button className="inline-flex min-h-11 items-center justify-center rounded-xl bg-[#2563eb] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(37,99,235,0.22)] transition hover:bg-[#1d4ed8] sm:col-span-3 sm:justify-self-start">
+            <button className="inline-flex min-h-11 items-center justify-center rounded-xl bg-[#3173f1] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(37,99,235,0.22)] transition hover:bg-[#255fce] sm:col-span-3 sm:justify-self-start">
               დამატება
             </button>
           </form>

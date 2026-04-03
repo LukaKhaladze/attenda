@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AdminLogoutButton } from "@/components/admin-logout-button";
+import { HostSignInForm } from "@/components/host-signin-form";
 import { Shell } from "@/components/shell";
 import { hasAdminAccess, hasHostAccess } from "@/lib/admin";
 import { getCurrentSessionUser } from "@/lib/host";
@@ -12,7 +13,11 @@ export default async function HostDashboardPage() {
   const sessionUser = await getCurrentSessionUser();
 
   if (!sessionUser?.id) {
-    redirect("/host/signin");
+    return (
+      <Shell>
+        <HostSignInForm />
+      </Shell>
+    );
   }
 
   if (!hasHostAccess(sessionUser) && !hasAdminAccess(sessionUser)) {
