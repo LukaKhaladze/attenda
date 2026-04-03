@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ReactNode, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 import darkLogo from "../../dark.png";
 
 export function Shell({ children, hideHeader = false }: { children: ReactNode; hideHeader?: boolean }) {
@@ -11,6 +12,8 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
   const pathname = usePathname();
   const [hasAttendeeCookie, setHasAttendeeCookie] = useState(false);
   const [hasConferenceAccess, setHasConferenceAccess] = useState(false);
+  const [hasUserSession, setHasUserSession] = useState(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const isPublicConferencePage = pathname.startsWith("/conference/");
@@ -70,6 +73,15 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
           signal: controller.signal
         });
         const sessionData = await sessionResponse.json().catch(() => ({}));
+        const authSessionResponse = await fetch("/api/auth/session", {
+          cache: "no-store",
+          signal: controller.signal
+        });
+        const authSessionData = await authSessionResponse.json().catch(() => null);
+        const hasUser = Boolean(authSessionData?.user?.email);
+        const role = typeof authSessionData?.user?.role === "string" ? authSessionData.user.role : null;
+        setHasUserSession(hasUser);
+        setUserRole(role);
         const isAttendee = Boolean(sessionResponse.ok && sessionData?.isAttendee);
         const access = Boolean(sessionResponse.ok && sessionData?.hasConferenceAccess);
         setHasAttendeeCookie(isAttendee);
@@ -104,6 +116,8 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
         if (!controller.signal.aborted) {
           setHasAttendeeCookie(false);
           setHasConferenceAccess(false);
+          setHasUserSession(false);
+          setUserRole(null);
           setUnreadCount(0);
         }
       }
@@ -124,6 +138,9 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
 
   async function handleLogout() {
     await fetch("/api/attendee/logout", { method: "POST" }).catch(() => null);
+    if (hasUserSession) {
+      await signOut({ redirect: false });
+    }
     try {
       Object.keys(sessionStorage)
         .filter((key) => key.startsWith("attenda_header_state_v3:"))
@@ -133,12 +150,17 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
     }
     setHasAttendeeCookie(false);
     setHasConferenceAccess(false);
+    setHasUserSession(false);
+    setUserRole(null);
     setUnreadCount(0);
     setMenuOpen(false);
     router.refresh();
   }
 
   const showAttendeeActions = hasAttendeeCookie && (!isPublicConferencePage || hasConferenceAccess);
+  const hasAnySession = showAttendeeActions || hasUserSession;
+  const showAdminDashboard = hasUserSession && userRole === "ADMIN";
+  const showHostDashboard = hasUserSession && userRole === "HOST";
   const registerHref = isPublicConferencePage && conferenceSlug ? `/register?conferenceSlug=${conferenceSlug}` : "/register";
   const attendeeSignInHref = isPublicConferencePage && conferenceSlug ? `/attendee/signin?conferenceSlug=${conferenceSlug}` : "/attendee/signin";
 
@@ -206,7 +228,7 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
               <span>დამსწრეები</span>
             </Link>
 
-            {!showAttendeeActions ? (
+            {!hasAnySession ? (
               <>
                 <Link href={registerHref} className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
                   <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -253,6 +275,25 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
                   <span>შეტყობინებები</span>
                   {unreadCount > 0 ? <span className="ml-auto text-xs font-semibold text-primary">{unreadCount > 99 ? "99+" : unreadCount}</span> : null}
                 </Link>
+
+                {showAdminDashboard ? (
+                  <Link href="/admin" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                    <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
+                      <path d="M4 12h16M12 4v16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                    <span>ადმინის პანელი</span>
+                  </Link>
+                ) : null}
+
+                {showHostDashboard ? (
+                  <Link href="/host" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                    <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
+                      <rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="2" />
+                      <path d="M7 8h10M7 12h6M7 16h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                    <span>ჰოსტის პანელი</span>
+                  </Link>
+                ) : null}
 
                 <button
                   type="button"
