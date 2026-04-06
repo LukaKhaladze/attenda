@@ -204,9 +204,9 @@ export default async function HomePage() {
               <div className="max-w-[720px] space-y-7 text-white xl:max-w-[80%]">
                 <div className="space-y-5">
                   <h1 className="max-w-[960px] text-[3.5rem] font-bold leading-[1.16] tracking-[-0.045em] sm:text-[4.3rem] lg:text-[4.65rem]">
-                    ივენთზე მარტივად შეხვდით ადამიანებს,
+                    ივენთზე ან კონფერენციაზე
                     <br />
-                    ვინც თქვენთვის <span className="text-[#5ae2e8]">მნიშვნელოვანია...</span>
+                    გაიცანი ყველა <span className="text-[#5ae2e8]">სტუმარი....</span>
                   </h1>
                   <p className="max-w-[880px] text-lg leading-8 text-white/84 sm:text-[1.35rem] sm:leading-9">
                     Networkapp - გეხმარება ღონისძიებებზე ადვილად გაიცნო ადამიანები ვინც შენ გჭირდება.
