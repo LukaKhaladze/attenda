@@ -50,6 +50,20 @@ export default async function HostDashboardPage() {
   return (
     <Shell>
       <section className="space-y-6 pb-8">
+        <div className="rounded-3xl border border-[#cfeeed] bg-[linear-gradient(135deg,#edfdfc_0%,#def9f7_100%)] p-5 shadow-[0_18px_40px_rgba(90,226,232,0.12)]">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="inline-flex items-center rounded-full bg-[#5ae2e8] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#0b1733]">
+              HOST
+            </span>
+            <p className="text-sm font-medium text-[#145965]">
+              შენ შესული ხარ როგორც ღონისძიების ჰოსტი
+            </p>
+          </div>
+          <p className="mt-2 text-sm leading-6 text-[#3e737d]">
+            აქედან ხედავ შენზე მინიჭებულ კონფერენციებს და მართავ მხოლოდ მათ რეგისტრაციებს.
+          </p>
+        </div>
+
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h1 className="text-3xl font-bold text-brand-900">ჰოსტის პანელი</h1>
@@ -58,7 +72,7 @@ export default async function HostDashboardPage() {
           <AdminLogoutButton callbackUrl="/host/signin" />
         </div>
 
-        <div className="rounded-2xl border border-brand-100 bg-white p-5 shadow-soft">
+        <div className="rounded-2xl border border-[#cfeeed] bg-white p-5 shadow-[0_18px_40px_rgba(90,226,232,0.08)]">
           <h2 className="mb-4 text-xl font-semibold text-brand-900">ჩემი კონფერენციები</h2>
           {conferences.length === 0 ? (
             <p className="rounded-lg border border-dashed border-brand-200 p-4 text-sm text-brand-700">

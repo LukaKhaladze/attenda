@@ -146,27 +146,41 @@ export default async function AdminPage() {
   return (
     <Shell>
       <section className="space-y-6 pb-8">
+        <div className="rounded-3xl border border-[#d9e7ff] bg-[linear-gradient(135deg,#eef4ff_0%,#e1ecff_100%)] p-5 shadow-[0_18px_40px_rgba(49,115,241,0.08)]">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="inline-flex items-center rounded-full bg-[#3173f1] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-white">
+              ADMIN
+            </span>
+            <p className="text-sm font-medium text-[#17305f]">
+              შენ შესული ხარ როგორც ადმინი
+            </p>
+          </div>
+          <p className="mt-2 text-sm leading-6 text-[#47618f]">
+            აქედან მართავ კონფერენციებს, ანიჭებ ჰოსტებს და აკონტროლებ რეგისტრაციებს.
+          </p>
+        </div>
+
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h1 className="text-3xl font-bold text-brand-900">ადმინისტრირება</h1>
           <AdminLogoutButton />
         </div>
 
         <div className="grid gap-4 sm:grid-cols-3">
-          <article className="rounded-2xl border border-brand-100 bg-white p-4 shadow-soft">
+          <article className="rounded-2xl border border-[#d9e7ff] bg-white p-4 shadow-[0_14px_30px_rgba(49,115,241,0.06)]">
             <p className="text-sm text-brand-700">ჯამური დამსწრეები</p>
             <p className="text-3xl font-bold text-brand-900">{total}</p>
           </article>
-          <article className="rounded-2xl border border-brand-100 bg-white p-4 shadow-soft">
+          <article className="rounded-2xl border border-[#d9e7ff] bg-white p-4 shadow-[0_14px_30px_rgba(49,115,241,0.06)]">
             <p className="text-sm text-brand-700">ბოლო 24 საათი</p>
             <p className="text-3xl font-bold text-brand-900">{last24h}</p>
           </article>
-          <article className="rounded-2xl border border-brand-100 bg-white p-4 shadow-soft">
+          <article className="rounded-2xl border border-[#d9e7ff] bg-white p-4 shadow-[0_14px_30px_rgba(49,115,241,0.06)]">
             <p className="text-sm text-brand-700">ჰოსტის ანგარიშები</p>
             <p className="text-3xl font-bold text-brand-900">{hostCount}</p>
           </article>
         </div>
 
-        <div className="rounded-2xl border border-brand-100 bg-white p-5 shadow-soft">
+        <div className="rounded-2xl border border-[#d9e7ff] bg-white p-5 shadow-[0_18px_40px_rgba(49,115,241,0.06)]">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-xl font-semibold text-brand-900">ახალი კონფერენცია</h2>
             {conferences.length > 0 ? (
@@ -199,7 +213,7 @@ export default async function AdminPage() {
           </form>
         </div>
 
-        <div className="rounded-2xl border border-brand-100 bg-white p-5 shadow-soft">
+        <div className="rounded-2xl border border-[#d9e7ff] bg-white p-5 shadow-[0_18px_40px_rgba(49,115,241,0.06)]">
           <h2 className="mb-4 text-xl font-semibold text-brand-900">კონფერენციების სია</h2>
           {conferences.length === 0 ? (
             <p className="rounded-lg border border-dashed border-brand-200 p-4 text-sm text-brand-700">კონფერენციები ჯერ არ არის დამატებული.</p>
