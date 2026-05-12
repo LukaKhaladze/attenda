@@ -47,18 +47,9 @@ export async function POST(request: NextRequest) {
       photoUrl: data.photoUrl ? cleanText(data.photoUrl) : null,
       sharePhonePublic: Boolean(data.phone) && data.sharePhonePublic,
       consentPublicList: data.consentPublicList,
-      status: AttendeeStatus.APPROVED
+      status: AttendeeStatus.PENDING
     }
   });
 
-  const response = NextResponse.json({ ok: true, attendeeId: attendee.id });
-  response.cookies.set("attendee_id", attendee.id, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 90
-  });
-
-  return response;
+  return NextResponse.json({ ok: true, attendeeId: attendee.id });
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { FormEvent, useMemo, useState } from "react";
 import { UIButton } from "@/components/ui-button";
 import { UICard } from "@/components/ui-card";
@@ -26,7 +25,6 @@ const positionOptions = [
 ];
 
 export function RegistrationForm({ conferenceId }: Props) {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -96,9 +94,8 @@ export function RegistrationForm({ conferenceId }: Props) {
 
       if (!response.ok) throw new Error(data?.error ?? "რეგისტრაცია ვერ შესრულდა");
 
-      setSuccess("რეგისტრაცია წარმატებულია. გადამისამართება მიმდინარეობს...");
+      setSuccess("რეგისტრაციის მოთხოვნა მიღებულია. ჰოსტის დადასტურების შემდეგ შეძლებ დამსწრეების სიაში შესვლას და შეხვედრების გაგზავნას.");
       form.reset();
-      setTimeout(() => router.push(`/attendees?conferenceId=${conferenceId}`), 900);
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : "უცნობი შეცდომა");
     } finally {
