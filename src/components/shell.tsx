@@ -18,6 +18,12 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
   const [unreadCount, setUnreadCount] = useState(0);
   const isPublicConferencePage = pathname.startsWith("/conference/");
   const conferenceSlug = isPublicConferencePage ? pathname.split("/")[2] ?? "" : "";
+  const isAdminArea = pathname.startsWith("/admin");
+  const isHostArea = pathname.startsWith("/host");
+  const isHostSession = hasUserSession && userRole === "HOST";
+  const isAdminSession = hasUserSession && userRole === "ADMIN";
+  const hostConferenceIdFromPath = pathname.startsWith("/host/conferences/") ? pathname.split("/")[3] ?? "" : "";
+  const [lastHostConferenceId, setLastHostConferenceId] = useState("");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -137,6 +143,40 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
     setMenuOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    const attendeeConferenceIdFromQuery =
+      typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("conferenceId") ?? "" : "";
+
+    if (hostConferenceIdFromPath) {
+      setLastHostConferenceId(hostConferenceIdFromPath);
+      try {
+        sessionStorage.setItem("attenda_last_host_conference_id", hostConferenceIdFromPath);
+      } catch {
+        // Ignore storage errors.
+      }
+      return;
+    }
+
+    if (attendeeConferenceIdFromQuery && isHostSession) {
+      setLastHostConferenceId(attendeeConferenceIdFromQuery);
+      try {
+        sessionStorage.setItem("attenda_last_host_conference_id", attendeeConferenceIdFromQuery);
+      } catch {
+        // Ignore storage errors.
+      }
+      return;
+    }
+
+    try {
+      const stored = sessionStorage.getItem("attenda_last_host_conference_id");
+      if (stored) {
+        setLastHostConferenceId(stored);
+      }
+    } catch {
+      // Ignore storage errors.
+    }
+  }, [hostConferenceIdFromPath, isHostSession, pathname]);
+
   async function handleLogout() {
     await fetch("/api/attendee/logout", { method: "POST" }).catch(() => null);
     if (hasUserSession) {
@@ -160,17 +200,19 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
 
   const showAttendeeActions = hasAttendeeCookie && (!isPublicConferencePage || hasConferenceAccess);
   const hasAnySession = showAttendeeActions || hasUserSession;
-  const showAdminDashboard = hasUserSession && userRole === "ADMIN";
-  const showHostDashboard = hasUserSession && userRole === "HOST";
+  const showAdminDashboard = isAdminSession;
+  const showHostDashboard = isHostSession;
   const registerHref = isPublicConferencePage && conferenceSlug ? `/register?conferenceSlug=${conferenceSlug}` : "/register";
   const attendeeSignInHref = isPublicConferencePage && conferenceSlug ? `/attendee/signin?conferenceSlug=${conferenceSlug}` : "/attendee/signin";
+  const hostAttendeesHref = lastHostConferenceId ? `/attendees?conferenceId=${lastHostConferenceId}` : "/host";
+  const primaryHomeHref = isAdminSession || isAdminArea ? "/admin" : isHostSession || isHostArea ? "/host" : "/";
 
   return (
     <div className="space-y-4">
       {!hideHeader ? (
         <header className="sticky top-0 z-40 rounded-[22px] border border-[#d7e7fb] bg-white/92 px-3 py-3 shadow-[0_18px_42px_rgba(37,99,235,0.08)] backdrop-blur sm:px-4">
         <div className="flex items-center justify-between gap-2">
-          <Link href="/" className="flex items-center">
+          <Link href={primaryHomeHref} className="flex items-center">
             <Image src={darkLogo} alt="Networkapp" className="h-auto w-[148px] sm:w-[168px]" priority={false} />
           </Link>
 
@@ -211,7 +253,7 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
 
         {menuOpen ? (
           <div className="mt-3 space-y-2 rounded-2xl border border-[#d7e7fb] bg-white p-3 shadow-[0_12px_30px_rgba(15,23,42,0.06)]">
-            <Link href="/" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+            <Link href={primaryHomeHref} className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
               <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
                 <path d="M3 11l9-8 9 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                 <path d="M5 10v10h14V10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -219,18 +261,18 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
               <span>მთავარი</span>
             </Link>
 
-            <Link href="/attendees" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
-              <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
-                <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="2" />
-                <circle cx="16" cy="9" r="2.5" stroke="currentColor" strokeWidth="2" />
-                <path d="M3 20c1.2-3.1 3.5-5 5-5s3.8 1.9 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <path d="M13 20c.8-2 2.4-3.2 3.6-3.2 1.3 0 2.8 1.2 3.7 3.2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </svg>
-              <span>დამსწრეები</span>
-            </Link>
-
             {!hasAnySession ? (
               <>
+                <Link href="/attendees" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                  <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
+                    <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="2" />
+                    <circle cx="16" cy="9" r="2.5" stroke="currentColor" strokeWidth="2" />
+                    <path d="M3 20c1.2-3.1 3.5-5 5-5s3.8 1.9 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    <path d="M13 20c.8-2 2.4-3.2 3.6-3.2 1.3 0 2.8 1.2 3.7 3.2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  </svg>
+                  <span>დამსწრეები</span>
+                </Link>
+
                 <Link href={registerHref} className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
                   <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
                     <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -260,40 +302,68 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
               </>
             ) : (
               <>
-                <Link href="/me" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                  <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
-                    <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
-                    <path d="M4 20c1.8-3.2 5-5 8-5s6.2 1.8 8 5" stroke="currentColor" strokeWidth="2" />
-                  </svg>
-                  <span>ჩემი გვერდი</span>
-                </Link>
-
-                <Link href="/notifications" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                  <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
-                    <path d="M15 17h5l-1.4-1.4a2 2 0 01-.6-1.4V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h11z" stroke="currentColor" strokeWidth="2" />
-                    <path d="M10 20a2 2 0 004 0" stroke="currentColor" strokeWidth="2" />
-                  </svg>
-                  <span>შეტყობინებები</span>
-                  {unreadCount > 0 ? <span className="ml-auto text-xs font-semibold text-primary">{unreadCount > 99 ? "99+" : unreadCount}</span> : null}
-                </Link>
-
-                {showAdminDashboard ? (
-                  <Link href="/admin" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                    <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
-                      <path d="M4 12h16M12 4v16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                    </svg>
-                    <span>ადმინის პანელი</span>
-                  </Link>
+                {isHostSession ? (
+                  <>
+                    <Link href={hostAttendeesHref} className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                      <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
+                        <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="2" />
+                        <circle cx="16" cy="9" r="2.5" stroke="currentColor" strokeWidth="2" />
+                        <path d="M3 20c1.2-3.1 3.5-5 5-5s3.8 1.9 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                        <path d="M13 20c.8-2 2.4-3.2 3.6-3.2 1.3 0 2.8 1.2 3.7 3.2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      </svg>
+                      <span>დამსწრეები</span>
+                    </Link>
+                  </>
                 ) : null}
 
-                {showHostDashboard ? (
-                  <Link href="/host" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                    <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
-                      <rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="2" />
-                      <path d="M7 8h10M7 12h6M7 16h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                    </svg>
-                    <span>ჩემი ღონისძიებები</span>
-                  </Link>
+                {isAdminSession ? (
+                  <>
+                    <Link href="/me" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                      <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
+                        <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
+                        <path d="M4 20c1.8-3.2 5-5 8-5s6.2 1.8 8 5" stroke="currentColor" strokeWidth="2" />
+                      </svg>
+                      <span>ჩემი გვერდი</span>
+                    </Link>
+
+                    <Link href="/notifications" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                      <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
+                        <path d="M15 17h5l-1.4-1.4a2 2 0 01-.6-1.4V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h11z" stroke="currentColor" strokeWidth="2" />
+                        <path d="M10 20a2 2 0 004 0" stroke="currentColor" strokeWidth="2" />
+                      </svg>
+                      <span>შეტყობინებები</span>
+                      {unreadCount > 0 ? <span className="ml-auto text-xs font-semibold text-primary">{unreadCount > 99 ? "99+" : unreadCount}</span> : null}
+                    </Link>
+
+                    <Link href="/admin" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                      <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
+                        <rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="2" />
+                        <path d="M7 8h10M7 12h6M7 16h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      </svg>
+                      <span>ჩემი ღონისძიებები</span>
+                    </Link>
+                  </>
+                ) : null}
+
+                {showAttendeeActions && !isAdminSession && !isHostSession ? (
+                  <>
+                    <Link href="/me" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                      <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
+                        <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
+                        <path d="M4 20c1.8-3.2 5-5 8-5s6.2 1.8 8 5" stroke="currentColor" strokeWidth="2" />
+                      </svg>
+                      <span>ჩემი გვერდი</span>
+                    </Link>
+
+                    <Link href="/notifications" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                      <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
+                        <path d="M15 17h5l-1.4-1.4a2 2 0 01-.6-1.4V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h11z" stroke="currentColor" strokeWidth="2" />
+                        <path d="M10 20a2 2 0 004 0" stroke="currentColor" strokeWidth="2" />
+                      </svg>
+                      <span>შეტყობინებები</span>
+                      {unreadCount > 0 ? <span className="ml-auto text-xs font-semibold text-primary">{unreadCount > 99 ? "99+" : unreadCount}</span> : null}
+                    </Link>
+                  </>
                 ) : null}
 
                 <button

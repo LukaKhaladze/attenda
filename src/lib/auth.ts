@@ -2,6 +2,7 @@ import { compare } from "bcryptjs";
 import { UserRole } from "@prisma/client";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { hasAdminAccess } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
 
 export const authOptions: NextAuthOptions = {
@@ -43,7 +44,7 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: user.name,
-          role: user.role satisfies UserRole
+          role: (hasAdminAccess(user) ? "ADMIN" : user.role) satisfies UserRole
         };
       }
     })
@@ -59,7 +60,12 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (session.user && token.id) {
         session.user.id = String(token.id);
-        session.user.role = token.role;
+        session.user.role = hasAdminAccess({
+          email: session.user.email,
+          role: (token.role as UserRole | undefined) ?? null
+        })
+          ? "ADMIN"
+          : token.role;
       }
       return session;
     }

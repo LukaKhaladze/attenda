@@ -20,20 +20,15 @@ export default async function HostDashboardPage() {
     );
   }
 
+  if (hasAdminAccess(sessionUser) && sessionUser.role === "ADMIN") {
+    redirect("/admin");
+  }
+
   if (!hasHostAccess(sessionUser) && !hasAdminAccess(sessionUser)) {
     redirect("/");
   }
 
-  const conferences = hasAdminAccess(sessionUser)
-    ? await prisma.conference.findMany({
-        orderBy: { date: "asc" },
-        include: {
-          _count: {
-            select: { attendees: true }
-          }
-        }
-      })
-    : await prisma.hostConference.findMany({
+  const conferences = await prisma.hostConference.findMany({
         where: { userId: sessionUser.id },
         orderBy: { conference: { date: "asc" } },
         include: {
