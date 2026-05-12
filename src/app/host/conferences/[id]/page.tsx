@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { AdminLogoutButton } from "@/components/admin-logout-button";
+import { ServerActionButton } from "@/components/server-action-button";
 import { Shell } from "@/components/shell";
 import { hasAdminAccess, hasHostAccess } from "@/lib/admin";
 import { authOptions } from "@/lib/auth";
@@ -60,10 +61,17 @@ async function updateHostConference(formData: FormData) {
 
   const existingCoverImageUrl = String(formData.get("existingCoverImageUrl") || "").trim();
   const coverImageFile = formData.get("coverImageFile");
-  const uploadedCoverImageUrl =
-    coverImageFile instanceof File && coverImageFile.size > 0
-      ? await uploadImageFile(coverImageFile, "conference-covers")
-      : null;
+  let uploadedCoverImageUrl: string | null = null;
+
+  try {
+    uploadedCoverImageUrl =
+      coverImageFile instanceof File && coverImageFile.size > 0
+        ? await uploadImageFile(coverImageFile, "conference-covers")
+        : null;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "ქავერის ატვირთვა ვერ მოხერხდა";
+    redirect(`/host/conferences/${id}?error=${encodeURIComponent(message)}`);
+  }
 
   await prisma.conference.update({
     where: { id },
@@ -81,10 +89,16 @@ async function updateHostConference(formData: FormData) {
     }
   });
 
-  redirect(`/host/conferences/${id}`);
+  redirect(`/host/conferences/${id}?saved=1`);
 }
 
-export default async function HostConferencePage({ params }: { params: { id: string } }) {
+export default async function HostConferencePage({
+  params,
+  searchParams
+}: {
+  params: { id: string };
+  searchParams?: { saved?: string; error?: string };
+}) {
   const sessionUser = await getCurrentSessionUser();
 
   if (!sessionUser?.id) {
@@ -122,6 +136,17 @@ export default async function HostConferencePage({ params }: { params: { id: str
   return (
     <Shell>
       <section className="space-y-6 pb-8">
+        {searchParams?.saved === "1" ? (
+          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">
+            ცვლილება წარმატებით შეინახა.
+          </div>
+        ) : null}
+        {searchParams?.error ? (
+          <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-800">
+            {decodeURIComponent(searchParams.error)}
+          </div>
+        ) : null}
+
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h1 className="text-2xl font-bold text-brand-900">კონფერენციის მართვა</h1>
@@ -181,7 +206,7 @@ export default async function HostConferencePage({ params }: { params: { id: str
             </label>
             <label className="sm:col-span-2">
               <span className="mb-1 block text-sm font-medium text-brand-800">ქავერის სურათი</span>
-              <span className="mb-2 block text-xs text-brand-600">ეს სურათი გამოჩნდება კონფერენციის მთავარ header-ში და share preview-ში.</span>
+              <span className="mb-2 block text-xs text-brand-600">ეს სურათი გამოჩნდება კონფერენციის მთავარ header-ში და share preview-ში. რეკომენდებულია JPG, PNG ან WEBP ფაილი 2MB-მდე.</span>
               <input type="file" name="coverImageFile" accept="image/*" className="w-full border-dashed" />
             </label>
             <label className="space-y-1 sm:col-span-2">
@@ -202,9 +227,9 @@ export default async function HostConferencePage({ params }: { params: { id: str
           </div>
           <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-xs text-brand-700 break-all">{shareUrl}</p>
-            <button className="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-[#3173f1] px-4 py-2 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(37,99,235,0.22)] transition hover:bg-[#255fce] sm:w-auto">
+            <ServerActionButton className="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-[#3173f1] px-4 py-2 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(37,99,235,0.22)] transition hover:bg-[#255fce] sm:w-auto" pendingLabel="ინახება...">
               შენახვა
-            </button>
+            </ServerActionButton>
           </div>
         </form>
 

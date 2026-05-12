@@ -55,6 +55,16 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
 
     async function updateState() {
       try {
+        const authSessionResponse = await fetch("/api/auth/session", {
+          cache: "no-store",
+          signal: controller.signal
+        });
+        const authSessionData = await authSessionResponse.json().catch(() => null);
+        const hasUser = Boolean(authSessionData?.user?.email);
+        const role = typeof authSessionData?.user?.role === "string" ? authSessionData.user.role : null;
+        setHasUserSession(hasUser);
+        setUserRole(role);
+
         const cached = readCachedState();
         if (cached) {
           setHasAttendeeCookie(cached.isAttendee);
@@ -73,15 +83,6 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
           signal: controller.signal
         });
         const sessionData = await sessionResponse.json().catch(() => ({}));
-        const authSessionResponse = await fetch("/api/auth/session", {
-          cache: "no-store",
-          signal: controller.signal
-        });
-        const authSessionData = await authSessionResponse.json().catch(() => null);
-        const hasUser = Boolean(authSessionData?.user?.email);
-        const role = typeof authSessionData?.user?.role === "string" ? authSessionData.user.role : null;
-        setHasUserSession(hasUser);
-        setUserRole(role);
         const isAttendee = Boolean(sessionResponse.ok && sessionData?.isAttendee);
         const access = Boolean(sessionResponse.ok && sessionData?.hasConferenceAccess);
         setHasAttendeeCookie(isAttendee);
@@ -291,7 +292,7 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
                       <rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="2" />
                       <path d="M7 8h10M7 12h6M7 16h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                     </svg>
-                    <span>ჰოსტის პანელი</span>
+                    <span>ჩემი ღონისძიებები</span>
                   </Link>
                 ) : null}
 
