@@ -44,6 +44,9 @@ Required values:
 - `NEXTAUTH_SECRET`: random secret for NextAuth
 - `ADMIN_EMAILS`: optional comma-separated admin emails allowed into `/admin` (if empty, any authenticated user can access admin)
 - `BLOB_READ_WRITE_TOKEN`: Vercel Blob token
+- `SUPABASE_URL`: optional, Supabase project URL for profile photo uploads
+- `SUPABASE_SERVICE_ROLE_KEY`: optional, Supabase service role key for server-side Storage uploads
+- `SUPABASE_STORAGE_BUCKET`: optional, Supabase Storage bucket for profile photos. Defaults to `attendee-photos`
 - `RESEND_API_KEY`: optional, required to send emails through Resend
 - `MAIL_FROM_EMAIL`: optional, sender email for app notifications such as registrations and approvals. Defaults to `NetworkApp <no-reply@networkapp.ge>`
 - `REGISTRATION_NOTIFY_EMAILS`: optional fallback comma-separated emails notified about new attendee registrations when an event has no assigned host
