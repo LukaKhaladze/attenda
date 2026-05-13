@@ -28,6 +28,7 @@ export async function GET(request: Request) {
       id: a.id,
       conference: a.conference.title_ka,
       fullName: a.fullName,
+      email: a.email || "",
       company: a.company || "",
       position: a.position || "",
       phone: a.phone,

@@ -47,6 +47,7 @@ model Attendee {
   id                String         @id @default(cuid())
   conferenceId      String
   fullName          String
+  email             String?
   company           String?
   position          String?
   motivation        String?
@@ -62,6 +63,7 @@ model Attendee {
   sentOffers        MeetingOffer[] @relation("SentOffers")
 
   @@index([conferenceId, status])
+  @@index([conferenceId, email])
   @@index([conferenceId, status, consentPublicList, createdAt])
   @@index([conferenceId, consentPublicList, position])
   @@index([fullName])

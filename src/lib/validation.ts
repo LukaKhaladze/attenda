@@ -33,6 +33,7 @@ const optionalLinkedInValidator = z
 export const registerSchema = z.object({
   conferenceId: z.string().cuid("კონფერენციის იდენტიფიკატორი არასწორია"),
   fullName: z.string().min(2, "სახელი სავალდებულოა").max(120, "მაქსიმუმ 120 სიმბოლო"),
+  email: z.string().trim().email("ელფოსტა არასწორია").max(180, "მაქსიმუმ 180 სიმბოლო"),
   company: z.string().max(120, "მაქსიმუმ 120 სიმბოლო").optional().or(z.literal("")),
   position: z.string().min(2, "პოზიცია სავალდებულოა").max(120, "მაქსიმუმ 120 სიმბოლო"),
   motivation: z.string().max(150, "მაქსიმუმ 150 სიმბოლო").optional().or(z.literal("")),

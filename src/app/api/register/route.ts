@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AttendeeStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { notifyHostsAboutRegistration, sendAttendeeRegistrationReceivedEmail } from "@/lib/attendee-emails";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { cleanText } from "@/lib/sanitize";
 import { registerSchema } from "@/lib/validation";
@@ -30,7 +31,18 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "ფორმა ძალიან სწრაფად გაიგზავნა" }, { status: 400 });
   }
 
-  const conference = await prisma.conference.findUnique({ where: { id: data.conferenceId } });
+  const conference = await prisma.conference.findUnique({
+    where: { id: data.conferenceId },
+    include: {
+      hostAssignments: {
+        include: {
+          user: {
+            select: { email: true }
+          }
+        }
+      }
+    }
+  });
   if (!conference) {
     return NextResponse.json({ error: "კონფერენცია ვერ მოიძებნა" }, { status: 404 });
   }
@@ -39,6 +51,7 @@ export async function POST(request: NextRequest) {
     data: {
       conferenceId: data.conferenceId,
       fullName: cleanText(data.fullName),
+      email: data.email.trim().toLowerCase(),
       company: data.company ? cleanText(data.company) : null,
       position: cleanText(data.position),
       motivation: data.motivation ? cleanText(data.motivation) : null,
@@ -50,6 +63,29 @@ export async function POST(request: NextRequest) {
       status: AttendeeStatus.PENDING
     }
   });
+
+  const conferenceUrl = `${request.nextUrl.origin}/conference/${conference.slug}`;
+
+  try {
+    await Promise.all([
+      sendAttendeeRegistrationReceivedEmail({
+        email: attendee.email,
+        fullName: attendee.fullName,
+        conferenceTitle: conference.title_ka,
+        conferenceUrl
+      }),
+      notifyHostsAboutRegistration({
+        email: attendee.email,
+        fullName: attendee.fullName,
+        conferenceTitle: conference.title_ka,
+        conferenceUrl,
+        adminUrl: `${request.nextUrl.origin}/host/conferences/${conference.id}`,
+        hostEmails: conference.hostAssignments.map((assignment) => assignment.user.email)
+      })
+    ]);
+  } catch (error) {
+    console.error("[registration-email] send failed", error);
+  }
 
   return NextResponse.json({ ok: true, attendeeId: attendee.id });
 }

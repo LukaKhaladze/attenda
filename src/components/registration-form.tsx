@@ -73,6 +73,7 @@ export function RegistrationForm({ conferenceId }: Props) {
       const payload = {
         conferenceId,
         fullName: String(formData.get("fullName") || ""),
+        email: String(formData.get("email") || ""),
         company: String(formData.get("company") || ""),
         position: String(formData.get("position") || ""),
         motivation: String(formData.get("motivation") || ""),
@@ -113,6 +114,7 @@ export function RegistrationForm({ conferenceId }: Props) {
         </div>
 
         <UIInput label="სახელი" name="fullName" required requiredMark maxLength={120} />
+        <UIInput label="ელფოსტა" name="email" type="email" required requiredMark maxLength={180} placeholder="you@example.com" />
         <UIInput label="კომპანია" name="company" maxLength={120} placeholder="მაგ: TechCorp Georgia" />
         <label className="block min-w-0 space-y-1.5">
           <span className="text-sm font-medium text-gray-700">

@@ -44,8 +44,10 @@ Required values:
 - `NEXTAUTH_SECRET`: random secret for NextAuth
 - `ADMIN_EMAILS`: optional comma-separated admin emails allowed into `/admin` (if empty, any authenticated user can access admin)
 - `BLOB_READ_WRITE_TOKEN`: Vercel Blob token
-- `RESEND_API_KEY`: optional, required to send password reset emails
-- `RESET_FROM_EMAIL`: optional, sender email for password reset messages
+- `RESEND_API_KEY`: optional, required to send emails through Resend
+- `MAIL_FROM_EMAIL`: optional, sender email for app notifications such as registrations and approvals. Defaults to `NetworkApp <no-reply@networkapp.ge>`
+- `REGISTRATION_NOTIFY_EMAILS`: optional fallback comma-separated emails notified about new attendee registrations when an event has no assigned host
+- `RESET_FROM_EMAIL`: optional, sender email for password reset messages and fallback sender for app notifications. Use `NetworkApp <no-reply@networkapp.ge>`
 
 ## Install
 

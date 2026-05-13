@@ -25,6 +25,7 @@ async function updateAttendee(formData: FormData) {
   const id = String(formData.get("id") || "");
   const conferenceId = String(formData.get("conferenceId") || "");
   const fullName = String(formData.get("fullName") || "").trim();
+  const email = String(formData.get("email") || "").trim().toLowerCase();
   const company = String(formData.get("company") || "").trim();
   const position = String(formData.get("position") || "").trim();
   const motivation = String(formData.get("motivation") || "").trim();
@@ -42,6 +43,7 @@ async function updateAttendee(formData: FormData) {
     where: { id },
     data: {
       fullName: cleanText(fullName),
+      email: email ? cleanText(email) : null,
       company: company ? cleanText(company) : null,
       position: cleanText(position),
       motivation: motivation ? cleanText(motivation) : null,
@@ -109,6 +111,10 @@ export default async function AdminAttendeeEditPage({
             <label className="space-y-1">
               <span className="block text-sm font-medium text-brand-800">პოზიცია</span>
               <input name="position" defaultValue={attendee.position ?? ""} required />
+            </label>
+            <label className="space-y-1">
+              <span className="block text-sm font-medium text-brand-800">ელფოსტა</span>
+              <input name="email" type="email" defaultValue={attendee.email ?? ""} />
             </label>
             <label className="space-y-1">
               <span className="block text-sm font-medium text-brand-800">კომპანია</span>
