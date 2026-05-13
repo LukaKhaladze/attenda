@@ -318,7 +318,6 @@ export default async function AdminConferencePage({
               <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={conference.coverImageUrl} alt="მიმდინარე ქავერი" className="h-20 w-32 rounded-lg border border-brand-100 object-cover" />
-                <p className="text-xs break-all text-brand-700">{conference.coverImageUrl}</p>
               </div>
             </div>
           ) : null}
