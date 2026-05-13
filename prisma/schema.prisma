@@ -62,6 +62,7 @@ model Attendee {
   conference        Conference     @relation(fields: [conferenceId], references: [id], onDelete: Cascade)
   receivedOffers    MeetingOffer[] @relation("ReceivedOffers")
   sentOffers        MeetingOffer[] @relation("SentOffers")
+  offerMessages     MeetingOfferMessage[]
 
   @@index([conferenceId, status])
   @@index([conferenceId, email])
@@ -83,11 +84,25 @@ model MeetingOffer {
   createdAt         DateTime           @default(now())
   recipient         Attendee           @relation("ReceivedOffers", fields: [recipientAttendeeId], references: [id], onDelete: Cascade)
   sender            Attendee?          @relation("SentOffers", fields: [senderAttendeeId], references: [id], onDelete: SetNull)
+  messages          MeetingOfferMessage[]
 
   @@index([recipientAttendeeId, createdAt])
   @@index([senderAttendeeId, createdAt])
   @@index([senderAttendeeId, status, createdAt])
   @@index([senderContact, status, createdAt])
+}
+
+model MeetingOfferMessage {
+  id               String      @id @default(cuid())
+  meetingOfferId   String
+  authorAttendeeId String
+  body             String
+  createdAt        DateTime    @default(now())
+  offer            MeetingOffer @relation(fields: [meetingOfferId], references: [id], onDelete: Cascade)
+  author           Attendee     @relation(fields: [authorAttendeeId], references: [id], onDelete: Cascade)
+
+  @@index([meetingOfferId, createdAt])
+  @@index([authorAttendeeId, createdAt])
 }
 
 model User {

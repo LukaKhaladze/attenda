@@ -39,13 +39,12 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ unread: 0, total: 0 });
   }
 
-  const [receivedCount, sentCount] = await Promise.all([
+  const [receivedCount, sentCount, messageCount] = await Promise.all([
     prisma.meetingOffer.count({
       where: { recipientAttendeeId: attendeeId }
     }),
     prisma.meetingOffer.count({
       where: {
-        status: { not: MeetingOfferStatus.PENDING },
         OR: [
           { senderAttendeeId: related.id },
           ...(related.legacySenderContactMatches.length > 0
@@ -66,10 +65,21 @@ export async function GET(request: NextRequest) {
             : [])
         ]
       }
+    }),
+    prisma.meetingOfferMessage.count({
+      where: {
+        authorAttendeeId: { not: attendeeId },
+        offer: {
+          OR: [
+            { recipientAttendeeId: attendeeId },
+            { senderAttendeeId: attendeeId }
+          ]
+        }
+      }
     })
   ]);
 
-  const total = receivedCount + sentCount;
+  const total = receivedCount + sentCount + messageCount;
 
   const seenFor = request.cookies.get("notifications_seen_for")?.value;
   const seenRaw = request.cookies.get("notifications_seen_count")?.value;

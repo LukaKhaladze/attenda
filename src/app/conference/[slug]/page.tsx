@@ -1,4 +1,4 @@
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { ConferencePage } from "@/components/conference-page";
 import { Shell } from "@/components/shell";
@@ -28,6 +28,20 @@ export default async function ConferenceSinglePage({ params }: { params: { slug:
       ? `https://${conference.customSubdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`
       : `${origin}/conference/${conference.slug}`;
 
+  const attendeeId = cookies().get("attendee_id")?.value;
+  const attendee = attendeeId
+    ? await prisma.attendee.findUnique({
+        where: { id: attendeeId },
+        select: {
+          conferenceId: true,
+          status: true
+        }
+      })
+    : null;
+  const isRegisteredForConference = Boolean(
+    attendee && attendee.status === "APPROVED" && attendee.conferenceId === conference.id
+  );
+
   return (
     <Shell>
       <ConferencePage
@@ -37,6 +51,7 @@ export default async function ConferenceSinglePage({ params }: { params: { slug:
           speakers: (conference.speakers as string[] | null) ?? null
         }}
         shareUrl={shareUrl}
+        isRegisteredForConference={isRegisteredForConference}
       />
     </Shell>
   );

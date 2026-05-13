@@ -40,6 +40,15 @@ export default async function NotificationsPage() {
     proposedAt: Date | null;
     note: string | null;
     status: MeetingOfferStatus;
+    messages: Array<{
+      id: string;
+      body: string;
+      createdAt: Date;
+      author: {
+        id: string;
+        fullName: string;
+      };
+    }>;
   }> = [];
 
   let sentOfferResponses: Array<{
@@ -48,10 +57,20 @@ export default async function NotificationsPage() {
     proposedAt: Date | null;
     createdAt: Date;
     recipient: {
+      id: string;
       fullName: string;
       company: string | null;
       position: string | null;
     };
+    messages: Array<{
+      id: string;
+      body: string;
+      createdAt: Date;
+      author: {
+        id: string;
+        fullName: string;
+      };
+    }>;
   }> = [];
 
   let loadError: string | null = null;
@@ -96,12 +115,26 @@ export default async function NotificationsPage() {
           proposedAt: true,
           note: true,
           status: true
+          ,
+          messages: {
+            orderBy: { createdAt: "asc" },
+            select: {
+              id: true,
+              body: true,
+              createdAt: true,
+              author: {
+                select: {
+                  id: true,
+                  fullName: true
+                }
+              }
+            }
+          }
         },
         take: 100
       }),
       prisma.meetingOffer.findMany({
         where: {
-          status: { not: MeetingOfferStatus.PENDING },
           OR: [
             { senderAttendeeId: currentAttendee.id },
             ...(legacySenderContactMatches.length > 0
@@ -127,9 +160,24 @@ export default async function NotificationsPage() {
         include: {
           recipient: {
             select: {
+              id: true,
               fullName: true,
               company: true,
               position: true
+            }
+          },
+          messages: {
+            orderBy: { createdAt: "asc" },
+            select: {
+              id: true,
+              body: true,
+              createdAt: true,
+              author: {
+                select: {
+                  id: true,
+                  fullName: true
+                }
+              }
             }
           }
         },
@@ -179,21 +227,57 @@ export default async function NotificationsPage() {
                       {offer.senderContact ? <p className="text-sm text-gray-700">კონტაქტი: {offer.senderContact}</p> : null}
                       {offer.proposedAt ? <p className="text-sm text-gray-700">შემოთავაზებული დრო: {format(offer.proposedAt, "yyyy-MM-dd HH:mm")}</p> : null}
                       {offer.note ? <p className="mt-1 text-sm text-gray-700">{offer.note}</p> : null}
+                      {offer.messages.length > 0 ? (
+                        <div className="mt-2 space-y-2 rounded-lg border border-gray-200 bg-gray-50 p-2">
+                          {offer.messages.map((message) => (
+                            <div key={message.id} className="rounded-md bg-white px-2 py-1">
+                              <p className="text-xs font-medium text-gray-800">{message.author.fullName}</p>
+                              <p className="text-sm text-gray-700">{message.body}</p>
+                            </div>
+                          ))}
+                        </div>
+                      ) : null}
 
                       <p className="mt-2 text-xs text-gray-500">სტატუსი: {statusLabel[offer.status]}</p>
 
                       {offer.status === MeetingOfferStatus.PENDING ? (
-                        <div className="mt-3 flex gap-2">
+                        <div className="mt-3 grid gap-2 sm:grid-cols-2">
                           <form action={`/api/meeting-offers/${offer.id}`} method="post">
                             <input type="hidden" name="status" value={MeetingOfferStatus.ACCEPTED} />
+                            <textarea
+                              name="note"
+                              rows={2}
+                              maxLength={500}
+                              placeholder="დადასტურებისას შეგიძლია დატოვო ნოუთი"
+                              className="mb-2 w-full resize-none rounded-md border border-gray-300 px-2 py-1 text-sm"
+                            />
                             <button className="rounded-lg bg-primary px-3 py-2 text-sm text-white">დადასტურება</button>
                           </form>
                           <form action={`/api/meeting-offers/${offer.id}`} method="post">
                             <input type="hidden" name="status" value={MeetingOfferStatus.DECLINED} />
+                            <textarea
+                              name="note"
+                              rows={2}
+                              maxLength={500}
+                              placeholder="უარყოფისას შეგიძლია დატოვო ნოუთი"
+                              className="mb-2 w-full resize-none rounded-md border border-gray-300 px-2 py-1 text-sm"
+                            />
                             <button className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700">არ ვარ დაინტერესებული</button>
                           </form>
                         </div>
                       ) : null}
+
+                      <form action={`/api/meeting-offers/${offer.id}/messages`} method="post" className="mt-3 space-y-2">
+                        <textarea
+                          name="body"
+                          rows={2}
+                          maxLength={500}
+                          required
+                          placeholder="დაწერე დამატებითი ნოუთი"
+                          className="w-full resize-none rounded-md border border-gray-300 px-2 py-1 text-sm"
+                        />
+                        <button className="rounded-lg border border-primary px-3 py-2 text-sm text-primary">ნოუთის გაგზავნა</button>
+                      </form>
                     </article>
                   ))}
                 </div>
@@ -212,7 +296,28 @@ export default async function NotificationsPage() {
                       <p className="text-sm text-gray-700">{offer.recipient.position || "პოზიცია არ არის მითითებული"}</p>
                       <p className="text-sm text-gray-700">{offer.recipient.company || "კომპანია არ არის მითითებული"}</p>
                       {offer.proposedAt ? <p className="text-sm text-gray-700">შენ მიერ შეთავაზებული დრო: {format(offer.proposedAt, "yyyy-MM-dd HH:mm")}</p> : null}
+                      {offer.messages.length > 0 ? (
+                        <div className="mt-2 space-y-2 rounded-lg border border-gray-200 bg-gray-50 p-2">
+                          {offer.messages.map((message) => (
+                            <div key={message.id} className="rounded-md bg-white px-2 py-1">
+                              <p className="text-xs font-medium text-gray-800">{message.author.fullName}</p>
+                              <p className="text-sm text-gray-700">{message.body}</p>
+                            </div>
+                          ))}
+                        </div>
+                      ) : null}
                       <p className="mt-2 text-xs text-gray-500">პასუხი: {statusLabel[offer.status]}</p>
+                      <form action={`/api/meeting-offers/${offer.id}/messages`} method="post" className="mt-3 space-y-2">
+                        <textarea
+                          name="body"
+                          rows={2}
+                          maxLength={500}
+                          required
+                          placeholder="დაწერე დამატებითი ნოუთი"
+                          className="w-full resize-none rounded-md border border-gray-300 px-2 py-1 text-sm"
+                        />
+                        <button className="rounded-lg border border-primary px-3 py-2 text-sm text-primary">ნოუთის გაგზავნა</button>
+                      </form>
                     </article>
                   ))}
                 </div>

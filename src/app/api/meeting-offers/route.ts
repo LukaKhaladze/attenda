@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
 
     const note = data.note ? cleanText(data.note) : null;
 
-    await prisma.meetingOffer.create({
+    const createdOffer = await prisma.meetingOffer.create({
       data: {
         recipientAttendeeId: data.recipientAttendeeId,
         senderAttendeeId,
@@ -63,6 +63,16 @@ export async function POST(request: NextRequest) {
         note
       }
     });
+
+    if (note) {
+      await prisma.meetingOfferMessage.create({
+        data: {
+          meetingOfferId: createdOffer.id,
+          authorAttendeeId: senderAttendeeId,
+          body: note
+        }
+      });
+    }
 
     try {
       await sendMeetingOfferCreatedEmail({

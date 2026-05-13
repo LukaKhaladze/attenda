@@ -9,9 +9,10 @@ import { UICard } from "@/components/ui-card";
 type Props = {
   conference: Conference & { agendaHighlights: string[] | null; speakers: string[] | null };
   shareUrl: string;
+  isRegisteredForConference: boolean;
 };
 
-export function ConferencePage({ conference, shareUrl }: Props) {
+export function ConferencePage({ conference, shareUrl, isRegisteredForConference }: Props) {
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(shareUrl)}`;
   const [expandedDescription, setExpandedDescription] = useState(false);
   const agendaCount = conference.agendaHighlights?.length ?? 0;
@@ -165,9 +166,11 @@ export function ConferencePage({ conference, shareUrl }: Props) {
 
       <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-gray-200 bg-white p-4">
         <div className="mx-auto flex w-full max-w-[430px] gap-2">
-          <Link href={`/register?conferenceId=${conference.id}`} className="w-full rounded-xl bg-primary px-4 py-3 text-center text-base font-medium text-white">
-            დარეგისტრირდი
-          </Link>
+          {!isRegisteredForConference ? (
+            <Link href={`/register?conferenceId=${conference.id}`} className="w-full rounded-xl bg-primary px-4 py-3 text-center text-base font-medium text-white">
+              დარეგისტრირდი
+            </Link>
+          ) : null}
           <Link href={`/attendees?conferenceId=${conference.id}`} className="w-full rounded-xl border-2 border-primary px-4 py-3 text-center text-base font-medium text-primary">
             დამსწრეები
           </Link>
