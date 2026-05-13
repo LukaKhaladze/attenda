@@ -175,6 +175,33 @@ async function deleteConference(formData: FormData) {
   redirect("/admin");
 }
 
+async function deleteAttendee(formData: FormData) {
+  "use server";
+
+  const session = await getServerSession(authOptions);
+  if (!hasAdminAccess(session?.user)) {
+    return;
+  }
+
+  const attendeeId = String(formData.get("attendeeId") || "");
+  const conferenceId = String(formData.get("conferenceId") || "");
+  if (!attendeeId || !conferenceId) {
+    return;
+  }
+
+  const attendee = await prisma.attendee.findUnique({
+    where: { id: attendeeId },
+    select: { id: true, conferenceId: true }
+  });
+  if (!attendee || attendee.conferenceId !== conferenceId) {
+    return;
+  }
+
+  await prisma.attendee.delete({ where: { id: attendeeId } });
+  revalidatePath(`/admin/conferences/${conferenceId}`);
+  redirect(`/admin/conferences/${conferenceId}`);
+}
+
 export default async function AdminConferencePage({
   params,
   searchParams
@@ -426,23 +453,19 @@ export default async function AdminConferencePage({
                       <td className="px-2 py-2">{statusLabels[attendee.status]}</td>
                       <td className="px-2 py-2">
                         <div className="flex flex-col gap-2 sm:flex-row">
-                          <form action={`/api/admin/attendees/${attendee.id}`} method="post" className="flex gap-2">
-                            <input type="hidden" name="redirectTo" value={`/admin/conferences/${conference.id}`} />
-                            <select name="status" defaultValue={attendee.status}>
-                              {Object.values(AttendeeStatus).map((status) => (
-                                <option key={status} value={status}>
-                                  {statusLabels[status]}
-                                </option>
-                              ))}
-                            </select>
-                            <button className="inline-flex min-h-9 items-center justify-center rounded-lg bg-[#3173f1] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-[#255fce]">განახლება</button>
-                          </form>
                           <Link
                             href={`/admin/attendees/${attendee.id}?conferenceId=${conference.id}`}
                             className="inline-flex min-h-9 items-center justify-center rounded-lg border border-brand-200 px-3 py-1.5 text-xs font-semibold text-brand-800 hover:bg-brand-50"
                           >
                             რედაქტირება
                           </Link>
+                          <form action={deleteAttendee}>
+                            <input type="hidden" name="attendeeId" value={attendee.id} />
+                            <input type="hidden" name="conferenceId" value={conference.id} />
+                            <button className="inline-flex min-h-9 items-center justify-center rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-700 transition hover:bg-red-50">
+                              წაშლა
+                            </button>
+                          </form>
                         </div>
                       </td>
                     </tr>
