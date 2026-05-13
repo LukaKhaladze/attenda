@@ -286,7 +286,7 @@ export default async function AdminConferencePage({
             </label>
             <label className="sm:col-span-2">
               <span className="mb-1 block text-sm font-medium text-brand-800">ქავერის სურათი</span>
-              <span className="mb-2 block text-xs text-brand-600">ატვირთე JPG, PNG ან WEBP. რეკომენდებულია 2MB-მდე ფაილი.</span>
+              <span className="mb-2 block text-xs text-brand-600">ატვირთე JPG, PNG ან WEBP. რეკომენდებული ზომაა 1600x900px ან 1920x1080px. მაქსიმუმ 2MB.</span>
               <input type="file" name="coverImageFile" accept="image/*" className="w-full border-dashed" />
             </label>
             <label className="space-y-1">
