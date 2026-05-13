@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { sendAttendeeStatusEmail } from "@/lib/attendee-emails";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { attendeeStatusSchema } from "@/lib/validation";
@@ -55,34 +54,10 @@ async function updateStatusByValue(id: string, status: string | null) {
     return NextResponse.json({ error: "სტატუსი არასწორია" }, { status: 400 });
   }
 
-  const attendee = await prisma.attendee.findUnique({
+  await prisma.attendee.update({
     where: { id },
-    include: { conference: true }
+    data: { status: parsed.data.status }
   });
-
-  if (!attendee) {
-    return NextResponse.json({ error: "დამსწრე ვერ მოიძებნა" }, { status: 404 });
-  }
-
-  const updatedAttendee = await prisma.attendee.update({
-    where: { id },
-    data: { status: parsed.data.status },
-    include: { conference: true }
-  });
-
-  if (attendee.status !== updatedAttendee.status) {
-    try {
-      await sendAttendeeStatusEmail({
-        email: updatedAttendee.email,
-        fullName: updatedAttendee.fullName,
-        conferenceTitle: updatedAttendee.conference.title_ka,
-        conferenceUrl: updatedAttendee.conference.slug ? `/conference/${updatedAttendee.conference.slug}` : undefined,
-        status: updatedAttendee.status
-      });
-    } catch (error) {
-      console.error("[attendee-status-email] send failed", error);
-    }
-  }
 
   return NextResponse.json({ ok: true });
 }

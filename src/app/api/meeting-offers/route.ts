@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import { z } from "zod";
+import { sendMeetingOfferCreatedEmail } from "@/lib/meeting-offer-emails";
 import { prisma } from "@/lib/prisma";
 import { cleanText } from "@/lib/sanitize";
 
@@ -29,7 +30,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "შეთავაზების გასაგზავნად საჭიროა დამსწრედ ავტორიზაცია" }, { status: 401 });
     }
 
-    const senderAttendee = await prisma.attendee.findUnique({ where: { id: senderAttendeeId } });
+    const senderAttendee = await prisma.attendee.findUnique({
+      where: { id: senderAttendeeId },
+      include: { conference: true }
+    });
     if (!senderAttendee || senderAttendee.status !== "APPROVED") {
       return NextResponse.json({ error: "გამომგზავნის პროფილი ვერ მოიძებნა" }, { status: 401 });
     }
@@ -47,6 +51,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "შეხვედრის შეთავაზება შესაძლებელია მხოლოდ იმავე ღონისძიების დამსწრეებს შორის." }, { status: 403 });
     }
 
+    const note = data.note ? cleanText(data.note) : null;
+
     await prisma.meetingOffer.create({
       data: {
         recipientAttendeeId: data.recipientAttendeeId,
@@ -54,9 +60,22 @@ export async function POST(request: NextRequest) {
         senderName: cleanText(senderAttendee.fullName),
         senderContact: senderAttendee.phone ? cleanText(senderAttendee.phone) : null,
         proposedAt: data.proposedAt ? new Date(data.proposedAt) : null,
-        note: data.note ? cleanText(data.note) : null
+        note
       }
     });
+
+    try {
+      await sendMeetingOfferCreatedEmail({
+        to: attendee.email,
+        recipientName: attendee.fullName,
+        senderName: senderAttendee.fullName,
+        conferenceTitle: senderAttendee.conference.title_ka,
+        notificationsUrl: `${request.nextUrl.origin}/notifications`,
+        note
+      });
+    } catch (error) {
+      console.error("[meeting-offer-email] send failed", error);
+    }
 
     return NextResponse.json({ ok: true });
   } catch (error) {

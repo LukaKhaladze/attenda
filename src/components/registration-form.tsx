@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { UIButton } from "@/components/ui-button";
 import { UICard } from "@/components/ui-card";
 import { UIHeader } from "@/components/ui-header";
@@ -25,9 +26,9 @@ const positionOptions = [
 ];
 
 export function RegistrationForm({ conferenceId }: Props) {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
   const [uploadNotice, setUploadNotice] = useState<string | null>(null);
   const startedAt = useMemo(() => Date.now(), []);
 
@@ -52,7 +53,6 @@ export function RegistrationForm({ conferenceId }: Props) {
     event.preventDefault();
     setLoading(true);
     setError(null);
-    setSuccess(null);
     setUploadNotice(null);
 
     try {
@@ -95,8 +95,9 @@ export function RegistrationForm({ conferenceId }: Props) {
 
       if (!response.ok) throw new Error(data?.error ?? "რეგისტრაცია ვერ შესრულდა");
 
-      setSuccess("რეგისტრაციის მოთხოვნა მიღებულია. ჰოსტის დადასტურების შემდეგ შეძლებ დამსწრეების სიაში შესვლას და შეხვედრების გაგზავნას.");
-      form.reset();
+      const redirectTo = typeof data?.redirectTo === "string" ? data.redirectTo : `/attendees?conferenceId=${conferenceId}`;
+      router.push(redirectTo);
+      router.refresh();
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : "უცნობი შეცდომა");
     } finally {
@@ -166,7 +167,6 @@ export function RegistrationForm({ conferenceId }: Props) {
 
         {error ? <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-error">{error}</p> : null}
         {uploadNotice ? <p className="rounded-md bg-amber-50 px-3 py-2 text-sm text-amber-700">{uploadNotice}</p> : null}
-        {success ? <p className="rounded-md bg-emerald-50 px-3 py-2 text-sm text-success">{success}</p> : null}
       </UICard>
 
       <div className="fixed bottom-0 left-0 right-0 border-t border-gray-200 bg-white p-4">

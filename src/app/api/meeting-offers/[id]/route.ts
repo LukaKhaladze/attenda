@@ -1,6 +1,7 @@
 import { MeetingOfferStatus } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { sendMeetingOfferStatusEmail } from "@/lib/meeting-offer-emails";
 import { prisma } from "@/lib/prisma";
 
 const statusSchema = z.object({
@@ -8,7 +9,15 @@ const statusSchema = z.object({
 });
 
 async function updateStatus(offerId: string, attendeeId: string, status: MeetingOfferStatus) {
-  const offer = await prisma.meetingOffer.findUnique({ where: { id: offerId } });
+  const offer = await prisma.meetingOffer.findUnique({
+    where: { id: offerId },
+    include: {
+      recipient: {
+        include: { conference: true }
+      },
+      sender: true
+    }
+  });
 
   if (!offer) {
     return NextResponse.json({ error: "შეთავაზება ვერ მოიძებნა" }, { status: 404 });
@@ -22,6 +31,21 @@ async function updateStatus(offerId: string, attendeeId: string, status: Meeting
     where: { id: offerId },
     data: { status }
   });
+
+  if (offer.sender?.email) {
+    try {
+      await sendMeetingOfferStatusEmail({
+        to: offer.sender.email,
+        senderName: offer.sender.fullName,
+        recipientName: offer.recipient.fullName,
+        conferenceTitle: offer.recipient.conference.title_ka,
+        status: status === MeetingOfferStatus.ACCEPTED ? "ACCEPTED" : "DECLINED",
+        notificationsUrl: "/notifications"
+      });
+    } catch (error) {
+      console.error("[meeting-offer-status-email] send failed", error);
+    }
+  }
 
   return NextResponse.json({ ok: true });
 }

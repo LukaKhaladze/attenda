@@ -48,9 +48,8 @@ Required values:
 - `SUPABASE_SERVICE_ROLE_KEY`: optional, Supabase service role key for server-side Storage uploads
 - `SUPABASE_STORAGE_BUCKET`: optional, Supabase Storage bucket for profile photos. Defaults to `attendee-photos`
 - `RESEND_API_KEY`: optional, required to send emails through Resend
-- `MAIL_FROM_EMAIL`: optional, sender email for app notifications such as registrations and approvals. Defaults to `NetworkApp <no-reply@networkapp.ge>`
-- `REGISTRATION_NOTIFY_EMAILS`: optional fallback comma-separated emails notified about new attendee registrations when an event has no assigned host
-- `RESET_FROM_EMAIL`: optional, sender email for password reset messages and fallback sender for app notifications. Use `NetworkApp <no-reply@networkapp.ge>`
+- `MAIL_FROM_EMAIL`: optional, sender email for app notifications (meeting-offer emails) and password-reset fallback. Defaults to `NetworkApp <no-reply@networkapp.ge>`
+- `RESET_FROM_EMAIL`: optional, sender email for password reset messages. Use `NetworkApp <no-reply@networkapp.ge>`
 
 ## Install
 

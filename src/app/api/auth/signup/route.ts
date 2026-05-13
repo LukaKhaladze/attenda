@@ -1,7 +1,6 @@
 import { hash } from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { escapeHtml, sendEmail } from "@/lib/email";
 import { prisma } from "@/lib/prisma";
 
 const schema = z.object({
@@ -34,23 +33,6 @@ export async function POST(request: NextRequest) {
       passwordHash
     }
   });
-
-  try {
-    await sendEmail({
-      to: email,
-      subject: "ანგარიში შეიქმნა — Attenda.ge",
-      html: `
-        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111827;">
-          <h2>Attenda.ge</h2>
-          <p>გამარჯობა ${escapeHtml(parsed.data.name)},</p>
-          <p>თქვენი ანგარიში წარმატებით შეიქმნა.</p>
-          <p><a href="${request.nextUrl.origin}/auth/signin">შესვლა</a></p>
-        </div>
-      `
-    });
-  } catch (error) {
-    console.error("[signup-email] send failed", error);
-  }
 
   return NextResponse.json({ ok: true });
 }
