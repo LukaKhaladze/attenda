@@ -92,6 +92,37 @@ async function updateHostConference(formData: FormData) {
   redirect(`/host/conferences/${id}?saved=1`);
 }
 
+async function deleteHostAttendee(formData: FormData) {
+  "use server";
+
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) {
+    return;
+  }
+
+  const attendeeId = String(formData.get("attendeeId") || "");
+  const conferenceId = String(formData.get("conferenceId") || "");
+  if (!attendeeId || !conferenceId) {
+    return;
+  }
+
+  const conference = await getHostScopedConference(conferenceId, session.user.id, true);
+  if (!conference) {
+    return;
+  }
+
+  const attendee = await prisma.attendee.findUnique({
+    where: { id: attendeeId },
+    select: { id: true, conferenceId: true }
+  });
+  if (!attendee || attendee.conferenceId !== conference.id) {
+    return;
+  }
+
+  await prisma.attendee.delete({ where: { id: attendeeId } });
+  redirect(`/host/conferences/${conference.id}?saved=1`);
+}
+
 export default async function HostConferencePage({
   params,
   searchParams
@@ -276,6 +307,21 @@ export default async function HostConferencePage({
                         </button>
                       </form>
                     ) : null}
+
+                    <Link
+                      href={`/host/attendees/${attendee.id}?conferenceId=${conference.id}`}
+                      className="inline-flex min-h-11 select-none items-center justify-center rounded-xl border border-brand-200 px-4 py-2 text-sm font-semibold leading-none text-brand-800 transition hover:bg-brand-50"
+                    >
+                      რედაქტირება
+                    </Link>
+
+                    <form action={deleteHostAttendee}>
+                      <input type="hidden" name="attendeeId" value={attendee.id} />
+                      <input type="hidden" name="conferenceId" value={conference.id} />
+                      <button className="inline-flex min-h-11 select-none items-center justify-center rounded-xl border border-red-200 px-4 py-2 text-sm font-semibold leading-none text-red-700 transition hover:bg-red-50">
+                        წაშლა
+                      </button>
+                    </form>
                   </div>
                 </article>
               ))}
