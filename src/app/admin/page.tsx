@@ -119,7 +119,7 @@ export default async function AdminPage() {
     );
   }
 
-  const [conferences, total, last24h, hostCount] = await Promise.all([
+  const [conferences, recentAttendeesByConference, hostCount] = await Promise.all([
     prisma.conference.findMany({
       orderBy: { date: "asc" },
       include: {
@@ -130,18 +130,25 @@ export default async function AdminPage() {
         }
       }
     }),
-    prisma.attendee.count(),
-    prisma.attendee.count({
+    prisma.attendee.groupBy({
+      by: ["conferenceId"],
       where: {
         createdAt: {
           gte: subHours(new Date(), 24)
         }
+      },
+      _count: {
+        _all: true
       }
     }),
     prisma.user.count({
       where: { role: "HOST" }
     })
   ]);
+
+  const recentCounts = new Map(
+    recentAttendeesByConference.map((item) => [item.conferenceId, item._count._all])
+  );
 
   return (
     <Shell>
@@ -165,16 +172,11 @@ export default async function AdminPage() {
           <AdminLogoutButton />
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2">
           <article className="rounded-2xl border border-[#d9e7ff] bg-white p-4 shadow-[0_14px_30px_rgba(49,115,241,0.06)]">
-            <p className="text-sm text-brand-700">ჯამური დამსწრეები</p>
-            <p className="text-3xl font-bold text-brand-900">{total}</p>
-            <p className="mt-2 text-xs leading-5 text-brand-600">სულ რამდენი დამსწრეა დარეგისტრირებული ყველა კონფერენციაზე ერთად.</p>
-          </article>
-          <article className="rounded-2xl border border-[#d9e7ff] bg-white p-4 shadow-[0_14px_30px_rgba(49,115,241,0.06)]">
-            <p className="text-sm text-brand-700">ბოლო 24 საათი</p>
-            <p className="text-3xl font-bold text-brand-900">{last24h}</p>
-            <p className="mt-2 text-xs leading-5 text-brand-600">ბოლო 24 საათში დამატებული ახალი რეგისტრაციების რაოდენობა ყველა ღონისძიებიდან.</p>
+            <p className="text-sm text-brand-700">კონფერენციები სულ</p>
+            <p className="text-3xl font-bold text-brand-900">{conferences.length}</p>
+            <p className="mt-2 text-xs leading-5 text-brand-600">რამდენი ღონისძიებაა შექმნილი ადმინისტრაციულ პანელში.</p>
           </article>
           <article className="rounded-2xl border border-[#d9e7ff] bg-white p-4 shadow-[0_14px_30px_rgba(49,115,241,0.06)]">
             <p className="text-sm text-brand-700">ჰოსტის ანგარიშები</p>
@@ -237,7 +239,16 @@ export default async function AdminPage() {
                     <p className="text-lg font-semibold text-brand-900">{conference.title_ka}</p>
                     <p className="mt-1 text-sm text-brand-700">{conference.location_ka}</p>
                     <p className="text-sm text-brand-700">{conference.date.toISOString().slice(0, 16).replace("T", " ")}</p>
-                    <p className="mt-2 text-xs text-brand-800">დამსწრეები: {conference._count.attendees}</p>
+                    <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                      <div className="rounded-lg border border-brand-100 bg-white/70 px-3 py-2">
+                        <p className="text-[11px] uppercase tracking-[0.08em] text-brand-600">რეგისტრაცია სულ</p>
+                        <p className="text-sm font-semibold text-brand-900">{conference._count.attendees}</p>
+                      </div>
+                      <div className="rounded-lg border border-brand-100 bg-white/70 px-3 py-2">
+                        <p className="text-[11px] uppercase tracking-[0.08em] text-brand-600">ბოლო 24 სთ</p>
+                        <p className="text-sm font-semibold text-brand-900">{recentCounts.get(conference.id) ?? 0}</p>
+                      </div>
+                    </div>
                     {conference.customSubdomain ? <p className="mt-1 text-xs text-brand-700">სუბდომენი: {conference.customSubdomain}.networkapp.ge</p> : null}
                   </Link>
 
