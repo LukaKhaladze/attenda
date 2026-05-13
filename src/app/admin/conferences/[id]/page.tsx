@@ -11,6 +11,7 @@ import { Shell } from "@/components/shell";
 import { hasAdminAccess } from "@/lib/admin";
 import { authOptions } from "@/lib/auth";
 import { uploadImageFile } from "@/lib/image-upload";
+import { sendHostInviteEmail } from "@/lib/host-invite";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -110,6 +111,8 @@ async function assignHost(formData: FormData) {
   }
 
   const passwordHash = await hash(password, 10);
+  const conferenceTitle = String(formData.get("conferenceTitle") || "").trim();
+  const origin = String(formData.get("origin") || "").trim();
 
   const user = await prisma.user.upsert({
     where: { email },
@@ -139,6 +142,18 @@ async function assignHost(formData: FormData) {
       conferenceId
     }
   });
+
+  try {
+    await sendHostInviteEmail({
+      email,
+      password,
+      hostName: name || user.name,
+      conferenceTitle,
+      signinUrl: `${origin}/host`,
+    });
+  } catch (error) {
+    console.error("[host-invite] send failed", error);
+  }
 
   redirect(`/admin/conferences/${conferenceId}`);
 }
@@ -296,9 +311,16 @@ export default async function AdminConferencePage({
             </label>
           </div>
           {conference.coverImageUrl ? (
-            <p className="text-xs text-brand-700">
-              მიმდინარე ქავერი დაყენებულია. ახალი ფაილის ატვირთვის შემთხვევაში ჩანაცვლდება.
-            </p>
+            <div className="rounded-xl border border-brand-100 bg-brand-50/60 p-3">
+              <p className="text-xs font-medium text-brand-800">
+                მიმდინარე ქავერი დაყენებულია. ახალი ფაილის ატვირთვის შემთხვევაში ჩანაცვლდება.
+              </p>
+              <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={conference.coverImageUrl} alt="მიმდინარე ქავერი" className="h-20 w-32 rounded-lg border border-brand-100 object-cover" />
+                <p className="text-xs break-all text-brand-700">{conference.coverImageUrl}</p>
+              </div>
+            </div>
           ) : null}
           {subdomainUrl ? <p className="text-xs text-brand-700">სუბდომენის მისამართი: {subdomainUrl}</p> : null}
           <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
@@ -344,6 +366,8 @@ export default async function AdminConferencePage({
           <h2 className="mb-4 text-xl font-semibold text-brand-900">ჰოსტის წვდომა</h2>
           <form action={assignHost} className="grid gap-3 lg:grid-cols-4">
             <input type="hidden" name="conferenceId" value={conference.id} />
+            <input type="hidden" name="conferenceTitle" value={conference.title_ka} />
+            <input type="hidden" name="origin" value={origin} />
             <input name="name" placeholder="ჰოსტის სახელი" />
             <input name="email" type="email" placeholder="ჰოსტის ელფოსტა" required />
             <input name="password" placeholder="საწყისი პაროლი" required />
@@ -351,6 +375,9 @@ export default async function AdminConferencePage({
               ჰოსტის მინიჭება
             </ServerActionButton>
           </form>
+          <p className="mt-2 text-xs text-brand-600">
+            ჰოსტს გაეგზავნება შესვლის ბმული, იუზერი და პაროლი მეილზე, თუ email sending გარემო ჩართულია.
+          </p>
 
           <div className="mt-4 space-y-2">
             {conference.hostAssignments.length === 0 ? (
@@ -362,7 +389,7 @@ export default async function AdminConferencePage({
                 <div key={assignment.id} className="rounded-xl border border-brand-100 p-4">
                   <p className="text-sm font-semibold text-brand-900">{assignment.user.name || assignment.user.email}</p>
                   <p className="text-sm text-brand-700">{assignment.user.email}</p>
-                  <p className="text-xs text-brand-600">ჰოსტის პანელი: /host/signin</p>
+                  <p className="text-xs text-brand-600">ჰოსტის პანელი: /host</p>
                 </div>
               ))
             )}

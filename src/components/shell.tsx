@@ -204,7 +204,7 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
   const showHostDashboard = isHostSession;
   const registerHref = isPublicConferencePage && conferenceSlug ? `/register?conferenceSlug=${conferenceSlug}` : "/register";
   const attendeeSignInHref = isPublicConferencePage && conferenceSlug ? `/attendee/signin?conferenceSlug=${conferenceSlug}` : "/attendee/signin";
-  const hostAttendeesHref = lastHostConferenceId ? `/attendees?conferenceId=${lastHostConferenceId}` : "/host";
+  const hostAttendeesHref = lastHostConferenceId ? `/host/conferences/${lastHostConferenceId}` : "/host";
   const primaryHomeHref = isAdminSession || isAdminArea ? "/admin" : isHostSession || isHostArea ? "/host" : "/";
 
   return (
@@ -340,7 +340,7 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
                         <rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="2" />
                         <path d="M7 8h10M7 12h6M7 16h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                       </svg>
-                      <span>ჩემი ღონისძიებები</span>
+                      <span>ღონისძიებები</span>
                     </Link>
                   </>
                 ) : null}

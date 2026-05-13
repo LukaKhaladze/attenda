@@ -169,14 +169,17 @@ export default async function AdminPage() {
           <article className="rounded-2xl border border-[#d9e7ff] bg-white p-4 shadow-[0_14px_30px_rgba(49,115,241,0.06)]">
             <p className="text-sm text-brand-700">ჯამური დამსწრეები</p>
             <p className="text-3xl font-bold text-brand-900">{total}</p>
+            <p className="mt-2 text-xs leading-5 text-brand-600">სულ რამდენი დამსწრეა დარეგისტრირებული ყველა კონფერენციაზე ერთად.</p>
           </article>
           <article className="rounded-2xl border border-[#d9e7ff] bg-white p-4 shadow-[0_14px_30px_rgba(49,115,241,0.06)]">
             <p className="text-sm text-brand-700">ბოლო 24 საათი</p>
             <p className="text-3xl font-bold text-brand-900">{last24h}</p>
+            <p className="mt-2 text-xs leading-5 text-brand-600">ბოლო 24 საათში დამატებული ახალი რეგისტრაციების რაოდენობა ყველა ღონისძიებიდან.</p>
           </article>
           <article className="rounded-2xl border border-[#d9e7ff] bg-white p-4 shadow-[0_14px_30px_rgba(49,115,241,0.06)]">
             <p className="text-sm text-brand-700">ჰოსტის ანგარიშები</p>
             <p className="text-3xl font-bold text-brand-900">{hostCount}</p>
+            <p className="mt-2 text-xs leading-5 text-brand-600">რამდენი HOST ტიპის ანგარიშია შექმნილი სისტემაში ჯამურად.</p>
           </article>
         </div>
 
@@ -184,14 +187,20 @@ export default async function AdminPage() {
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-xl font-semibold text-brand-900">ახალი კონფერენცია</h2>
             {conferences.length > 0 ? (
-              <form action={deleteAllConferences}>
-                <button
-                  type="submit"
-                  className="rounded-xl bg-red-100 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-200"
-                >
-                  ყველა კონფერენციის წაშლა
-                </button>
-              </form>
+              <details className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm">
+                <summary className="cursor-pointer font-medium text-red-700">საშიში მოქმედებები</summary>
+                <div className="mt-3 space-y-3">
+                  <p className="text-xs leading-5 text-red-700">ეს ღილაკი ერთიანად წაშლის ყველა კონფერენციას. გამოიყენე მხოლოდ საჭიროების შემთხვევაში.</p>
+                  <form action={deleteAllConferences}>
+                    <button
+                      type="submit"
+                      className="rounded-xl bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700"
+                    >
+                      ყველა კონფერენციის წაშლა
+                    </button>
+                  </form>
+                </div>
+              </details>
             ) : null}
           </div>
           <form action={createConference} className="grid gap-3 sm:grid-cols-3">
