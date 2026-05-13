@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { MeetingOfferStatus, Prisma } from "@prisma/client";
 import { format } from "date-fns";
+import Link from "next/link";
 import { Shell } from "@/components/shell";
 import { NotificationsReadMarker } from "@/components/notifications-read-marker";
 import { UICard } from "@/components/ui-card";
@@ -33,6 +34,7 @@ export default async function NotificationsPage() {
 
   let receivedOffers: Array<{
     id: string;
+    senderAttendeeId: string | null;
     senderName: string;
     senderContact: string | null;
     proposedAt: Date | null;
@@ -86,6 +88,15 @@ export default async function NotificationsPage() {
       prisma.meetingOffer.findMany({
         where: { recipientAttendeeId: attendeeId },
         orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          senderAttendeeId: true,
+          senderName: true,
+          senderContact: true,
+          proposedAt: true,
+          note: true,
+          status: true
+        },
         take: 100
       }),
       prisma.meetingOffer.findMany({
@@ -158,7 +169,13 @@ export default async function NotificationsPage() {
                 <div className="space-y-3">
                   {receivedOffers.map((offer) => (
                     <article key={offer.id} className="rounded-xl border border-gray-200 p-3">
-                      <p className="text-sm font-semibold text-gray-900">{offer.senderName}</p>
+                      {offer.senderAttendeeId ? (
+                        <Link href={`/attendees/${offer.senderAttendeeId}`} className="text-sm font-semibold text-primary hover:underline">
+                          {offer.senderName}
+                        </Link>
+                      ) : (
+                        <p className="text-sm font-semibold text-gray-900">{offer.senderName}</p>
+                      )}
                       {offer.senderContact ? <p className="text-sm text-gray-700">კონტაქტი: {offer.senderContact}</p> : null}
                       {offer.proposedAt ? <p className="text-sm text-gray-700">შემოთავაზებული დრო: {format(offer.proposedAt, "yyyy-MM-dd HH:mm")}</p> : null}
                       {offer.note ? <p className="mt-1 text-sm text-gray-700">{offer.note}</p> : null}

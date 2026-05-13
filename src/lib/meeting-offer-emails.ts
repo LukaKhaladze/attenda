@@ -35,6 +35,7 @@ export async function sendMeetingOfferCreatedEmail(params: OfferEmailParams) {
     return;
   }
 
+  const notificationsUrl = buildNotificationsUrl(params.notificationsUrl);
   await sendEmail({
     to: params.to,
     subject: `ახალი შეხვედრის შეთავაზება — ${params.conferenceTitle}`,
@@ -45,6 +46,8 @@ export async function sendMeetingOfferCreatedEmail(params: OfferEmailParams) {
         <p><strong>${escapeHtml(params.senderName)}</strong>-მა გამოგიგზავნა შეხვედრის შეთავაზება.</p>
         ${params.note ? `<p><strong>შენიშვნა:</strong> ${escapeHtml(params.note)}</p>` : ""}
         <p><strong>ღონისძიება:</strong> ${escapeHtml(params.conferenceTitle)}</p>
+        <p>შეტყობინება ასევე გამოჩნდა თქვენს პირად გვერდზე.</p>
+        ${notificationsUrl ? `<p><a href="${escapeHtml(notificationsUrl)}">${escapeHtml(notificationsUrl)}</a></p>` : ""}
         ${renderAction(params.notificationsUrl)}
       </div>
     `
