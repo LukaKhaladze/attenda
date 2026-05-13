@@ -246,7 +246,7 @@ export default async function NotificationsPage() {
                             name="note"
                             rows={2}
                             maxLength={500}
-                            placeholder="დაწერე ნოუთი (არასავალდებულო)"
+                            placeholder="დაწერე კომენტარი (არასავალდებულო)"
                             className="w-full resize-none rounded-md border border-gray-300 px-2 py-1 text-sm"
                           />
                           <div className="flex gap-2">
@@ -275,10 +275,10 @@ export default async function NotificationsPage() {
                             rows={2}
                             maxLength={500}
                             required
-                            placeholder="დაწერე დამატებითი ნოუთი"
+                            placeholder="დაწერე დამატებითი კომენტარი"
                             className="w-full resize-none rounded-md border border-gray-300 px-2 py-1 text-sm"
                           />
-                          <button className="rounded-lg border border-primary px-3 py-2 text-sm text-primary">ნოუთის გაგზავნა</button>
+                          <button className="rounded-lg border border-primary px-3 py-2 text-sm text-primary">კომენტარის გაგზავნა</button>
                         </form>
                       )}
                     </article>
@@ -316,10 +316,10 @@ export default async function NotificationsPage() {
                           rows={2}
                           maxLength={500}
                           required
-                          placeholder="დაწერე დამატებითი ნოუთი"
+                          placeholder="დაწერე დამატებითი კომენტარი"
                           className="w-full resize-none rounded-md border border-gray-300 px-2 py-1 text-sm"
                         />
-                        <button className="rounded-lg border border-primary px-3 py-2 text-sm text-primary">ნოუთის გაგზავნა</button>
+                        <button className="rounded-lg border border-primary px-3 py-2 text-sm text-primary">კომენტარის გაგზავნა</button>
                       </form>
                     </article>
                   ))}

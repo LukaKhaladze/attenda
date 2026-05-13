@@ -99,12 +99,12 @@ export async function sendMeetingOfferMessageEmail(params: {
 
   await sendEmail({
     to: params.to,
-    subject: `ახალი ნოუთი შეხვედრის შეთავაზებაზე — ${params.conferenceTitle}`,
+    subject: `ახალი კომენტარი შეხვედრის შეთავაზებაზე — ${params.conferenceTitle}`,
     html: `
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111827;">
-        <h2>ახალი ნოუთი შეთავაზებაზე</h2>
+        <h2>ახალი კომენტარი შეთავაზებაზე</h2>
         <p>გამარჯობა ${escapeHtml(params.recipientName)},</p>
-        <p><strong>${escapeHtml(params.authorName)}</strong>-მა დაგიტოვა ნოუთი შეთავაზებაზე:</p>
+        <p><strong>${escapeHtml(params.authorName)}</strong>-მა დაგიტოვა კომენტარი შეთავაზებაზე:</p>
         <p style="background:#f3f4f6;padding:12px;border-radius:8px;">${escapeHtml(params.body)}</p>
         <p><strong>ღონისძიება:</strong> ${escapeHtml(params.conferenceTitle)}</p>
         ${notificationsUrl ? `<p><a href="${escapeHtml(notificationsUrl)}">${escapeHtml(notificationsUrl)}</a></p>` : ""}

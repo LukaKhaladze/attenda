@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { cleanText } from "@/lib/sanitize";
 
 const schema = z.object({
-  body: z.string().min(1, "ნოუთი ცარიელი ვერ იქნება").max(500, "ნოუთი უნდა იყოს მაქსიმუმ 500 სიმბოლო")
+  body: z.string().min(1, "კომენტარი ცარიელი ვერ იქნება").max(500, "კომენტარი უნდა იყოს მაქსიმუმ 500 სიმბოლო")
 });
 
 export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
