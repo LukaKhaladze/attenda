@@ -241,43 +241,46 @@ export default async function NotificationsPage() {
                       <p className="mt-2 text-xs text-gray-500">სტატუსი: {statusLabel[offer.status]}</p>
 
                       {offer.status === MeetingOfferStatus.PENDING ? (
-                        <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                          <form action={`/api/meeting-offers/${offer.id}`} method="post">
-                            <input type="hidden" name="status" value={MeetingOfferStatus.ACCEPTED} />
-                            <textarea
-                              name="note"
-                              rows={2}
-                              maxLength={500}
-                              placeholder="დადასტურებისას შეგიძლია დატოვო ნოუთი"
-                              className="mb-2 w-full resize-none rounded-md border border-gray-300 px-2 py-1 text-sm"
-                            />
-                            <button className="rounded-lg bg-primary px-3 py-2 text-sm text-white">დადასტურება</button>
-                          </form>
-                          <form action={`/api/meeting-offers/${offer.id}`} method="post">
-                            <input type="hidden" name="status" value={MeetingOfferStatus.DECLINED} />
-                            <textarea
-                              name="note"
-                              rows={2}
-                              maxLength={500}
-                              placeholder="უარყოფისას შეგიძლია დატოვო ნოუთი"
-                              className="mb-2 w-full resize-none rounded-md border border-gray-300 px-2 py-1 text-sm"
-                            />
-                            <button className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700">არ ვარ დაინტერესებული</button>
-                          </form>
-                        </div>
-                      ) : null}
-
-                      <form action={`/api/meeting-offers/${offer.id}/messages`} method="post" className="mt-3 space-y-2">
-                        <textarea
-                          name="body"
-                          rows={2}
-                          maxLength={500}
-                          required
-                          placeholder="დაწერე დამატებითი ნოუთი"
-                          className="w-full resize-none rounded-md border border-gray-300 px-2 py-1 text-sm"
-                        />
-                        <button className="rounded-lg border border-primary px-3 py-2 text-sm text-primary">ნოუთის გაგზავნა</button>
-                      </form>
+                        <form action={`/api/meeting-offers/${offer.id}`} method="post" className="mt-3 space-y-2">
+                          <textarea
+                            name="note"
+                            rows={2}
+                            maxLength={500}
+                            placeholder="დაწერე ნოუთი (არასავალდებულო)"
+                            className="w-full resize-none rounded-md border border-gray-300 px-2 py-1 text-sm"
+                          />
+                          <div className="flex gap-2">
+                            <button
+                              type="submit"
+                              name="status"
+                              value={MeetingOfferStatus.ACCEPTED}
+                              className="rounded-lg bg-primary px-3 py-2 text-sm text-white"
+                            >
+                              დადასტურება
+                            </button>
+                            <button
+                              type="submit"
+                              name="status"
+                              value={MeetingOfferStatus.DECLINED}
+                              className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700"
+                            >
+                              არ ვარ დაინტერესებული
+                            </button>
+                          </div>
+                        </form>
+                      ) : (
+                        <form action={`/api/meeting-offers/${offer.id}/messages`} method="post" className="mt-3 space-y-2">
+                          <textarea
+                            name="body"
+                            rows={2}
+                            maxLength={500}
+                            required
+                            placeholder="დაწერე დამატებითი ნოუთი"
+                            className="w-full resize-none rounded-md border border-gray-300 px-2 py-1 text-sm"
+                          />
+                          <button className="rounded-lg border border-primary px-3 py-2 text-sm text-primary">ნოუთის გაგზავნა</button>
+                        </form>
+                      )}
                     </article>
                   ))}
                 </div>
