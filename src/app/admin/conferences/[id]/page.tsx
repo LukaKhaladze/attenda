@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { AdminLogoutButton } from "@/components/admin-logout-button";
+import { RichTextEditor } from "@/components/rich-text-editor";
 import { ServerActionButton } from "@/components/server-action-button";
 import { Shell } from "@/components/shell";
 import { hasAdminAccess } from "@/lib/admin";
@@ -13,6 +14,7 @@ import { authOptions } from "@/lib/auth";
 import { uploadImageFile } from "@/lib/image-upload";
 import { sendHostInviteEmail } from "@/lib/host-invite";
 import { prisma } from "@/lib/prisma";
+import { normalizeRichText, richTextFromStored } from "@/lib/rich-text";
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +38,7 @@ async function updateConference(formData: FormData) {
   }
 
   const title = String(formData.get("title_ka") || "").trim();
-  const description = String(formData.get("description_ka") || "").trim();
+  const description = normalizeRichText(String(formData.get("description_ka") || ""));
   const location = String(formData.get("location_ka") || "").trim();
   const dateRaw = String(formData.get("date") || "");
   const date = new Date(dateRaw);
@@ -47,15 +49,8 @@ async function updateConference(formData: FormData) {
     return;
   }
 
-  const agenda = String(formData.get("agenda") || "")
-    .split("\n")
-    .map((item) => item.trim())
-    .filter(Boolean);
-
-  const speakers = String(formData.get("speakers") || "")
-    .split("\n")
-    .map((item) => item.trim())
-    .filter(Boolean);
+  const agenda = normalizeRichText(String(formData.get("agenda") || ""));
+  const speakers = normalizeRichText(String(formData.get("speakers") || ""));
   const existingCoverImageUrl = String(formData.get("existingCoverImageUrl") || "").trim();
   const coverImageFile = formData.get("coverImageFile");
   let uploadedCoverImageUrl: string | null = null;
@@ -241,8 +236,9 @@ export default async function AdminConferencePage({
     orderBy: { createdAt: "desc" }
   });
 
-  const agenda = ((conference.agendaHighlights as string[] | null) ?? []).join("\n");
-  const speakers = ((conference.speakers as string[] | null) ?? []).join("\n");
+  const agenda = richTextFromStored(conference.agendaHighlights);
+  const speakers = richTextFromStored(conference.speakers);
+  const description = richTextFromStored(conference.description_ka);
   const requestHeaders = headers();
   const forwardedProto = requestHeaders.get("x-forwarded-proto");
   const forwardedHost = requestHeaders.get("x-forwarded-host");
@@ -324,18 +320,9 @@ export default async function AdminConferencePage({
               <span className="block text-sm font-medium text-brand-800">რუკის ბმული</span>
               <input name="mapUrl" defaultValue={conference.mapUrl ?? ""} placeholder="რუკის ბმული (არასავალდებულო)" />
             </label>
-            <label className="space-y-1 sm:col-span-2">
-              <span className="block text-sm font-medium text-brand-800">დღის წესრიგი</span>
-              <textarea name="agenda" defaultValue={agenda} rows={5} placeholder="დღის წესრიგი — თითო ჩანაწერი ახალ ხაზზე" />
-            </label>
-            <label className="space-y-1 sm:col-span-2">
-              <span className="block text-sm font-medium text-brand-800">სპიკერები</span>
-              <textarea name="speakers" defaultValue={speakers} rows={5} placeholder="სპიკერები — თითო ჩანაწერი ახალ ხაზზე" />
-            </label>
-            <label className="space-y-1 sm:col-span-2">
-              <span className="block text-sm font-medium text-brand-800">აღწერა</span>
-              <textarea className="sm:col-span-2" name="description_ka" defaultValue={conference.description_ka} rows={4} placeholder="აღწერა" required />
-            </label>
+            <RichTextEditor name="agenda" label="დღის წესრიგი" defaultValue={agenda} placeholder="დღის წესრიგი" hint="შეგიძლია გამოიყენო Bold, Italic და Paragraph." />
+            <RichTextEditor name="speakers" label="სპიკერები" defaultValue={speakers} placeholder="სპიკერები" hint="შეგიძლია გამოიყენო Bold, Italic და Paragraph." />
+            <RichTextEditor name="description_ka" label="აღწერა" defaultValue={description} placeholder="აღწერა" required hint="შეგიძლია გამოიყენო Bold, Italic და Paragraph." />
           </div>
           {conference.coverImageUrl ? (
             <div className="rounded-xl border border-brand-100 bg-brand-50/60 p-3">

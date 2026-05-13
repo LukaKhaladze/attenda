@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ConferencePage } from "@/components/conference-page";
 import { Shell } from "@/components/shell";
 import { prisma } from "@/lib/prisma";
+import { richTextCountBlocks, richTextFromStored } from "@/lib/rich-text";
 
 export const revalidate = 60;
 
@@ -27,6 +28,9 @@ export default async function ConferenceSinglePage({ params }: { params: { slug:
     conference.customSubdomain && process.env.NEXT_PUBLIC_ROOT_DOMAIN
       ? `https://${conference.customSubdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`
       : `${origin}/conference/${conference.slug}`;
+  const descriptionHtml = richTextFromStored(conference.description_ka);
+  const agendaHtml = richTextFromStored(conference.agendaHighlights);
+  const speakersHtml = richTextFromStored(conference.speakers);
 
   const attendeeId = cookies().get("attendee_id")?.value;
   const attendee = attendeeId
@@ -47,11 +51,16 @@ export default async function ConferenceSinglePage({ params }: { params: { slug:
       <ConferencePage
         conference={{
           ...conference,
-          agendaHighlights: (conference.agendaHighlights as string[] | null) ?? null,
-          speakers: (conference.speakers as string[] | null) ?? null
+          description_ka: descriptionHtml,
+          agendaHighlights: null,
+          speakers: null
         }}
         shareUrl={shareUrl}
         isRegisteredForConference={isRegisteredForConference}
+        agendaHtml={agendaHtml}
+        speakersHtml={speakersHtml}
+        agendaCount={richTextCountBlocks(agendaHtml)}
+        speakerCount={richTextCountBlocks(speakersHtml)}
       />
     </Shell>
   );

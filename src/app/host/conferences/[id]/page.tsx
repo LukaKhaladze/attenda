@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { AdminLogoutButton } from "@/components/admin-logout-button";
+import { RichTextEditor } from "@/components/rich-text-editor";
 import { ServerActionButton } from "@/components/server-action-button";
 import { Shell } from "@/components/shell";
 import { hasAdminAccess, hasHostAccess } from "@/lib/admin";
@@ -10,6 +11,7 @@ import { authOptions } from "@/lib/auth";
 import { getCurrentSessionUser, getHostScopedConference } from "@/lib/host";
 import { uploadImageFile } from "@/lib/image-upload";
 import { prisma } from "@/lib/prisma";
+import { normalizeRichText, richTextFromStored } from "@/lib/rich-text";
 import { getServerSession } from "next-auth";
 
 export const dynamic = "force-dynamic";
@@ -39,7 +41,7 @@ async function updateHostConference(formData: FormData) {
   }
 
   const title = String(formData.get("title_ka") || "").trim();
-  const description = String(formData.get("description_ka") || "").trim();
+  const description = normalizeRichText(String(formData.get("description_ka") || ""));
   const location = String(formData.get("location_ka") || "").trim();
   const dateRaw = String(formData.get("date") || "");
   const date = new Date(dateRaw);
@@ -49,15 +51,8 @@ async function updateHostConference(formData: FormData) {
     return;
   }
 
-  const agenda = String(formData.get("agenda") || "")
-    .split("\n")
-    .map((item) => item.trim())
-    .filter(Boolean);
-
-  const speakers = String(formData.get("speakers") || "")
-    .split("\n")
-    .map((item) => item.trim())
-    .filter(Boolean);
+  const agenda = normalizeRichText(String(formData.get("agenda") || ""));
+  const speakers = normalizeRichText(String(formData.get("speakers") || ""));
 
   const existingCoverImageUrl = String(formData.get("existingCoverImageUrl") || "").trim();
   const coverImageFile = formData.get("coverImageFile");
@@ -150,8 +145,9 @@ export default async function HostConferencePage({
     orderBy: [{ status: "asc" }, { createdAt: "desc" }]
   });
 
-  const agenda = ((conference.agendaHighlights as string[] | null) ?? []).join("\n");
-  const speakers = ((conference.speakers as string[] | null) ?? []).join("\n");
+  const agenda = richTextFromStored(conference.agendaHighlights);
+  const speakers = richTextFromStored(conference.speakers);
+  const description = richTextFromStored(conference.description_ka);
   const requestHeaders = headers();
   const forwardedProto = requestHeaders.get("x-forwarded-proto");
   const forwardedHost = requestHeaders.get("x-forwarded-host");
@@ -240,21 +236,9 @@ export default async function HostConferencePage({
               <span className="mb-2 block text-xs text-brand-600">ეს სურათი გამოჩნდება კონფერენციის მთავარ header-ში და share preview-ში. რეკომენდებული ზომაა 1600x900px ან 1920x1080px. JPG, PNG ან WEBP, მაქსიმუმ 2MB.</span>
               <input type="file" name="coverImageFile" accept="image/*" className="w-full border-dashed" />
             </label>
-            <label className="space-y-1 sm:col-span-2">
-              <span className="block text-sm font-medium text-brand-800">დღის წესრიგი</span>
-              <span className="block text-xs text-brand-600">თითო ჩანაწერი ახალ ხაზზე. მაგალითად: გახსნა, პანელი, networking.</span>
-              <textarea name="agenda" defaultValue={agenda} rows={5} placeholder="მაგ: გახსნა\nპანელური დისკუსია\nNetworking" />
-            </label>
-            <label className="space-y-1 sm:col-span-2">
-              <span className="block text-sm font-medium text-brand-800">სპიკერები</span>
-              <span className="block text-xs text-brand-600">ჩაწერე თითო სპიკერი ახალ ხაზზე.</span>
-              <textarea name="speakers" defaultValue={speakers} rows={5} placeholder="მაგ: გიორგი მელაძე\nანა კაპანაძე" />
-            </label>
-            <label className="space-y-1 sm:col-span-2">
-              <span className="block text-sm font-medium text-brand-800">აღწერა</span>
-              <span className="block text-xs text-brand-600">მოკლედ აუხსენი ვიზიტორს რას ეხება ღონისძიება და რატომ უნდა დარეგისტრირდეს.</span>
-              <textarea className="sm:col-span-2" name="description_ka" defaultValue={conference.description_ka} rows={4} placeholder="მოკლე აღწერა კონფერენციის თემის, სპიკერების და ღირებულების შესახებ" required />
-            </label>
+            <RichTextEditor name="agenda" label="დღის წესრიგი" defaultValue={agenda} placeholder="დღის წესრიგი" hint="შეგიძლია გამოიყენო Bold, Italic და Paragraph." />
+            <RichTextEditor name="speakers" label="სპიკერები" defaultValue={speakers} placeholder="სპიკერები" hint="შეგიძლია გამოიყენო Bold, Italic და Paragraph." />
+            <RichTextEditor name="description_ka" label="აღწერა" defaultValue={description} placeholder="აღწერა" required hint="შეგიძლია გამოიყენო Bold, Italic და Paragraph." />
           </div>
           <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-xs text-brand-700 break-all">{shareUrl}</p>

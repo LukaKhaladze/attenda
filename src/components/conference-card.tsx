@@ -2,12 +2,15 @@ import { Conference } from "@prisma/client";
 import { format } from "date-fns";
 import Link from "next/link";
 import { UICard } from "@/components/ui-card";
+import { richTextToPlain } from "@/lib/rich-text";
 
 type Props = {
   conference: Conference;
 };
 
 export function ConferenceCard({ conference }: Props) {
+  const description = richTextToPlain(conference.description_ka);
+
   return (
     <Link href={`/conference/${conference.slug}`}>
       <UICard className="overflow-hidden p-0 active:scale-[0.98]">
@@ -38,7 +41,7 @@ export function ConferenceCard({ conference }: Props) {
             </svg>
             {conference.location_ka}
           </p>
-          <p className="line-clamp-3 text-sm leading-6 text-gray-700">{conference.description_ka}</p>
+          <p className="line-clamp-3 text-sm leading-6 text-gray-700">{description}</p>
         </div>
       </UICard>
     </Link>

@@ -10,13 +10,23 @@ type Props = {
   conference: Conference & { agendaHighlights: string[] | null; speakers: string[] | null };
   shareUrl: string;
   isRegisteredForConference: boolean;
+  agendaHtml: string;
+  speakersHtml: string;
+  agendaCount: number;
+  speakerCount: number;
 };
 
-export function ConferencePage({ conference, shareUrl, isRegisteredForConference }: Props) {
+export function ConferencePage({
+  conference,
+  shareUrl,
+  isRegisteredForConference,
+  agendaHtml,
+  speakersHtml,
+  agendaCount,
+  speakerCount
+}: Props) {
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(shareUrl)}`;
   const [expandedDescription, setExpandedDescription] = useState(false);
-  const agendaCount = conference.agendaHighlights?.length ?? 0;
-  const speakerCount = conference.speakers?.length ?? 0;
 
   return (
     <section className="space-y-6 pb-24">
@@ -50,9 +60,10 @@ export function ConferencePage({ conference, shareUrl, isRegisteredForConference
             </p>
           </div>
 
-          <p className={`text-sm leading-7 text-gray-700 ${expandedDescription ? "" : "line-clamp-3"}`}>
-            {conference.description_ka}
-          </p>
+          <div
+            className={`text-sm leading-7 text-gray-700 ${expandedDescription ? "" : "line-clamp-3"}`}
+            dangerouslySetInnerHTML={{ __html: conference.description_ka }}
+          />
           <button type="button" onClick={() => setExpandedDescription((value) => !value)} className="text-sm font-medium text-primary underline">
             {expandedDescription ? "ნაკლების ნახვა" : "სრულად ნახვა"}
           </button>
@@ -136,22 +147,14 @@ export function ConferencePage({ conference, shareUrl, isRegisteredForConference
       {agendaCount > 0 ? (
         <UICard id="agenda" className="space-y-2">
           <h2 className="text-base font-semibold text-primary">დღის წესრიგი</h2>
-          <ul className="space-y-2">
-            {conference.agendaHighlights?.map((item) => (
-              <li key={item} className="text-sm text-gray-700">• {item}</li>
-            ))}
-          </ul>
+          <div className="space-y-2 text-sm text-gray-700" dangerouslySetInnerHTML={{ __html: agendaHtml }} />
         </UICard>
       ) : null}
 
       {speakerCount > 0 ? (
         <UICard id="speakers" className="space-y-2">
           <h2 className="text-base font-semibold text-primary">სპიკერები</h2>
-          <ul className="space-y-2">
-            {conference.speakers?.map((item) => (
-              <li key={item} className="text-sm text-gray-700">• {item}</li>
-            ))}
-          </ul>
+          <div className="space-y-2 text-sm text-gray-700" dangerouslySetInnerHTML={{ __html: speakersHtml }} />
         </UICard>
       ) : null}
 
