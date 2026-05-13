@@ -4,6 +4,7 @@ import { AttendeesExplorer } from "@/components/attendees-explorer";
 import { Shell } from "@/components/shell";
 import { UICard } from "@/components/ui-card";
 import { UIHeader } from "@/components/ui-header";
+import { normalizeStoredImageUrl } from "@/lib/image-url";
 import { prisma } from "@/lib/prisma";
 
 export default async function AttendeesPage({ searchParams }: { searchParams: { conferenceId?: string } }) {
@@ -84,7 +85,10 @@ export default async function AttendeesPage({ searchParams }: { searchParams: { 
         <p className="text-sm text-gray-700">
           {searchParams.conferenceId ? "მხოლოდ ამ კონფერენციის დამსწრეები" : "იპოვე ადამიანები პროფესიული გაცნობისა და შეხვედრისთვის."}
         </p>
-        <AttendeesExplorer conferenceId={searchParams.conferenceId} initialItems={initialItems} />
+        <AttendeesExplorer
+          conferenceId={searchParams.conferenceId}
+          initialItems={initialItems.map((item) => ({ ...item, photoUrl: normalizeStoredImageUrl(item.photoUrl) }))}
+        />
       </section>
     </Shell>
   );

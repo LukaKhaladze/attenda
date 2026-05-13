@@ -12,6 +12,7 @@ const sizeClasses = {
 };
 
 export function UIAvatar({ src, alt, size = "md" }: Props) {
+  const safeSrc = src?.startsWith("data:image/") ? null : src;
   const initials = alt
     .split(" ")
     .map((p) => p[0])
@@ -19,8 +20,8 @@ export function UIAvatar({ src, alt, size = "md" }: Props) {
     .slice(0, 2)
     .toUpperCase();
 
-  return src ? (
-    <img src={src} alt={alt} className={`${sizeClasses[size]} rounded-full object-cover`} />
+  return safeSrc ? (
+    <img src={safeSrc} alt={alt} className={`${sizeClasses[size]} rounded-full object-cover`} />
   ) : (
     <div
       className={`${sizeClasses[size]} flex items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent font-semibold text-white`}

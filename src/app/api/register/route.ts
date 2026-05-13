@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { AttendeeStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { notifyHostsAboutRegistration, sendAttendeeRegistrationReceivedEmail } from "@/lib/attendee-emails";
+import { normalizeStoredImageUrl } from "@/lib/image-url";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { cleanText } from "@/lib/sanitize";
 import { registerSchema } from "@/lib/validation";
@@ -57,7 +58,7 @@ export async function POST(request: NextRequest) {
       motivation: data.motivation ? cleanText(data.motivation) : null,
       phone: data.phone ? cleanText(data.phone) : "",
       linkedinUrl: data.linkedinUrl ? cleanText(data.linkedinUrl) : "",
-      photoUrl: data.photoUrl ? cleanText(data.photoUrl) : null,
+      photoUrl: normalizeStoredImageUrl(data.photoUrl ? cleanText(data.photoUrl) : null),
       sharePhonePublic: Boolean(data.phone) && data.sharePhonePublic,
       consentPublicList: data.consentPublicList,
       status: AttendeeStatus.PENDING

@@ -30,6 +30,13 @@ const optionalLinkedInValidator = z
   .or(z.literal(""))
   .refine((value) => !value || linkedInValidator.safeParse(value).success, "LinkedIn ბმული არასწორია");
 
+const optionalImageUrlValidator = z
+  .string()
+  .url("ფოტოს ბმული არასწორია")
+  .refine((value) => !value.startsWith("data:image/"), "ფოტო უნდა აიტვირთოს ფაილად")
+  .optional()
+  .or(z.literal(""));
+
 export const registerSchema = z.object({
   conferenceId: z.string().cuid("კონფერენციის იდენტიფიკატორი არასწორია"),
   fullName: z.string().min(2, "სახელი სავალდებულოა").max(120, "მაქსიმუმ 120 სიმბოლო"),
@@ -39,7 +46,7 @@ export const registerSchema = z.object({
   motivation: z.string().max(150, "მაქსიმუმ 150 სიმბოლო").optional().or(z.literal("")),
   phone: optionalPhoneSchema,
   linkedinUrl: optionalLinkedInValidator,
-  photoUrl: z.string().url("ფოტოს ბმული არასწორია").optional().or(z.literal("")),
+  photoUrl: optionalImageUrlValidator,
   consentPublicList: z.boolean().default(true),
   sharePhonePublic: z.boolean().default(false),
   website: z.string().optional(),
@@ -66,7 +73,7 @@ export const attendeeProfileUpdateSchema = z.object({
   motivation: z.string().max(150, "მაქსიმუმ 150 სიმბოლო").optional().or(z.literal("")),
   phone: optionalPhoneSchema,
   linkedinUrl: optionalLinkedInValidator,
-  photoUrl: z.string().url("ფოტოს ბმული არასწორია").optional().or(z.literal("")),
+  photoUrl: optionalImageUrlValidator,
   sharePhonePublic: z.boolean(),
   consentPublicList: z.boolean()
 });

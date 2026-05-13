@@ -90,7 +90,7 @@ export function AttendeeProfileForm() {
     const target = event.currentTarget;
     const formData = new FormData(target);
     const file = formData.get("photo") as File;
-    let photoUrl = form.photoUrl || "";
+    let photoUrl = form.photoUrl?.startsWith("data:image/") ? "" : form.photoUrl || "";
 
     if (file && file.size > 0) {
       try {

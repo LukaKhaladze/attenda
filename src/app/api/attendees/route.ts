@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { normalizeStoredImageUrl } from "@/lib/image-url";
 import { attendeeQuerySchema } from "@/lib/validation";
 
 export async function GET(request: NextRequest) {
@@ -77,5 +78,8 @@ export async function GET(request: NextRequest) {
     .filter((value): value is string => Boolean(value))
     .sort((a, b) => a.localeCompare(b, "ka"));
 
-  return NextResponse.json({ items, positions });
+  return NextResponse.json({
+    items: items.map((item) => ({ ...item, photoUrl: normalizeStoredImageUrl(item.photoUrl) })),
+    positions
+  });
 }

@@ -21,10 +21,7 @@ export async function POST(request: Request) {
     }
 
     if (!process.env.BLOB_READ_WRITE_TOKEN) {
-      const bytes = await file.arrayBuffer();
-      const base64 = Buffer.from(bytes).toString("base64");
-      const dataUrl = `data:${file.type};base64,${base64}`;
-      return NextResponse.json({ url: dataUrl, storage: "inline" });
+      return NextResponse.json({ error: "ფოტოს ასატვირთად Vercel Blob token არ არის დაყენებული" }, { status: 500 });
     }
 
     const safeFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-");

@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { normalizeStoredImageUrl } from "@/lib/image-url";
 import { cleanText } from "@/lib/sanitize";
 import { attendeeProfileUpdateSchema } from "@/lib/validation";
 
@@ -31,7 +32,7 @@ export async function GET() {
     return NextResponse.json({ error: "დამსწრე ვერ მოიძებნა" }, { status: 404 });
   }
 
-  return NextResponse.json({ item: attendee });
+  return NextResponse.json({ item: { ...attendee, photoUrl: normalizeStoredImageUrl(attendee.photoUrl) } });
 }
 
 export async function PATCH(request: NextRequest) {
@@ -59,7 +60,7 @@ export async function PATCH(request: NextRequest) {
       motivation: data.motivation ? cleanText(data.motivation) : null,
       phone: data.phone ? cleanText(data.phone) : "",
       linkedinUrl: data.linkedinUrl ? cleanText(data.linkedinUrl) : "",
-      photoUrl: data.photoUrl ? cleanText(data.photoUrl) : null,
+      photoUrl: normalizeStoredImageUrl(data.photoUrl ? cleanText(data.photoUrl) : null),
       sharePhonePublic: Boolean(data.phone) && data.sharePhonePublic,
       consentPublicList: data.consentPublicList
     },
