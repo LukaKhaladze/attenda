@@ -31,6 +31,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
   const origin = resolveOrigin();
   const shareUrl = `${origin}/conference/${conference.slug}`;
+  const ogImage = conference.coverImageUrl && !conference.coverImageUrl.startsWith("data:image/")
+    ? conference.coverImageUrl
+    : "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1400&q=80";
   const plainDescription = richTextFromStored(conference.description_ka).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 
   return {
@@ -41,13 +44,13 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       description: plainDescription,
       url: shareUrl,
       type: "website",
-      images: conference.coverImageUrl ? [{ url: conference.coverImageUrl }] : undefined
+      images: [{ url: ogImage, width: 1400, height: 900 }]
     },
     twitter: {
       card: "summary_large_image",
       title: conference.title_ka,
       description: plainDescription,
-      images: conference.coverImageUrl ? [conference.coverImageUrl] : undefined
+      images: [ogImage]
     }
   };
 }
@@ -69,10 +72,7 @@ export default async function ConferenceSinglePage({
 
   const origin = resolveOrigin();
   const lang = resolveLang(searchParams.lang);
-  const shareUrl =
-    conference.customSubdomain && process.env.NEXT_PUBLIC_ROOT_DOMAIN
-      ? `https://${conference.customSubdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`
-      : `${origin}/conference/${conference.slug}`;
+  const shareUrl = `${origin}/conference/${conference.slug}`;
   const descriptionHtml = richTextFromStored(conference.description_ka);
   const agendaHtml = richTextFromStored(conference.agendaHighlights);
   const speakersHtml = richTextFromStored(conference.speakers);

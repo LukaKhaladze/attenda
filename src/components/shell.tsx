@@ -247,8 +247,8 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
               <Link
                 href="/notifications"
                 className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#d7e7fb] text-[#3173f1]"
-                aria-label="შეტყობინებები"
-                title="შეტყობინებები"
+                aria-label={isEnglish ? "Notifications" : "შეტყობინებები"}
+                title={isEnglish ? "Notifications" : "შეტყობინებები"}
               >
                 <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden>
                   <path d="M15 17h5l-1.4-1.4a2 2 0 01-.6-1.4V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h11z" stroke="currentColor" strokeWidth="2" />
@@ -267,12 +267,12 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
               onClick={() => setMenuOpen((value) => !value)}
               className="inline-flex items-center gap-2 rounded-full border border-[#d7e7fb] px-3 py-1.5 text-sm text-[#334155]"
               aria-expanded={menuOpen}
-              aria-label="მენიუ"
+              aria-label={isEnglish ? "Menu" : "მენიუ"}
             >
               <svg className="h-4 w-4 text-[#3173f1]" viewBox="0 0 24 24" fill="none" aria-hidden>
                 <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
               </svg>
-              <span>მენიუ</span>
+              <span>{isEnglish ? "Menu" : "მენიუ"}</span>
             </button>
           </div>
         </div>

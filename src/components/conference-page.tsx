@@ -97,7 +97,7 @@ export function ConferencePage({
             dangerouslySetInnerHTML={{ __html: conference.description_ka }}
           />
           <button type="button" onClick={() => setExpandedDescription((value) => !value)} className="text-sm font-medium text-primary underline">
-            {expandedDescription ? "ნაკლების ნახვა" : "სრულად ნახვა"}
+            {expandedDescription ? (lang === "en" ? "Show less" : "ნაკლების ნახვა") : (lang === "en" ? "Read more" : "სრულად ნახვა")}
           </button>
         </div>
       </UICard>
@@ -133,7 +133,7 @@ export function ConferencePage({
             <div className="flex min-w-0 flex-1 items-center justify-between gap-3">
               <div className="space-y-1">
                 <span className="block text-xl font-bold tracking-[-0.03em] text-[#0f172a]">{lang === "en" ? "Agenda" : "დღის წესრიგი"}</span>
-                <span className="block text-sm leading-6 text-slate-500">სესიის სტრუქტურა და დღის მთავარი ბლოკები</span>
+                <span className="block text-sm leading-6 text-slate-500">{lang === "en" ? "Session flow and key agenda blocks" : "სესიის სტრუქტურა და დღის მთავარი ბლოკები"}</span>
               </div>
             </div>
           </UICard>
@@ -149,8 +149,8 @@ export function ConferencePage({
             </span>
             <div className="flex min-w-0 flex-1 items-center justify-between gap-3">
               <div className="space-y-1">
-                <span className="block text-xl font-bold tracking-[-0.03em] text-[#0f172a]">სპიკერები</span>
-                <span className="block text-sm leading-6 text-slate-500">მოწვეული სპიკერები და პროგრამის მთავარი სახეები</span>
+                <span className="block text-xl font-bold tracking-[-0.03em] text-[#0f172a]">{lang === "en" ? "Speakers" : "სპიკერები"}</span>
+                <span className="block text-sm leading-6 text-slate-500">{lang === "en" ? "Invited speakers and key program voices" : "მოწვეული სპიკერები და პროგრამის მთავარი სახეები"}</span>
               </div>
               <span className="rounded-full border border-[#dbe7ff] bg-white px-3 py-1 text-sm font-semibold text-primary">{speakerCount > 0 ? speakerCount : "0"}</span>
             </div>
@@ -166,10 +166,10 @@ export function ConferencePage({
             </span>
             <div className="flex min-w-0 flex-1 items-center justify-between gap-3">
               <div className="space-y-1">
-                <span className="block text-xl font-bold tracking-[-0.03em] text-[#0f172a]">სტუმრები</span>
-                <span className="block text-sm leading-6 text-slate-500">ღონისძიების საერთო community და networking გარემო</span>
+                <span className="block text-xl font-bold tracking-[-0.03em] text-[#0f172a]">{lang === "en" ? "Guests" : "სტუმრები"}</span>
+                <span className="block text-sm leading-6 text-slate-500">{lang === "en" ? "Event community and networking space" : "ღონისძიების საერთო community და networking გარემო"}</span>
               </div>
-              <span className="rounded-full border border-[#dbe7ff] bg-white px-3 py-1 text-sm font-semibold text-primary">იხილე</span>
+              <span className="rounded-full border border-[#dbe7ff] bg-white px-3 py-1 text-sm font-semibold text-primary">{lang === "en" ? "View" : "იხილე"}</span>
             </div>
           </UICard>
         </Link>
@@ -184,7 +184,7 @@ export function ConferencePage({
 
       {speakerCount > 0 ? (
         <UICard id="speakers" className="space-y-2">
-          <h2 className="text-base font-semibold text-primary">სპიკერები</h2>
+          <h2 className="text-base font-semibold text-primary">{lang === "en" ? "Speakers" : "სპიკერები"}</h2>
           <div className="space-y-2 text-sm text-gray-700" dangerouslySetInnerHTML={{ __html: speakersHtml }} />
         </UICard>
       ) : null}
