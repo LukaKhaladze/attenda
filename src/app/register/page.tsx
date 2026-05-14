@@ -22,7 +22,7 @@ export default async function RegisterPage({
       {conference ? (
         <RegistrationForm conferenceId={conference.id} lang={lang} />
       ) : (
-        <p className="rounded-md bg-amber-50 px-4 py-3 text-sm text-amber-700">აქტიური კონფერენცია ვერ მოიძებნა.</p>
+        <p className="rounded-md bg-amber-50 px-4 py-3 text-sm text-amber-700">{lang === "en" ? "No active conference found." : "აქტიური კონფერენცია ვერ მოიძებნა."}</p>
       )}
     </Shell>
   );

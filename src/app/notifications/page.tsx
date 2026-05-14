@@ -6,26 +6,27 @@ import { Shell } from "@/components/shell";
 import { NotificationsReadMarker } from "@/components/notifications-read-marker";
 import { UICard } from "@/components/ui-card";
 import { UIHeader } from "@/components/ui-header";
+import { resolveLang } from "@/lib/i18n";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-const statusLabel: Record<MeetingOfferStatus, string> = {
-  PENDING: "მოლოდინში",
-  ACCEPTED: "დადასტურებულია",
-  DECLINED: "არ არის დაინტერესებული"
-};
-
-export default async function NotificationsPage() {
+export default async function NotificationsPage({ searchParams }: { searchParams: { lang?: string } }) {
+  const lang = resolveLang(searchParams.lang);
+  const isEnglish = lang === "en";
+  const withLang = (href: string) => (isEnglish ? `${href}${href.includes("?") ? "&" : "?"}lang=en` : href);
+  const statusLabel: Record<MeetingOfferStatus, string> = isEnglish
+    ? { PENDING: "Pending", ACCEPTED: "Accepted", DECLINED: "Declined" }
+    : { PENDING: "მოლოდინში", ACCEPTED: "დადასტურებულია", DECLINED: "არ არის დაინტერესებული" };
   const attendeeId = cookies().get("attendee_id")?.value;
 
   if (!attendeeId) {
     return (
       <Shell>
         <section className="space-y-3">
-          <UIHeader title="შეტყობინებები" backHref="/" />
+          <UIHeader title={isEnglish ? "Notifications" : "შეტყობინებები"} backHref="/" />
           <UICard>
-            <p className="text-sm text-gray-700">შეტყობინებების სანახავად ჯერ დარეგისტრირდი როგორც დამსწრე.</p>
+            <p className="text-sm text-gray-700">{isEnglish ? "Register as an attendee first to see notifications." : "შეტყობინებების სანახავად ჯერ დარეგისტრირდი როგორც დამსწრე."}</p>
           </UICard>
         </section>
       </Shell>
@@ -90,9 +91,9 @@ export default async function NotificationsPage() {
       return (
         <Shell>
           <section className="space-y-3">
-            <UIHeader title="შეტყობინებები" backHref="/" />
+            <UIHeader title={isEnglish ? "Notifications" : "შეტყობინებები"} backHref="/" />
             <UICard>
-              <p className="text-sm text-gray-700">დამსწრის პროფილი ვერ მოიძებნა.</p>
+              <p className="text-sm text-gray-700">{isEnglish ? "Attendee profile not found." : "დამსწრის პროფილი ვერ მოიძებნა."}</p>
             </UICard>
           </section>
         </Shell>
@@ -189,9 +190,9 @@ export default async function NotificationsPage() {
     sentOfferResponses = sent;
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2021") {
-      loadError = "შეტყობინებები დროებით მიუწვდომელია. საჭიროა ბაზის მიგრაციის გაშვება.";
+      loadError = isEnglish ? "Notifications are temporarily unavailable. Run database migration." : "შეტყობინებები დროებით მიუწვდომელია. საჭიროა ბაზის მიგრაციის გაშვება.";
     } else {
-      loadError = "შეტყობინებების ჩატვირთვა ვერ მოხერხდა. სცადე მოგვიანებით.";
+      loadError = isEnglish ? "Failed to load notifications. Try again later." : "შეტყობინებების ჩატვირთვა ვერ მოხერხდა. სცადე მოგვიანებით.";
     }
   }
 
@@ -199,7 +200,7 @@ export default async function NotificationsPage() {
     <Shell>
       <section className="space-y-4">
         <NotificationsReadMarker />
-        <UIHeader title="შეტყობინებები" backHref="/" />
+        <UIHeader title={isEnglish ? "Notifications" : "შეტყობინებები"} backHref="/" />
 
         {loadError ? (
           <UICard>
@@ -210,22 +211,22 @@ export default async function NotificationsPage() {
         {!loadError ? (
           <>
             <UICard className="space-y-3">
-              <h2 className="text-base font-semibold text-primary">მიღებული შეთავაზებები</h2>
+              <h2 className="text-base font-semibold text-primary">{isEnglish ? "Received Offers" : "მიღებული შეთავაზებები"}</h2>
               {receivedOffers.length === 0 ? (
-                <p className="text-sm text-gray-700">ახალი შეხვედრის შეთავაზებები ჯერ არ გაქვს.</p>
+                <p className="text-sm text-gray-700">{isEnglish ? "You have no new meeting offers yet." : "ახალი შეხვედრის შეთავაზებები ჯერ არ გაქვს."}</p>
               ) : (
                 <div className="space-y-3">
                   {receivedOffers.map((offer) => (
                     <article key={offer.id} className="rounded-xl border border-gray-200 p-3">
                       {offer.senderAttendeeId ? (
-                        <Link href={`/attendees/${offer.senderAttendeeId}`} className="text-sm font-semibold text-primary hover:underline">
+                        <Link href={withLang(`/attendees/${offer.senderAttendeeId}`)} className="text-sm font-semibold text-primary hover:underline">
                           {offer.senderName}
                         </Link>
                       ) : (
                         <p className="text-sm font-semibold text-gray-900">{offer.senderName}</p>
                       )}
-                      {offer.senderContact ? <p className="text-sm text-gray-700">კონტაქტი: {offer.senderContact}</p> : null}
-                      {offer.proposedAt ? <p className="text-sm text-gray-700">შემოთავაზებული დრო: {format(offer.proposedAt, "yyyy-MM-dd HH:mm")}</p> : null}
+                      {offer.senderContact ? <p className="text-sm text-gray-700">{isEnglish ? "Contact" : "კონტაქტი"}: {offer.senderContact}</p> : null}
+                      {offer.proposedAt ? <p className="text-sm text-gray-700">{isEnglish ? "Proposed time" : "შემოთავაზებული დრო"}: {format(offer.proposedAt, "yyyy-MM-dd HH:mm")}</p> : null}
                       {offer.note ? <p className="mt-1 text-sm text-gray-700">{offer.note}</p> : null}
                       {offer.messages.length > 0 ? (
                         <div className="mt-2 space-y-2 rounded-lg border border-gray-200 bg-gray-50 p-2">
@@ -238,7 +239,7 @@ export default async function NotificationsPage() {
                         </div>
                       ) : null}
 
-                      <p className="mt-2 text-xs text-gray-500">სტატუსი: {statusLabel[offer.status]}</p>
+                      <p className="mt-2 text-xs text-gray-500">{isEnglish ? "Status" : "სტატუსი"}: {statusLabel[offer.status]}</p>
 
                       {offer.status === MeetingOfferStatus.PENDING ? (
                         <form action={`/api/meeting-offers/${offer.id}`} method="post" className="mt-3 space-y-2">
@@ -246,7 +247,7 @@ export default async function NotificationsPage() {
                             name="note"
                             rows={2}
                             maxLength={500}
-                            placeholder="დაწერე კომენტარი (არასავალდებულო)"
+                            placeholder={isEnglish ? "Write a comment (optional)" : "დაწერე კომენტარი (არასავალდებულო)"}
                             className="w-full resize-none rounded-md border border-gray-300 px-2 py-1 text-sm"
                           />
                           <div className="flex gap-2">
@@ -256,7 +257,7 @@ export default async function NotificationsPage() {
                               value={MeetingOfferStatus.ACCEPTED}
                               className="rounded-lg bg-primary px-3 py-2 text-sm text-white"
                             >
-                              დადასტურება
+                              {isEnglish ? "Accept" : "დადასტურება"}
                             </button>
                             <button
                               type="submit"
@@ -264,7 +265,7 @@ export default async function NotificationsPage() {
                               value={MeetingOfferStatus.DECLINED}
                               className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700"
                             >
-                              არ ვარ დაინტერესებული
+                              {isEnglish ? "Decline" : "არ ვარ დაინტერესებული"}
                             </button>
                           </div>
                         </form>
@@ -275,10 +276,10 @@ export default async function NotificationsPage() {
                             rows={2}
                             maxLength={500}
                             required
-                            placeholder="დაწერე დამატებითი კომენტარი"
+                            placeholder={isEnglish ? "Write an additional comment" : "დაწერე დამატებითი კომენტარი"}
                             className="w-full resize-none rounded-md border border-gray-300 px-2 py-1 text-sm"
                           />
-                          <button className="rounded-lg border border-primary px-3 py-2 text-sm text-primary">კომენტარის გაგზავნა</button>
+                          <button className="rounded-lg border border-primary px-3 py-2 text-sm text-primary">{isEnglish ? "Send Comment" : "კომენტარის გაგზავნა"}</button>
                         </form>
                       )}
                     </article>
@@ -288,17 +289,17 @@ export default async function NotificationsPage() {
             </UICard>
 
             <UICard className="space-y-3">
-              <h2 className="text-base font-semibold text-primary">ჩემს შეთავაზებებზე პასუხები</h2>
+              <h2 className="text-base font-semibold text-primary">{isEnglish ? "Responses to My Offers" : "ჩემს შეთავაზებებზე პასუხები"}</h2>
               {sentOfferResponses.length === 0 ? (
-                <p className="text-sm text-gray-700">ჯერ პასუხი არ მიგიღია შენს გაგზავნილ შეთავაზებებზე.</p>
+                <p className="text-sm text-gray-700">{isEnglish ? "No responses yet to your sent offers." : "ჯერ პასუხი არ მიგიღია შენს გაგზავნილ შეთავაზებებზე."}</p>
               ) : (
                 <div className="space-y-3">
                   {sentOfferResponses.map((offer) => (
                     <article key={offer.id} className="rounded-xl border border-gray-200 p-3">
                       <p className="text-sm font-semibold text-gray-900">{offer.recipient.fullName}</p>
-                      <p className="text-sm text-gray-700">{offer.recipient.position || "პოზიცია არ არის მითითებული"}</p>
-                      <p className="text-sm text-gray-700">{offer.recipient.company || "კომპანია არ არის მითითებული"}</p>
-                      {offer.proposedAt ? <p className="text-sm text-gray-700">შენ მიერ შეთავაზებული დრო: {format(offer.proposedAt, "yyyy-MM-dd HH:mm")}</p> : null}
+                      <p className="text-sm text-gray-700">{offer.recipient.position || (isEnglish ? "Position not specified" : "პოზიცია არ არის მითითებული")}</p>
+                      <p className="text-sm text-gray-700">{offer.recipient.company || (isEnglish ? "Company not specified" : "კომპანია არ არის მითითებული")}</p>
+                      {offer.proposedAt ? <p className="text-sm text-gray-700">{isEnglish ? "Your proposed time" : "შენ მიერ შეთავაზებული დრო"}: {format(offer.proposedAt, "yyyy-MM-dd HH:mm")}</p> : null}
                       {offer.messages.length > 0 ? (
                         <div className="mt-2 space-y-2 rounded-lg border border-gray-200 bg-gray-50 p-2">
                           {offer.messages.map((message) => (
@@ -309,17 +310,17 @@ export default async function NotificationsPage() {
                           ))}
                         </div>
                       ) : null}
-                      <p className="mt-2 text-xs text-gray-500">პასუხი: {statusLabel[offer.status]}</p>
+                      <p className="mt-2 text-xs text-gray-500">{isEnglish ? "Response" : "პასუხი"}: {statusLabel[offer.status]}</p>
                       <form action={`/api/meeting-offers/${offer.id}/messages`} method="post" className="mt-3 space-y-2">
                         <textarea
                           name="body"
                           rows={2}
                           maxLength={500}
                           required
-                          placeholder="დაწერე დამატებითი კომენტარი"
+                          placeholder={isEnglish ? "Write an additional comment" : "დაწერე დამატებითი კომენტარი"}
                           className="w-full resize-none rounded-md border border-gray-300 px-2 py-1 text-sm"
                         />
-                        <button className="rounded-lg border border-primary px-3 py-2 text-sm text-primary">კომენტარის გაგზავნა</button>
+                        <button className="rounded-lg border border-primary px-3 py-2 text-sm text-primary">{isEnglish ? "Send Comment" : "კომენტარის გაგზავნა"}</button>
                       </form>
                     </article>
                   ))}

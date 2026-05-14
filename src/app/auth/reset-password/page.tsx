@@ -14,6 +14,7 @@ function ResetPasswordContent() {
   const email = searchParams.get("email") ?? "";
 
   const hasToken = useMemo(() => token.length > 0 && email.length > 0, [token, email]);
+  const isEnglish = searchParams.get("lang") === "en";
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +23,7 @@ function ResetPasswordContent() {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!hasToken) {
-      setError("ბმული არასწორია");
+      setError(isEnglish ? "Invalid link" : "ბმული არასწორია");
       return;
     }
 
@@ -40,13 +41,13 @@ function ResetPasswordContent() {
     setLoading(false);
 
     if (!response.ok) {
-      setError(data?.error ?? "პაროლის შეცვლა ვერ შესრულდა");
+      setError(data?.error ?? (isEnglish ? "Password reset failed" : "პაროლის შეცვლა ვერ შესრულდა"));
       return;
     }
 
-    setSuccess("პაროლი წარმატებით შეიცვალა. გადამისამართება...");
+    setSuccess(isEnglish ? "Password changed successfully. Redirecting..." : "პაროლი წარმატებით შეიცვალა. გადამისამართება...");
     setTimeout(() => {
-      router.push("/auth/signin");
+      router.push(isEnglish ? "/auth/signin?lang=en" : "/auth/signin");
       router.refresh();
     }, 1200);
   }
@@ -54,15 +55,15 @@ function ResetPasswordContent() {
   return (
     <section className="mx-auto mt-10 max-w-md px-4">
       <UICard className="space-y-5 p-6">
-        <h1 className="text-4xl font-bold tracking-tight text-gray-900">ახალი პაროლი</h1>
-        <p className="text-sm text-gray-700">შეიყვანე ახალი პაროლი.</p>
+        <h1 className="text-4xl font-bold tracking-tight text-gray-900">{isEnglish ? "New Password" : "ახალი პაროლი"}</h1>
+        <p className="text-sm text-gray-700">{isEnglish ? "Enter your new password." : "შეიყვანე ახალი პაროლი."}</p>
 
         {!hasToken ? (
-          <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-error">ბმული არასწორია ან არასრულია.</p>
+          <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-error">{isEnglish ? "The link is invalid or incomplete." : "ბმული არასწორია ან არასრულია."}</p>
         ) : (
           <form onSubmit={onSubmit} className="space-y-4">
             <UIInput
-              label="პაროლი"
+              label={isEnglish ? "Password" : "პაროლი"}
               name="password"
               type="password"
               required
@@ -76,13 +77,13 @@ function ResetPasswordContent() {
             {success ? <p className="rounded-md bg-emerald-50 px-3 py-2 text-sm text-emerald-700">{success}</p> : null}
 
             <UIButton fullWidth size="lg" disabled={loading}>
-              {loading ? "ინახება..." : "პაროლის შეცვლა"}
+              {loading ? (isEnglish ? "Saving..." : "ინახება...") : (isEnglish ? "Change Password" : "პაროლის შეცვლა")}
             </UIButton>
           </form>
         )}
 
         <p className="text-sm text-gray-700">
-          <Link href="/auth/signin" className="text-primary underline">შესვლა</Link>
+          <Link href={isEnglish ? "/auth/signin?lang=en" : "/auth/signin"} className="text-primary underline">{isEnglish ? "Sign in" : "შესვლა"}</Link>
         </p>
       </UICard>
     </section>

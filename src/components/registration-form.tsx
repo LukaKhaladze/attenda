@@ -12,7 +12,7 @@ type Props = {
   lang?: "ka" | "en";
 };
 
-const positionOptions = [
+const positionOptionsKa = [
   "დამფუძნებელი",
   "ოპერაციული დირექტორი",
   "ტექნოლოგიების ხელმძღვანელი",
@@ -26,12 +26,28 @@ const positionOptions = [
   "სხვა"
 ];
 
+const positionOptionsEn = [
+  "Founder",
+  "COO",
+  "Head of Technology",
+  "Project Manager",
+  "Product Manager",
+  "Marketing Manager",
+  "Sales & Business Development Manager",
+  "Software Developer",
+  "UX/UI Designer",
+  "Consultant / Domain Specialist",
+  "Other"
+];
+
 export function RegistrationForm({ conferenceId, lang = "ka" }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [uploadNotice, setUploadNotice] = useState<string | null>(null);
   const startedAt = useMemo(() => Date.now(), []);
+  const isEnglish = lang === "en";
+  const positionOptions = isEnglish ? positionOptionsEn : positionOptionsKa;
 
   async function readJsonSafe(response: Response) {
     try {
@@ -46,7 +62,7 @@ export function RegistrationForm({ conferenceId, lang = "ka" }: Props) {
     formData.append("file", file);
     const response = await fetch("/api/upload", { method: "POST", body: formData });
     const data = await readJsonSafe(response);
-    if (!response.ok) throw new Error(data?.error ?? "ფოტოს ატვირთვა ვერ მოხერხდა");
+    if (!response.ok) throw new Error(data?.error ?? (isEnglish ? "Photo upload failed" : "ფოტოს ატვირთვა ვერ მოხერხდა"));
     return data.url as string;
   }
 
@@ -94,13 +110,13 @@ export function RegistrationForm({ conferenceId, lang = "ka" }: Props) {
       });
       const data = await readJsonSafe(response);
 
-      if (!response.ok) throw new Error(data?.error ?? "რეგისტრაცია ვერ შესრულდა");
+      if (!response.ok) throw new Error(data?.error ?? (isEnglish ? "Registration failed" : "რეგისტრაცია ვერ შესრულდა"));
 
       const redirectTo = typeof data?.redirectTo === "string" ? data.redirectTo : `/attendees?conferenceId=${conferenceId}`;
-      router.push(redirectTo);
+      router.push(isEnglish ? `${redirectTo}&lang=en` : redirectTo);
       router.refresh();
     } catch (submitError) {
-      setError(submitError instanceof Error ? submitError.message : "უცნობი შეცდომა");
+      setError(submitError instanceof Error ? submitError.message : (isEnglish ? "Unknown error" : "უცნობი შეცდომა"));
     } finally {
       setLoading(false);
     }
@@ -108,23 +124,23 @@ export function RegistrationForm({ conferenceId, lang = "ka" }: Props) {
 
   return (
     <form onSubmit={onSubmit} className="space-y-4 pb-24">
-      <UIHeader title={lang === "en" ? "Registration" : "რეგისტრაცია"} backHref="/" />
+      <UIHeader title={isEnglish ? "Registration" : "რეგისტრაცია"} backHref="/" />
       <UICard className="space-y-3 overflow-hidden">
         <div className="hidden">
-          <label htmlFor="website">ვებსაიტი</label>
+          <label htmlFor="website">{isEnglish ? "Website" : "ვებსაიტი"}</label>
           <input id="website" name="website" autoComplete="off" tabIndex={-1} />
         </div>
 
-        <UIInput label={lang === "en" ? "Full Name" : "სახელი და გვარი"} name="fullName" required requiredMark maxLength={120} />
-        <UIInput label="ელფოსტა" name="email" type="email" required requiredMark maxLength={180} placeholder="you@example.com" />
-        <UIInput label="კომპანია" name="company" maxLength={120} placeholder="მაგ: TechCorp Georgia" />
+        <UIInput label={isEnglish ? "Full Name" : "სახელი და გვარი"} name="fullName" required requiredMark maxLength={120} />
+        <UIInput label={isEnglish ? "Email" : "ელფოსტა"} name="email" type="email" required requiredMark maxLength={180} placeholder="you@example.com" />
+        <UIInput label={isEnglish ? "Company" : "კომპანია"} name="company" maxLength={120} placeholder={isEnglish ? "e.g. TechCorp Georgia" : "მაგ: TechCorp Georgia"} />
         <label className="block min-w-0 space-y-1.5">
           <span className="text-sm font-medium text-gray-700">
-            პოზიცია <span className="text-error">*</span>
+            {isEnglish ? "Position" : "პოზიცია"} <span className="text-error">*</span>
           </span>
           <select name="position" required defaultValue="" className="w-full">
             <option value="" disabled>
-              აირჩიე პოზიცია
+              {isEnglish ? "Select a position" : "აირჩიე პოზიცია"}
             </option>
             {positionOptions.map((item) => (
               <option key={item} value={item}>
@@ -134,36 +150,36 @@ export function RegistrationForm({ conferenceId, lang = "ka" }: Props) {
           </select>
         </label>
         <label className="block min-w-0 space-y-1.5">
-          <span className="text-sm font-medium text-gray-700">ღონისძიებაზე დასწრების მოტივაცია</span>
+          <span className="text-sm font-medium text-gray-700">{isEnglish ? "Motivation for attending" : "ღონისძიებაზე დასწრების მოტივაცია"}</span>
           <textarea
             name="motivation"
             maxLength={150}
             rows={3}
-            placeholder="მოკლედ აღწერე რატომ გინდა დასწრება (მაქს. 150 სიმბოლო)"
+            placeholder={isEnglish ? "Briefly describe why you want to attend (max 150 chars)" : "მოკლედ აღწერე რატომ გინდა დასწრება (მაქს. 150 სიმბოლო)"}
             className="w-full resize-none"
           />
         </label>
-        <UIInput label="ტელეფონი" name="phone" placeholder="+995..." />
+        <UIInput label={isEnglish ? "Phone" : "ტელეფონი"} name="phone" placeholder="+995..." />
         <UIInput
-          label="LinkedIn ბმული"
+          label={isEnglish ? "LinkedIn URL" : "LinkedIn ბმული"}
           name="linkedinUrl"
           type="url"
           placeholder="https://linkedin.com/in/..."
         />
 
         <label className="block min-w-0 space-y-1.5">
-          <span className="text-sm font-medium text-gray-700">პროფილის ფოტო</span>
+          <span className="text-sm font-medium text-gray-700">{isEnglish ? "Profile Photo" : "პროფილის ფოტო"}</span>
           <input name="photo" type="file" accept="image/*" className="w-full min-w-0" />
         </label>
 
         <label className="grid min-w-0 grid-cols-[18px,minmax(0,1fr)] items-start gap-x-3 gap-y-1 text-sm text-gray-700">
           <input type="checkbox" name="sharePhonePublic" />
-          <span className="min-w-0 leading-6">ვადასტურებ, რომ ტელეფონი საჯაროდ ჩანდეს</span>
+          <span className="min-w-0 leading-6">{isEnglish ? "I allow my phone number to be publicly visible" : "ვადასტურებ, რომ ტელეფონი საჯაროდ ჩანდეს"}</span>
         </label>
 
         <label className="grid min-w-0 grid-cols-[18px,minmax(0,1fr)] items-start gap-x-3 gap-y-1 text-sm text-gray-700">
           <input type="checkbox" name="consentPublicList" defaultChecked />
-          <span className="min-w-0 leading-6">ვეთანხმები, რომ ჩემი ინფორმაცია გამოჩნდეს სიაში</span>
+          <span className="min-w-0 leading-6">{isEnglish ? "I agree to show my information in the attendee list" : "ვეთანხმები, რომ ჩემი ინფორმაცია გამოჩნდეს სიაში"}</span>
         </label>
 
         {error ? <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-error">{error}</p> : null}
@@ -173,7 +189,7 @@ export function RegistrationForm({ conferenceId, lang = "ka" }: Props) {
       <div className="fixed bottom-0 left-0 right-0 border-t border-gray-200 bg-white p-4">
         <div className="mx-auto w-full max-w-3xl">
           <UIButton fullWidth size="lg" disabled={loading} type="submit">
-            {loading ? "იგზავნება..." : "რეგისტრაცია"}
+            {loading ? (isEnglish ? "Submitting..." : "იგზავნება...") : (isEnglish ? "Register" : "რეგისტრაცია")}
           </UIButton>
         </div>
       </div>

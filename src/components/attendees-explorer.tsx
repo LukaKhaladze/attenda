@@ -113,7 +113,7 @@ export function AttendeesExplorer({ conferenceId, initialItems = [], lang = "ka"
           </div>
           <button
             type="button"
-            aria-label="ფილტრი"
+            aria-label={lang === "en" ? "Filter" : "ფილტრი"}
             onClick={() => setFiltersOpen((value) => !value)}
             className={`inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border text-primary transition-colors ${
               filtersOpen ? "border-primary bg-primary/5" : "border-gray-300"

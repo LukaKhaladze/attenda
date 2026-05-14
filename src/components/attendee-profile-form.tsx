@@ -17,7 +17,8 @@ type AttendeeProfile = {
   consentPublicList: boolean;
 };
 
-export function AttendeeProfileForm() {
+export function AttendeeProfileForm({ lang = "ka" }: { lang?: "ka" | "en" }) {
+  const isEnglish = lang === "en";
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -47,7 +48,7 @@ export function AttendeeProfileForm() {
       const response = await fetch("/api/attendee-profile");
       const data = await readJsonSafe(response);
       if (!response.ok) {
-        setError(data?.error ?? "პროფილი ვერ ჩაიტვირთა");
+        setError(data?.error ?? (isEnglish ? "Failed to load profile" : "პროფილი ვერ ჩაიტვირთა"));
         setLoading(false);
         return;
       }
@@ -67,7 +68,7 @@ export function AttendeeProfileForm() {
     }
 
     load().catch(() => {
-      setError("პროფილი ვერ ჩაიტვირთა");
+      setError(isEnglish ? "Failed to load profile" : "პროფილი ვერ ჩაიტვირთა");
       setLoading(false);
     });
   }, []);
@@ -77,7 +78,7 @@ export function AttendeeProfileForm() {
     formData.append("file", file);
     const response = await fetch("/api/upload", { method: "POST", body: formData });
     const data = await readJsonSafe(response);
-    if (!response.ok) throw new Error(data?.error ?? "ფოტოს ატვირთვა ვერ მოხერხდა");
+    if (!response.ok) throw new Error(data?.error ?? (isEnglish ? "Photo upload failed" : "ფოტოს ატვირთვა ვერ მოხერხდა"));
     return data.url as string;
   }
 
@@ -121,59 +122,59 @@ export function AttendeeProfileForm() {
       const data = await readJsonSafe(response);
 
       if (!response.ok) {
-        setError(data?.error ?? "განახლება ვერ შესრულდა");
+        setError(data?.error ?? (isEnglish ? "Update failed" : "განახლება ვერ შესრულდა"));
         return;
       }
 
       setForm((prev) => ({ ...prev, photoUrl }));
-      setMessage("პროფილი განახლდა წარმატებით");
+      setMessage(isEnglish ? "Profile updated successfully" : "პროფილი განახლდა წარმატებით");
     } catch {
-      setError("განახლება ვერ შესრულდა");
+      setError(isEnglish ? "Update failed" : "განახლება ვერ შესრულდა");
     } finally {
       setSaving(false);
     }
   }
 
   if (loading) {
-    return <p className="text-sm text-gray-600">იტვირთება...</p>;
+    return <p className="text-sm text-gray-600">{isEnglish ? "Loading..." : "იტვირთება..."}</p>;
   }
 
   return (
     <form onSubmit={onSubmit} className="space-y-3">
       <UICard className="space-y-3">
-        <UIInput label="სახელი" value={form.fullName} onChange={(event) => setForm((prev) => ({ ...prev, fullName: event.target.value }))} required />
-        <UIInput label="კომპანია" value={form.company || ""} onChange={(event) => setForm((prev) => ({ ...prev, company: event.target.value }))} />
-        <UIInput label="პოზიცია" value={form.position || ""} onChange={(event) => setForm((prev) => ({ ...prev, position: event.target.value }))} required />
+        <UIInput label={isEnglish ? "Full Name" : "სახელი და გვარი"} value={form.fullName} onChange={(event) => setForm((prev) => ({ ...prev, fullName: event.target.value }))} required />
+        <UIInput label={isEnglish ? "Company" : "კომპანია"} value={form.company || ""} onChange={(event) => setForm((prev) => ({ ...prev, company: event.target.value }))} />
+        <UIInput label={isEnglish ? "Position" : "პოზიცია"} value={form.position || ""} onChange={(event) => setForm((prev) => ({ ...prev, position: event.target.value }))} required />
         <label className="block space-y-1.5">
-          <span className="text-sm font-medium text-gray-700">ღონისძიებაზე დასწრების მოტივაცია</span>
+          <span className="text-sm font-medium text-gray-700">{isEnglish ? "Motivation for attending" : "ღონისძიებაზე დასწრების მოტივაცია"}</span>
           <textarea
             value={form.motivation || ""}
             onChange={(event) => setForm((prev) => ({ ...prev, motivation: event.target.value }))}
             maxLength={150}
             rows={3}
-            placeholder="მაქს. 150 სიმბოლო"
+            placeholder={isEnglish ? "Max. 150 chars" : "მაქს. 150 სიმბოლო"}
             className="w-full resize-none"
           />
         </label>
-        <UIInput label="ტელეფონი" value={form.phone} onChange={(event) => setForm((prev) => ({ ...prev, phone: event.target.value }))} />
-        <UIInput label="LinkedIn ბმული" type="url" value={form.linkedinUrl} onChange={(event) => setForm((prev) => ({ ...prev, linkedinUrl: event.target.value }))} />
+        <UIInput label={isEnglish ? "Phone" : "ტელეფონი"} value={form.phone} onChange={(event) => setForm((prev) => ({ ...prev, phone: event.target.value }))} />
+        <UIInput label={isEnglish ? "LinkedIn URL" : "LinkedIn ბმული"} type="url" value={form.linkedinUrl} onChange={(event) => setForm((prev) => ({ ...prev, linkedinUrl: event.target.value }))} />
         <label className="block min-w-0 space-y-1.5">
-          <span className="text-sm font-medium text-gray-700">ახალი პროფილის ფოტო</span>
+          <span className="text-sm font-medium text-gray-700">{isEnglish ? "New Profile Photo" : "ახალი პროფილის ფოტო"}</span>
           <input name="photo" type="file" accept="image/*" className="w-full min-w-0" />
         </label>
 
         <label className="grid min-w-0 grid-cols-[18px,minmax(0,1fr)] items-start gap-x-3 gap-y-1 text-sm text-gray-700">
           <input type="checkbox" checked={form.sharePhonePublic} onChange={(event) => setForm((prev) => ({ ...prev, sharePhonePublic: event.target.checked }))} />
-          <span className="min-w-0 leading-6">ტელეფონი საჯაროდ გამოჩნდეს</span>
+          <span className="min-w-0 leading-6">{isEnglish ? "Show phone publicly" : "ტელეფონი საჯაროდ გამოჩნდეს"}</span>
         </label>
 
         <label className="grid min-w-0 grid-cols-[18px,minmax(0,1fr)] items-start gap-x-3 gap-y-1 text-sm text-gray-700">
           <input type="checkbox" checked={form.consentPublicList} onChange={(event) => setForm((prev) => ({ ...prev, consentPublicList: event.target.checked }))} />
-          <span className="min-w-0 leading-6">ჩემი პროფილი დარჩეს საჯარო დამსწრეთა სიაში</span>
+          <span className="min-w-0 leading-6">{isEnglish ? "Keep my profile visible in the attendee list" : "ჩემი პროფილი დარჩეს საჯარო დამსწრეთა სიაში"}</span>
         </label>
 
         <UIButton type="submit" disabled={saving} fullWidth>
-          {saving ? "ინახება..." : "პროფილის განახლება"}
+          {saving ? (isEnglish ? "Saving..." : "ინახება...") : (isEnglish ? "Update Profile" : "პროფილის განახლება")}
         </UIButton>
 
         {error ? <p className="text-sm text-error">{error}</p> : null}

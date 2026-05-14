@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Shell } from "@/components/shell";
 import { UIButton } from "@/components/ui-button";
 import { UICard } from "@/components/ui-card";
@@ -15,6 +15,13 @@ export default function SignUpPage() {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isEnglish, setIsEnglish] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsEnglish(new URLSearchParams(window.location.search).get("lang") === "en");
+    }
+  }, []);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -33,23 +40,23 @@ export default function SignUpPage() {
     setLoading(false);
 
     if (!response.ok) {
-      setError(data?.error ?? "რეგისტრაცია ვერ შესრულდა");
+      setError(data?.error ?? (isEnglish ? "Registration failed" : "რეგისტრაცია ვერ შესრულდა"));
       return;
     }
 
-    router.push("/auth/signin");
+    router.push(isEnglish ? "/auth/signin?lang=en" : "/auth/signin");
   }
 
   return (
     <Shell>
       <section className="mx-auto mt-10 max-w-md px-4">
         <UICard className="space-y-5 p-6">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900">ადმინ რეგისტრაცია</h1>
-          <p className="text-sm leading-6 text-gray-700">შექმენი ადმინისტრატორის ანგარიში ელფოსტით და პაროლით.</p>
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900">{isEnglish ? "Admin Registration" : "ადმინ რეგისტრაცია"}</h1>
+          <p className="text-sm leading-6 text-gray-700">{isEnglish ? "Create an administrator account with email and password." : "შექმენი ადმინისტრატორის ანგარიში ელფოსტით და პაროლით."}</p>
 
           <form onSubmit={onSubmit} className="space-y-4">
             <UIInput
-              label="სახელი"
+              label={isEnglish ? "Name" : "სახელი"}
               name="name"
               required
               requiredMark
@@ -57,7 +64,7 @@ export default function SignUpPage() {
               onChange={(event) => setName(event.target.value)}
             />
             <UIInput
-              label="ელფოსტა"
+              label={isEnglish ? "Email" : "ელფოსტა"}
               name="email"
               type="email"
               required
@@ -66,7 +73,7 @@ export default function SignUpPage() {
               onChange={(event) => setEmail(event.target.value)}
             />
             <UIInput
-              label="პაროლი"
+              label={isEnglish ? "Password" : "პაროლი"}
               name="password"
               type="password"
               minLength={8}
@@ -79,12 +86,12 @@ export default function SignUpPage() {
             {error ? <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p> : null}
 
             <UIButton fullWidth size="lg" disabled={loading} type="submit">
-              {loading ? "მიმდინარეობს..." : "რეგისტრაცია"}
+              {loading ? (isEnglish ? "Loading..." : "მიმდინარეობს...") : (isEnglish ? "Register" : "რეგისტრაცია")}
             </UIButton>
           </form>
 
           <p className="text-sm text-gray-700">
-            უკვე გაქვს ანგარიში? <Link href="/auth/signin" className="text-primary underline">შესვლა</Link>
+            {isEnglish ? "Already have an account?" : "უკვე გაქვს ანგარიში?"} <Link href={isEnglish ? "/auth/signin?lang=en" : "/auth/signin"} className="text-primary underline">{isEnglish ? "Sign in" : "შესვლა"}</Link>
           </p>
         </UICard>
       </section>
