@@ -1,7 +1,7 @@
 import sanitizeHtml from "sanitize-html";
 import { cleanText } from "@/lib/sanitize";
 
-const allowedTags = ["p", "strong", "em", "br", "ul", "ol", "li"];
+const allowedTags = ["p", "strong", "em", "b", "i", "br", "ul", "ol", "li"];
 
 export function sanitizeRichText(value: string) {
   return sanitizeHtml(value, {
