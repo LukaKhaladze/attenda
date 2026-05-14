@@ -10,6 +10,7 @@ import darkLogo from "../../dark.png";
 export function Shell({ children, hideHeader = false }: { children: ReactNode; hideHeader?: boolean }) {
   const router = useRouter();
   const pathname = usePathname();
+  const [search, setSearch] = useState("");
   const [hasAttendeeCookie, setHasAttendeeCookie] = useState(false);
   const [hasConferenceAccess, setHasConferenceAccess] = useState(false);
   const [hasUserSession, setHasUserSession] = useState(false);
@@ -206,6 +207,23 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
   const attendeeSignInHref = isPublicConferencePage && conferenceSlug ? `/attendee/signin?conferenceSlug=${conferenceSlug}` : "/attendee/signin";
   const hostAttendeesHref = lastHostConferenceId ? `/host/conferences/${lastHostConferenceId}` : "/host";
   const primaryHomeHref = isAdminSession || isAdminArea ? "/admin" : isHostSession || isHostArea ? "/host" : "/";
+  const isEnglish = new URLSearchParams(search).get("lang") === "en";
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setSearch(window.location.search);
+  }, [pathname]);
+
+  function toggleLanguage() {
+    const params = new URLSearchParams(search);
+    if (isEnglish) {
+      params.delete("lang");
+    } else {
+      params.set("lang", "en");
+    }
+    const query = params.toString();
+    router.push(query ? `${pathname}?${query}` : pathname);
+  }
 
   return (
     <div className="space-y-4">
@@ -217,6 +235,14 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
           </Link>
 
           <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={toggleLanguage}
+              className="inline-flex h-9 items-center justify-center rounded-full border border-[#d7e7fb] px-3 text-xs font-semibold text-[#3173f1]"
+              aria-label="Switch language"
+            >
+              {isEnglish ? "KA" : "EN"}
+            </button>
             {showAttendeeActions ? (
               <Link
                 href="/notifications"

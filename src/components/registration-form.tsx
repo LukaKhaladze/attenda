@@ -9,6 +9,7 @@ import { UIInput } from "@/components/ui-input";
 
 type Props = {
   conferenceId: string;
+  lang?: "ka" | "en";
 };
 
 const positionOptions = [
@@ -25,7 +26,7 @@ const positionOptions = [
   "სხვა"
 ];
 
-export function RegistrationForm({ conferenceId }: Props) {
+export function RegistrationForm({ conferenceId, lang = "ka" }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -66,7 +67,7 @@ export function RegistrationForm({ conferenceId }: Props) {
           photoUrl = await uploadPhoto(file);
         } catch {
           photoUrl = "";
-          setUploadNotice("ფოტოს ატვირთვა ვერ მოხერხდა, რეგისტრაცია გაგრძელდა ფოტოს გარეშე.");
+          throw new Error(lang === "en" ? "Photo upload failed. Please try again." : "ფოტოს ატვირთვა ვერ მოხერხდა. სცადე თავიდან.");
         }
       }
 
@@ -107,14 +108,14 @@ export function RegistrationForm({ conferenceId }: Props) {
 
   return (
     <form onSubmit={onSubmit} className="space-y-4 pb-24">
-      <UIHeader title="რეგისტრაცია" backHref="/" />
+      <UIHeader title={lang === "en" ? "Registration" : "რეგისტრაცია"} backHref="/" />
       <UICard className="space-y-3 overflow-hidden">
         <div className="hidden">
           <label htmlFor="website">ვებსაიტი</label>
           <input id="website" name="website" autoComplete="off" tabIndex={-1} />
         </div>
 
-        <UIInput label="სახელი" name="fullName" required requiredMark maxLength={120} />
+        <UIInput label={lang === "en" ? "Full Name" : "სახელი და გვარი"} name="fullName" required requiredMark maxLength={120} />
         <UIInput label="ელფოსტა" name="email" type="email" required requiredMark maxLength={180} placeholder="you@example.com" />
         <UIInput label="კომპანია" name="company" maxLength={120} placeholder="მაგ: TechCorp Georgia" />
         <label className="block min-w-0 space-y-1.5">

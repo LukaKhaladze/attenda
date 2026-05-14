@@ -159,7 +159,7 @@ export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
               <div className="min-w-0 space-y-1">
                 <h3 className="truncate font-semibold text-gray-900">{attendee.fullName}</h3>
                 <p className="truncate text-sm text-gray-700">{attendee.position || "პოზიცია არ არის მითითებული"}</p>
-                <p className="truncate text-sm text-gray-600">{attendee.company || "კომპანია არ არის მითითებული"}</p>
+                <p className="truncate text-sm text-gray-600"><span className="sm:hidden">🏢 </span>{attendee.company || "კომპანია არ არის მითითებული"}</p>
               </div>
             </UICard>
           </Link>

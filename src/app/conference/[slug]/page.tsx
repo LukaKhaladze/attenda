@@ -1,13 +1,64 @@
+import type { Metadata } from "next";
 import { cookies, headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { ConferencePage } from "@/components/conference-page";
 import { Shell } from "@/components/shell";
+import { resolveLang } from "@/lib/i18n";
 import { prisma } from "@/lib/prisma";
 import { richTextCountBlocks, richTextFromStored } from "@/lib/rich-text";
 
 export const revalidate = 60;
 
-export default async function ConferenceSinglePage({ params }: { params: { slug: string } }) {
+function resolveOrigin() {
+  const requestHeaders = headers();
+  const forwardedProto = requestHeaders.get("x-forwarded-proto");
+  const forwardedHost = requestHeaders.get("x-forwarded-host");
+  const host = forwardedHost || requestHeaders.get("host");
+  return host
+    ? `${forwardedProto || "https"}://${host}`
+    : process.env.NEXTAUTH_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
+}
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const conference = await prisma.conference.findUnique({
+    where: { slug: params.slug },
+    select: { title_ka: true, slug: true, description_ka: true, coverImageUrl: true }
+  });
+
+  if (!conference) {
+    return {};
+  }
+
+  const origin = resolveOrigin();
+  const shareUrl = `${origin}/conference/${conference.slug}`;
+  const plainDescription = richTextFromStored(conference.description_ka).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+
+  return {
+    title: conference.title_ka,
+    description: plainDescription,
+    openGraph: {
+      title: conference.title_ka,
+      description: plainDescription,
+      url: shareUrl,
+      type: "website",
+      images: conference.coverImageUrl ? [{ url: conference.coverImageUrl }] : undefined
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: conference.title_ka,
+      description: plainDescription,
+      images: conference.coverImageUrl ? [conference.coverImageUrl] : undefined
+    }
+  };
+}
+
+export default async function ConferenceSinglePage({
+  params,
+  searchParams
+}: {
+  params: { slug: string };
+  searchParams: { lang?: string };
+}) {
   const conference = await prisma.conference.findUnique({
     where: { slug: params.slug }
   });
@@ -16,14 +67,8 @@ export default async function ConferenceSinglePage({ params }: { params: { slug:
     notFound();
   }
 
-  const requestHeaders = headers();
-  const forwardedProto = requestHeaders.get("x-forwarded-proto");
-  const forwardedHost = requestHeaders.get("x-forwarded-host");
-  const host = forwardedHost || requestHeaders.get("host");
-  const origin =
-    host
-      ? `${forwardedProto || "https"}://${host}`
-      : process.env.NEXTAUTH_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
+  const origin = resolveOrigin();
+  const lang = resolveLang(searchParams.lang);
   const shareUrl =
     conference.customSubdomain && process.env.NEXT_PUBLIC_ROOT_DOMAIN
       ? `https://${conference.customSubdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`
@@ -45,6 +90,9 @@ export default async function ConferenceSinglePage({ params }: { params: { slug:
   const isRegisteredForConference = Boolean(
     attendee && attendee.status === "APPROVED" && attendee.conferenceId === conference.id
   );
+  const attendeeCount = await prisma.attendee.count({
+    where: { conferenceId: conference.id, status: "APPROVED" }
+  });
 
   return (
     <Shell>
@@ -57,10 +105,11 @@ export default async function ConferenceSinglePage({ params }: { params: { slug:
         }}
         shareUrl={shareUrl}
         isRegisteredForConference={isRegisteredForConference}
+        attendeeCount={attendeeCount}
         agendaHtml={agendaHtml}
         speakersHtml={speakersHtml}
-        agendaCount={richTextCountBlocks(agendaHtml)}
         speakerCount={richTextCountBlocks(speakersHtml)}
+        lang={lang}
       />
     </Shell>
   );
