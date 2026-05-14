@@ -16,25 +16,27 @@ type Attendee = {
 type Props = {
   conferenceId?: string;
   initialItems?: Attendee[];
+  lang?: "ka" | "en";
 };
 
-export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
+export function AttendeesExplorer({ conferenceId, initialItems = [], lang = "ka" }: Props) {
   const [attendees, setAttendees] = useState<Attendee[]>(initialItems);
   const [positionTerms, setPositionTerms] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [q, setQ] = useState("");
   const [debouncedQ, setDebouncedQ] = useState("");
-  const [position, setPosition] = useState("ყველა");
+  const allLabel = lang === "en" ? "All" : "ყველა";
+  const [position, setPosition] = useState(allLabel);
   const [filtersOpen, setFiltersOpen] = useState(false);
 
-  const effectivePosition = useMemo(() => (position === "ყველა" ? "" : position), [position]);
+  const effectivePosition = useMemo(() => (position === allLabel ? "" : position), [position, allLabel]);
 
   useEffect(() => {
     const unique = Array.from(
       new Set(
         initialItems
           .map((item) => item.position?.trim())
-          .filter((value): value is string => Boolean(value) && value !== "ყველა")
+          .filter((value): value is string => Boolean(value) && value !== "ყველა" && value !== "All")
       )
     );
     setPositionTerms(unique);
@@ -78,8 +80,8 @@ export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
           )
         : [];
       setPositionTerms(terms);
-      if (position !== "ყველა" && !terms.includes(position)) {
-        setPosition("ყველა");
+      if (position !== allLabel && !terms.includes(position)) {
+        setPosition(allLabel);
       }
       setLoading(false);
     }
@@ -89,7 +91,7 @@ export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
       }
     });
     return () => controller.abort();
-  }, [debouncedQ, effectivePosition, conferenceId, initialItems]);
+  }, [debouncedQ, effectivePosition, conferenceId, initialItems, position, allLabel]);
 
   return (
     <section className="space-y-4">
@@ -104,7 +106,7 @@ export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
           </span>
           <input
             className="h-11 w-full rounded-xl pl-11 text-sm"
-            placeholder="მოძებნე ადამიანი ან კომპანია"
+            placeholder={lang === "en" ? "Search person or company" : "მოძებნე ადამიანი ან კომპანია"}
             value={q}
             onChange={(event) => setQ(event.target.value)}
           />
@@ -125,7 +127,7 @@ export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
 
         <div className={`overflow-hidden transition-all duration-200 ${filtersOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0"}`}>
           <div className="flex min-w-0 gap-2 overflow-x-auto pb-1 pt-1">
-            {["ყველა", ...positionTerms].map((item) => (
+            {[allLabel, ...positionTerms].map((item) => (
               <button
                 key={item}
                 type="button"
@@ -143,11 +145,11 @@ export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
         </div>
       </UICard>
 
-      {loading ? <p className="text-sm text-gray-600">იტვირთება...</p> : null}
+      {loading ? <p className="text-sm text-gray-600">{lang === "en" ? "Loading..." : "იტვირთება..."}</p> : null}
 
       {!loading && attendees.length === 0 ? (
         <UICard>
-          <p className="text-sm text-gray-600">მონაცემი ვერ მოიძებნა. სცადე სხვა ფილტრი.</p>
+          <p className="text-sm text-gray-600">{lang === "en" ? "No results found. Try another filter." : "მონაცემი ვერ მოიძებნა. სცადე სხვა ფილტრი."}</p>
         </UICard>
       ) : null}
 
@@ -158,8 +160,8 @@ export function AttendeesExplorer({ conferenceId, initialItems = [] }: Props) {
               <UIAvatar src={attendee.photoUrl} alt={attendee.fullName} size="sm" />
               <div className="min-w-0 space-y-1">
                 <h3 className="truncate font-semibold text-gray-900">{attendee.fullName}</h3>
-                <p className="truncate text-sm text-gray-700">{attendee.position || "პოზიცია არ არის მითითებული"}</p>
-                <p className="truncate text-sm text-gray-600"><span className="sm:hidden">🏢 </span>{attendee.company || "კომპანია არ არის მითითებული"}</p>
+                <p className="truncate text-sm text-gray-700">{attendee.position || (lang === "en" ? "Position not specified" : "პოზიცია არ არის მითითებული")}</p>
+                <p className="truncate text-sm text-gray-600"><span className="sm:hidden">🏢 </span>{attendee.company || (lang === "en" ? "Company not specified" : "კომპანია არ არის მითითებული")}</p>
               </div>
             </UICard>
           </Link>

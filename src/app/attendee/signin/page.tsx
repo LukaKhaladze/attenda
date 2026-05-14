@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { AttendeeSignInForm } from "@/components/attendee-signin-form";
 import { Shell } from "@/components/shell";
+import { resolveLang } from "@/lib/i18n";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -8,8 +9,9 @@ export const dynamic = "force-dynamic";
 export default async function AttendeeSignInPage({
   searchParams
 }: {
-  searchParams: { conferenceId?: string; conferenceSlug?: string };
+  searchParams: { conferenceId?: string; conferenceSlug?: string; lang?: string };
 }) {
+  const lang = resolveLang(searchParams.lang);
   const conference = searchParams.conferenceId
     ? await prisma.conference.findUnique({ where: { id: searchParams.conferenceId } })
     : searchParams.conferenceSlug
@@ -22,7 +24,7 @@ export default async function AttendeeSignInPage({
 
   return (
     <Shell>
-      <AttendeeSignInForm conferenceId={conference.id} conferenceTitle={conference.title_ka} />
+      <AttendeeSignInForm conferenceId={conference.id} conferenceTitle={conference.title_ka} lang={lang} />
     </Shell>
   );
 }

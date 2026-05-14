@@ -208,6 +208,12 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
   const hostAttendeesHref = lastHostConferenceId ? `/host/conferences/${lastHostConferenceId}` : "/host";
   const primaryHomeHref = isAdminSession || isAdminArea ? "/admin" : isHostSession || isHostArea ? "/host" : "/";
   const isEnglish = new URLSearchParams(search).get("lang") === "en";
+  const langQuery = isEnglish ? "lang=en" : "";
+
+  function withLang(href: string) {
+    if (!langQuery) return href;
+    return href.includes("?") ? `${href}&${langQuery}` : `${href}?${langQuery}`;
+  }
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -245,7 +251,7 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
             </button>
             {showAttendeeActions ? (
               <Link
-                href="/notifications"
+                href={withLang("/notifications")}
                 className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#d7e7fb] text-[#3173f1]"
                 aria-label={isEnglish ? "Notifications" : "შეტყობინებები"}
                 title={isEnglish ? "Notifications" : "შეტყობინებები"}
@@ -284,45 +290,45 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
                 <path d="M3 11l9-8 9 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                 <path d="M5 10v10h14V10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
               </svg>
-              <span>მთავარი</span>
+              <span>{isEnglish ? "Home" : "მთავარი"}</span>
             </Link>
 
             {!hasAnySession ? (
               <>
-                <Link href="/attendees" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                <Link href={withLang("/attendees")} className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
                   <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
                     <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="2" />
                     <circle cx="16" cy="9" r="2.5" stroke="currentColor" strokeWidth="2" />
                     <path d="M3 20c1.2-3.1 3.5-5 5-5s3.8 1.9 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                     <path d="M13 20c.8-2 2.4-3.2 3.6-3.2 1.3 0 2.8 1.2 3.7 3.2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                   </svg>
-                  <span>დამსწრეები</span>
+                  <span>{isEnglish ? "Attendees" : "დამსწრეები"}</span>
                 </Link>
 
-                <Link href={registerHref} className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                <Link href={withLang(registerHref)} className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
                   <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
                     <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                   </svg>
-                  <span>რეგისტრაცია</span>
+                  <span>{isEnglish ? "Register" : "რეგისტრაცია"}</span>
                 </Link>
 
-                <Link href={isPublicConferencePage ? attendeeSignInHref : "/auth/signin"} className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                <Link href={withLang(isPublicConferencePage ? attendeeSignInHref : "/auth/signin")} className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
                   <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
                     <path d="M10 17l-5-5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                     <path d="M5 12h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                     <path d="M14 4h4a2 2 0 012 2v12a2 2 0 01-2 2h-4" stroke="currentColor" strokeWidth="2" />
                   </svg>
-                  <span>შესვლა</span>
+                  <span>{isEnglish ? "Sign In" : "შესვლა"}</span>
                 </Link>
 
                 {!isPublicConferencePage ? (
-                  <Link href="/auth/signin" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                  <Link href={withLang("/auth/signin")} className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
                     <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
                       <path d="M10 17l-5-5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                       <path d="M5 12h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                       <path d="M14 4h4a2 2 0 012 2v12a2 2 0 01-2 2h-4" stroke="currentColor" strokeWidth="2" />
                     </svg>
-                    <span>ადმინი</span>
+                    <span>{isEnglish ? "Admin" : "ადმინი"}</span>
                   </Link>
                 ) : null}
               </>
@@ -330,63 +336,63 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
               <>
                 {isHostSession ? (
                   <>
-                    <Link href={hostAttendeesHref} className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                    <Link href={withLang(hostAttendeesHref)} className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
                       <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
                         <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="2" />
                         <circle cx="16" cy="9" r="2.5" stroke="currentColor" strokeWidth="2" />
                         <path d="M3 20c1.2-3.1 3.5-5 5-5s3.8 1.9 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                         <path d="M13 20c.8-2 2.4-3.2 3.6-3.2 1.3 0 2.8 1.2 3.7 3.2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                       </svg>
-                      <span>დამსწრეები</span>
+                      <span>{isEnglish ? "Attendees" : "დამსწრეები"}</span>
                     </Link>
                   </>
                 ) : null}
 
                 {isAdminSession ? (
                   <>
-                    <Link href="/me" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                    <Link href={withLang("/me")} className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
                       <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
                         <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
                         <path d="M4 20c1.8-3.2 5-5 8-5s6.2 1.8 8 5" stroke="currentColor" strokeWidth="2" />
                       </svg>
-                      <span>ჩემი გვერდი</span>
+                      <span>{isEnglish ? "My Profile" : "ჩემი გვერდი"}</span>
                     </Link>
 
-                    <Link href="/notifications" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                    <Link href={withLang("/notifications")} className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
                       <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
                         <path d="M15 17h5l-1.4-1.4a2 2 0 01-.6-1.4V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h11z" stroke="currentColor" strokeWidth="2" />
                         <path d="M10 20a2 2 0 004 0" stroke="currentColor" strokeWidth="2" />
                       </svg>
-                      <span>შეტყობინებები</span>
+                      <span>{isEnglish ? "Notifications" : "შეტყობინებები"}</span>
                       {unreadCount > 0 ? <span className="ml-auto text-xs font-semibold text-primary">{unreadCount > 99 ? "99+" : unreadCount}</span> : null}
                     </Link>
 
-                    <Link href="/admin" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                    <Link href={withLang("/admin")} className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
                       <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
                         <rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="2" />
                         <path d="M7 8h10M7 12h6M7 16h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                       </svg>
-                      <span>ღონისძიებები</span>
+                      <span>{isEnglish ? "Events" : "ღონისძიებები"}</span>
                     </Link>
                   </>
                 ) : null}
 
                 {showAttendeeActions && !isAdminSession && !isHostSession ? (
                   <>
-                    <Link href="/me" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                    <Link href={withLang("/me")} className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
                       <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
                         <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
                         <path d="M4 20c1.8-3.2 5-5 8-5s6.2 1.8 8 5" stroke="currentColor" strokeWidth="2" />
                       </svg>
-                      <span>ჩემი გვერდი</span>
+                      <span>{isEnglish ? "My Profile" : "ჩემი გვერდი"}</span>
                     </Link>
 
-                    <Link href="/notifications" className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                    <Link href={withLang("/notifications")} className="flex items-center gap-2 rounded-lg px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">
                       <svg className="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" aria-hidden>
                         <path d="M15 17h5l-1.4-1.4a2 2 0 01-.6-1.4V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h11z" stroke="currentColor" strokeWidth="2" />
                         <path d="M10 20a2 2 0 004 0" stroke="currentColor" strokeWidth="2" />
                       </svg>
-                      <span>შეტყობინებები</span>
+                      <span>{isEnglish ? "Notifications" : "შეტყობინებები"}</span>
                       {unreadCount > 0 ? <span className="ml-auto text-xs font-semibold text-primary">{unreadCount > 99 ? "99+" : unreadCount}</span> : null}
                     </Link>
                   </>
@@ -402,7 +408,7 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
                     <path d="M5 12h11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                     <path d="M14 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4" stroke="currentColor" strokeWidth="2" />
                   </svg>
-                  <span>გამოსვლა</span>
+                  <span>{isEnglish ? "Sign Out" : "გამოსვლა"}</span>
                 </button>
               </>
             )}

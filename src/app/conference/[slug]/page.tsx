@@ -31,9 +31,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
   const origin = resolveOrigin();
   const shareUrl = `${origin}/conference/${conference.slug}`;
-  const ogImage = conference.coverImageUrl && !conference.coverImageUrl.startsWith("data:image/")
-    ? conference.coverImageUrl
-    : "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1400&q=80";
+  const ogImage = `${origin}/api/conference-og/${conference.slug}`;
   const plainDescription = richTextFromStored(conference.description_ka).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 
   return {

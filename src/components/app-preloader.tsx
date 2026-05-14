@@ -1,30 +1,26 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function AppPreloader() {
   const pathname = usePathname();
   const [visible, setVisible] = useState(false);
-  const [initialShown, setInitialShown] = useState(false);
+  const previousPath = useRef(pathname);
 
   if (pathname === "/") {
     return null;
   }
 
   useEffect(() => {
-    if (initialShown) {
+    if (previousPath.current === pathname) {
       return;
     }
-
+    previousPath.current = pathname;
     setVisible(true);
-    const timer = setTimeout(() => {
-      setVisible(false);
-      setInitialShown(true);
-    }, 250);
-
+    const timer = setTimeout(() => setVisible(false), 320);
     return () => clearTimeout(timer);
-  }, [pathname, initialShown]);
+  }, [pathname]);
 
   if (!visible) {
     return null;
