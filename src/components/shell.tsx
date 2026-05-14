@@ -228,6 +228,7 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
       params.set("lang", "en");
     }
     const query = params.toString();
+    setSearch(query ? `?${query}` : "");
     router.push(query ? `${pathname}?${query}` : pathname);
   }
 
@@ -247,7 +248,7 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
               className="inline-flex h-9 items-center justify-center rounded-full border border-[#d7e7fb] px-3 text-xs font-semibold text-[#3173f1]"
               aria-label="Switch language"
             >
-              {isEnglish ? "KA" : "EN"}
+              {isEnglish ? "GE" : "EN"}
             </button>
             {showAttendeeActions ? (
               <Link
