@@ -182,7 +182,12 @@ export default async function AdminPage() {
 
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h1 className="text-3xl font-bold text-brand-900">ადმინისტრირება</h1>
-          <AdminLogoutButton />
+          <div className="flex items-center gap-2">
+            <Link href="/admin/analytics" className="rounded-xl border border-brand-200 px-3 py-2 text-sm text-brand-800 hover:bg-brand-50">
+              Analytics
+            </Link>
+            <AdminLogoutButton />
+          </div>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
