@@ -8,11 +8,12 @@ export function AppPreloader() {
   const [visible, setVisible] = useState(false);
   const previousPath = useRef(pathname);
 
-  if (pathname === "/") {
-    return null;
-  }
-
   useEffect(() => {
+    if (pathname === "/") {
+      setVisible(false);
+      previousPath.current = pathname;
+      return;
+    }
     if (previousPath.current === pathname) {
       return;
     }
@@ -22,7 +23,7 @@ export function AppPreloader() {
     return () => clearTimeout(timer);
   }, [pathname]);
 
-  if (!visible) {
+  if (!visible || pathname === "/") {
     return null;
   }
 
