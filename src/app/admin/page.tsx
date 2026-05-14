@@ -1,3 +1,4 @@
+import { MeetingOfferStatus } from "@prisma/client";
 import { subHours } from "date-fns";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
@@ -119,7 +120,7 @@ export default async function AdminPage() {
     );
   }
 
-  const [conferences, recentAttendeesByConference, hostCount] = await Promise.all([
+  const [conferences, recentAttendeesByConference, hostCount, offerStats] = await Promise.all([
     prisma.conference.findMany({
       orderBy: { date: "asc" },
       include: {
@@ -143,12 +144,24 @@ export default async function AdminPage() {
     }),
     prisma.user.count({
       where: { role: "HOST" }
+    }),
+    prisma.meetingOffer.groupBy({
+      by: ["status"],
+      _count: {
+        _all: true
+      }
     })
   ]);
 
   const recentCounts = new Map(
     recentAttendeesByConference.map((item) => [item.conferenceId, item._count._all])
   );
+  const offerStatsMap = new Map(
+    offerStats.map((item) => [item.status, item._count._all])
+  );
+  const totalOffersSent = offerStats.reduce((sum, item) => sum + item._count._all, 0);
+  const approvedOffers = offerStatsMap.get(MeetingOfferStatus.ACCEPTED) ?? 0;
+  const rejectedOffers = offerStatsMap.get(MeetingOfferStatus.DECLINED) ?? 0;
 
   return (
     <Shell>
@@ -172,7 +185,7 @@ export default async function AdminPage() {
           <AdminLogoutButton />
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           <article className="rounded-2xl border border-[#d9e7ff] bg-white p-4 shadow-[0_14px_30px_rgba(49,115,241,0.06)]">
             <p className="text-sm text-brand-700">კონფერენციები სულ</p>
             <p className="text-3xl font-bold text-brand-900">{conferences.length}</p>
@@ -182,6 +195,21 @@ export default async function AdminPage() {
             <p className="text-sm text-brand-700">ჰოსტის ანგარიშები</p>
             <p className="text-3xl font-bold text-brand-900">{hostCount}</p>
             <p className="mt-2 text-xs leading-5 text-brand-600">რამდენი HOST ტიპის ანგარიშია შექმნილი სისტემაში ჯამურად.</p>
+          </article>
+          <article className="rounded-2xl border border-[#d9e7ff] bg-white p-4 shadow-[0_14px_30px_rgba(49,115,241,0.06)]">
+            <p className="text-sm text-brand-700">Meeting offers (გაგზავნილი)</p>
+            <p className="text-3xl font-bold text-brand-900">{totalOffersSent}</p>
+            <p className="mt-2 text-xs leading-5 text-brand-600">რამდენი შეხვედრის შეთავაზება გაიგზავნა ჯამურად.</p>
+          </article>
+          <article className="rounded-2xl border border-[#d9e7ff] bg-white p-4 shadow-[0_14px_30px_rgba(49,115,241,0.06)]">
+            <p className="text-sm text-brand-700">Meeting offers (დადასტურებული)</p>
+            <p className="text-3xl font-bold text-emerald-700">{approvedOffers}</p>
+            <p className="mt-2 text-xs leading-5 text-brand-600">რამდენი შეთავაზება დამტკიცდა.</p>
+          </article>
+          <article className="rounded-2xl border border-[#d9e7ff] bg-white p-4 shadow-[0_14px_30px_rgba(49,115,241,0.06)]">
+            <p className="text-sm text-brand-700">Meeting offers (უარყოფილი)</p>
+            <p className="text-3xl font-bold text-red-700">{rejectedOffers}</p>
+            <p className="mt-2 text-xs leading-5 text-brand-600">რამდენ შეთავაზებაზე მოვიდა უარყოფა.</p>
           </article>
         </div>
 

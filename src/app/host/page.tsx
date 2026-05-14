@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MeetingOfferStatus } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { AdminLogoutButton } from "@/components/admin-logout-button";
 import { HostSignInForm } from "@/components/host-signin-form";
@@ -41,6 +42,26 @@ export default async function HostDashboardPage() {
           }
         }
       }).then((items) => items.map((item) => item.conference));
+  const conferenceIds = conferences.map((conference) => conference.id);
+  const offerStats = conferenceIds.length
+    ? await prisma.meetingOffer.groupBy({
+        by: ["status"],
+        where: {
+          recipient: {
+            conferenceId: {
+              in: conferenceIds
+            }
+          }
+        },
+        _count: {
+          _all: true
+        }
+      })
+    : [];
+  const offerStatsMap = new Map(offerStats.map((item) => [item.status, item._count._all]));
+  const totalOffersSent = offerStats.reduce((sum, item) => sum + item._count._all, 0);
+  const approvedOffers = offerStatsMap.get(MeetingOfferStatus.ACCEPTED) ?? 0;
+  const rejectedOffers = offerStatsMap.get(MeetingOfferStatus.DECLINED) ?? 0;
 
   return (
     <Shell>
@@ -65,6 +86,24 @@ export default async function HostDashboardPage() {
             <p className="text-sm text-brand-700">აქ ხედავ მხოლოდ შენზე მინიჭებულ კონფერენციებს და მათ რეგისტრაციებს.</p>
           </div>
           <AdminLogoutButton callbackUrl="/host/signin" />
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-3">
+          <article className="rounded-2xl border border-[#cfeeed] bg-white p-4 shadow-[0_14px_30px_rgba(90,226,232,0.08)]">
+            <p className="text-sm text-brand-700">Meeting offers (გაგზავნილი)</p>
+            <p className="text-3xl font-bold text-brand-900">{totalOffersSent}</p>
+            <p className="mt-2 text-xs leading-5 text-brand-600">მინიჭებული კონფერენციების ჯამური შეთავაზებები.</p>
+          </article>
+          <article className="rounded-2xl border border-[#cfeeed] bg-white p-4 shadow-[0_14px_30px_rgba(90,226,232,0.08)]">
+            <p className="text-sm text-brand-700">Meeting offers (დადასტურებული)</p>
+            <p className="text-3xl font-bold text-emerald-700">{approvedOffers}</p>
+            <p className="mt-2 text-xs leading-5 text-brand-600">რამდენ შეთავაზებაზე მოვიდა თანხმობა.</p>
+          </article>
+          <article className="rounded-2xl border border-[#cfeeed] bg-white p-4 shadow-[0_14px_30px_rgba(90,226,232,0.08)]">
+            <p className="text-sm text-brand-700">Meeting offers (უარყოფილი)</p>
+            <p className="text-3xl font-bold text-red-700">{rejectedOffers}</p>
+            <p className="mt-2 text-xs leading-5 text-brand-600">რამდენ შეთავაზებაზე მოვიდა უარყოფა.</p>
+          </article>
         </div>
 
         <div className="rounded-2xl border border-[#cfeeed] bg-white p-5 shadow-[0_18px_40px_rgba(90,226,232,0.08)]">
