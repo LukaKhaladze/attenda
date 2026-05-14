@@ -16,6 +16,18 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <main className="min-h-screen w-full bg-background px-4 py-4 sm:px-6 lg:px-8">
           <AppPreloader />
           {children}
+          <footer className="pb-4 pt-8 text-center text-xs text-gray-500">
+            Developed by{" "}
+            <a
+              href="https://webfeatures.ge/"
+              target="_blank"
+              rel="noreferrer"
+              className="underline-offset-2 hover:underline"
+            >
+              Web Features
+            </a>{" "}
+            &copy; 2026 All Rights Reserved
+          </footer>
         </main>
         <SpeedInsights />
       </body>
