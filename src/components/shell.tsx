@@ -229,7 +229,12 @@ export function Shell({ children, hideHeader = false }: { children: ReactNode; h
     }
     const query = params.toString();
     setSearch(query ? `?${query}` : "");
-    router.push(query ? `${pathname}?${query}` : pathname);
+    const nextUrl = query ? `${pathname}?${query}` : pathname;
+    if (typeof window !== "undefined") {
+      window.location.assign(nextUrl);
+      return;
+    }
+    router.push(nextUrl);
   }
 
   return (
